@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Users Management Dashboard</title>
+
+<!-- BOOTSTRAP 5 CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- BOOTSTRAP ICONS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f6f8f6;
+    }
+    aside {
+        width: 256px;
+        border-right: 1px solid #e1e7e3;
+    }
+    .sidebar-active {
+        background-color: #52d6814f !important;
+        font-weight: 600;
+    }
+</style>
+</head>
+
+<body class="text-dark">
+
+<div class="d-flex h-100">
+
+<!-- Sidebar -->
+<aside class="bg-white d-flex flex-column justify-content-between p-3">
+    <div>
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <div class="rounded-circle bg-cover" style="width:45px;height:45px;background:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvs6WeHoG_PTeHh6qI7GdGPD35gLluSRaDqHjnJclmVOaEmpOf1G1X8VmHCEomTS5ZSIzq2tmDYVnqyWIYEFFj8gEG2CTpdGfTtD57CEdwhCXrP_YmnlTTYWZxifWEElTDlneDZhcxB_ij8VHbCoTOrd6k_ZpDE_qZbQLUAHuLwWNzjhsh7vTzVkVoHPC89SY6X48fZ9SY4ZaQBNQAlY-JVWfRAXHCrPHi8TVwMnw8X1b7aZvFBnBwWcyu5KIzOfUIW9m6A20_cfx1') center/cover"></div>
+            <div>
+                <h6 class="mb-0">RETRO XI</h6>
+                <small class="text-muted">Admin Panel</small>
+            </div>
+        </div>
+
+        <ul class="list-unstyled">
+            <li><a href="#" class="d-flex align-items-center gap-2 btn btn-outline-light w-100 text-dark"><i class="bi bi-grid"></i> Dashboard</a></li>
+            <li><a href="#" class="d-flex align-items-center gap-2 btn btn-outline-light w-100 text-dark"><i class="bi bi-cart"></i> Orders</a></li>
+            <li><a href="#" class="d-flex align-items-center gap-2 btn btn-outline-light w-100 text-dark"><i class="bi bi-box"></i> Products</a></li>
+            <li><a href="#" class="d-flex align-items-center gap-2 btn sidebar-active w-100 text-dark"><i class="bi bi-people-fill"></i> Users</a></li>
+            <li><a href="#" class="d-flex align-items-center gap-2 btn btn-outline-light w-100 text-dark"><i class="bi bi-gear"></i> Settings</a></li>
+        </ul>
+    </div>
+
+    <button class="btn btn-success w-100 fw-bold">View Storefront</button>
+</aside>
+
+<!-- Main Content -->
+<main class="p-4 flex-grow-1 overflow-auto">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between mb-4 gap-3">
+        <h1 class="fw-bolder">Users Management</h1>
+
+        <div class="d-flex gap-2">    
+            <form method="get" class="d-flex gap-2 w-100">
+            <div class="input-group w-100">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input class="form-control" type="text" placeholder="Search by name or email..." name="search" value="{{search_query}}">
+            </div> 
+            <button class="btn btn-success fw-bold" type="submit">Search</button>
+            {%if search_query%}           
+            <a href="{%url 'user_list'%}" class="btn btn-secondary fw-bold">Clear</a>
+            {%endif%}
+            </form>
+
+            <button class="btn btn-success fw-bold">+ Add New User</button>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap mb-3">
+        <button class="btn btn-outline-secondary dropdown-toggle">Filter by Status</button>
+        <button class="btn btn-outline-secondary dropdown-toggle">Sort by Name</button>
+        <button class="btn btn-outline-secondary dropdown-toggle">Bulk Actions</button>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table align-middle table-hover mb-0">
+                <thead class="table-light text-uppercase small">
+                    <tr>
+                        <th><input type="checkbox" /></th>
+                        <th>User</th>
+                        <th>Status</th>
+                        <th>Date Joined</th>
+                        <th>Total Orders</th>
+                        <th>Last Login</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {%for user in users%}
+                    <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>
+                            <strong>{{user.first_name|default:'N/A'}}</strong><br>
+                            <small class="text-muted">{{user.email}}</small>
+                        </td>
+                        <td>
+                            {%if user.is_active%}
+                            <span class="badge bg-success">Active</span>
+                            {%else%}
+                            <span class="badge bg-secondary">Inactive</span>
+                            {%endif%}
+                        </td>
+                        <td>{{user.date_joined|date:'Y-m-d'}}</td>
+                        <td>12</td>
+                        <td>{{user.last_login|date:'Y-m-d'}}</td>
+                        <td class="text-end">
+                            {%if user.is_blocked%}
+                            <button onclick="unblockUser({{user.id}})" class="btn btn-sm btn-success fw-bold"> 
+                                Unblock User
+                            </button>
+                            {%else%}
+                            <button onclick="blockUser({{user.id}})" class="btn btn-sm btn-danger fw-bold">
+                                Block User
+                            </button>
+                            {%endif%}
+                            <button class="btn btn-sm text-secondary">
+        <i class="bi bi-eye"></i>
+    </button>
+                        </td>
+                    </tr>
+                    {%empty%}
+                    <tr> 
+                        <td class="text-center text-muted py-3" colspan="7">
+                            NO USERS FOUND
+                        </td>
+                    </tr>
+                    {%endfor%}
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <span class="small">Showing <strong>{{users.start_index}}</strong>-<strong>{{users.end_index}}</strong> of <strong>{{users.paginator.count}}</strong></span>
+
+            <nav>
+                <ul class="pagination mb-0"> 
+                    {%if users.has_previous%}
+                    <li class="page-item"><a class="page-link" href="?page={{users.previous_page_number}}&search={{search_query}}">Previous</a></li>
+                    {%endif%}   
+                    {%for num in users.paginator.page_range%}
+                        {%if users.number == num%} 
+                            <li class="page-item active">
+                                <span class="page-link">{{num}}</span>
+                            </li>
+                        {%else%} 
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{num}}&search={{search_query}}">
+                                    {{num}}
+                                </a>
+                            </li>
+                        {%endif%}
+                    {%endfor%}  
+                    {%if users.has_next%}
+                    <li class="page-item"><a class="page-link" href="?page={{users.next_page_number}}&search={{search_query}}">Next</a></li>
+                    {%endif%}       
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</main>
+
+</div>
+
+<script>
+    function blockUser(userID) {
+            if (!confirm("Are you sure you want to BLOCK this user?")) return;
+
+            fetch("{% url 'block_user' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: "user_id=" + userID
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                if (data.status === "success") location.reload();
+            });
+        }
+
+        function unblockUser(userID) {
+            if (!confirm("Are you sure you want to UNBLOCK this user?")) return;
+
+            fetch("{% url 'unblock_user' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: "user_id=" + userID
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                if (data.status === "success") location.reload();
+            });
+        }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> 
+</body>
+</html>

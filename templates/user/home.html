@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro XI - Where football heritage lives on</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"> 
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
+    rel="stylesheet"
+  /> 
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+  />
+<style>
+    :root{
+        --bs-primary:#11d452;
+    } 
+    body{
+        font-family:'Lexend',sans-serif; 
+        background-color: #102216;  
+        color: #ffffff;
+    } 
+    .bg-background-dark{
+        background-color: #102216;
+    } 
+</style>
+</head>
+<body class="bg-background-dark">
+    <div class="d-flex flex-column min-vh-100"> 
+      <div class="container-fluid px-3 px-md-5 px-lg-5 py-3">
+        <div class="mx-auto" style="max-width: 1280px;"> 
+          <header class="d-flex align-items-center justify-content-between border-bottom border-custom px-2 px-md-3 py-3">
+            <div class="d-flex align-items-center gap-4"> 
+              <div class="d-flex align-items-center gap-2 text-white">
+              <div class="text-primary">
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="width: 24px; height: 24px;"
+                >
+                  <g clip-path="url(#clip0_6_543)">
+                    <path
+                      d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1187 3.29028 29.2403 4.41187Z"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_6_543">
+                      <rect width="48" height="48" fill="white"></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+              <h2 class="h5 fw-bold mb-0">Retro XI</h2>
+            </div>
+
+            <nav class="d-none d-lg-flex align-items-center gap-4">
+              <a href="#" class="text-white text-decoration-none small fw-medium">
+                Home
+              </a>
+              <a href="#" class="text-white text-decoration-none small fw-medium">
+                Shop
+              </a>
+              <a href="#" class="text-white text-decoration-none small fw-medium">
+                Featured
+              </a>
+              <a href="#" class="text-white text-decoration-none small fw-medium">
+                New Arrivals
+              </a>
+            </nav>
+          </div>
+            <!-- Icons -->
+            <div class="d-flex gap-2">
+              <button onclick="window.location.href='{% url 'profile' %}'" class="btn btn-chip d-flex align-items-center justify-content-center px-2">
+                <span class="material-symbols-outlined">person</span>
+              </button>
+              <button class="btn btn-chip d-flex align-items-center justify-content-center px-2">
+                <span class="material-symbols-outlined">shopping_bag</span>
+              </button>
+            </div>
+            </div>
+          </header> 
+          <main class="mt-4 mt-md-5 mb-5">
+          <!-- HERO -->
+          <section class="mb-5">
+            <div
+              class="hero-section d-flex flex-column justify-content-center align-items-center text-center p-3 p-md-4"
+              style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD6RZBfqkSyXVdzvDA0_TVAZbcM5XbrU7x_r2eXdUWoesN-MQjleqi89YrT8dTmBG5guIpBwO0DECBBMt0ERHZd-_eCUMBdTesS-Kyt2NGMy3hooTfA9A9GlJzDhCRmaD4cyGf8iVPK8UHAn2SpSh5TsoFX3AdJ5KjuCfA3jWMu13wIV9Y6oFr1yO6MrJ357f12SO2kDff6pSPeok5-k2Rl-kSBoGhHhJRzL5qauLm8100JbOL3sRPSkKUrjJJddqVzNUwA-u4MF70x');
+              background-size: cover;
+              background-position: center;
+              background-repeat: no-repeat;"
+            >
+              <div class="hero-overlay"></div>
+              <div class="hero-content">
+                <div class="mb-3">
+                  <h1 class="fw-black display-5 mb-3">
+                    Where Football Heritage Lives On
+                  </h1>
+                  <p class="text-white-50 small small-md fs-6 mx-auto" style="max-width: 600px;">
+                    Discover timeless classics and relive the greatest moments in
+                    football history with our curated collection of authentic vintage
+                    jerseys.
+                  </p>
+                </div>
+                <button class="btn btn-primary-custom px-4 py-2 fw-bold">
+                  Explore Jerseys
+                </button>
+              </div>
+            </div>
+          </section> 
+           <!-- FEATURED JERSEYS -->
+          <section class="container my-5">
+            <h2 class="h5 fw-bold px-2 mb-3 text-white">Featured Jerseys</h2>
+            <div class="no-scrollbar overflow-auto">
+              <div class="row g-4">
+                <!-- Card 1 -->
+                <div class="card card-dark flex-shrink-0 col-md-3 col-sm-6" style="min-width: 240px;">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUPq0cNsd85a92QN90E0zCKPibhta4MH-GE-fZZZT1CqtiNNJ2CdBIC55gK2lGT23sBtPcR9p97lJuxVdpZX7DU5eQ7BE5e8OlSOJFdwYzjP5eMUKNy8x6dq-_xRmeUYg9XitcVOQSaaCb57TWAW4Ct3Fmw6bps-kd8chp2SlltCHc43FYl4_A_tlmDE0G_yiOIhhqAP_q_h9bzvmQPnQOfHNng4Ex3XWdLIYUhLn80r7GILjzC1ZcKkdPo3n_kivWCMUlYlOULYtT"
+         class="card-img-top"
+         alt="AC Milan Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">AC Milan</p>
+                      <p class="mb-3 small text-muted-green">1993-94 | €120.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="card card-dark flex-shrink-0 col-md-3 col-sm-6" style="min-width: 240px;">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTs-Fe63-MTEm7c_6pp7fMJ-nXkqaz1fEsG8OkgcWVDeuZ963Np5u1uN21dK77fVTqrZcobw6piZm07HsdI7Jk8INEWdP14lD9SzOnW9U4uounFcm9Lr1wHTT3YSnzcdS3SGVInZiHGpIyI_b9yLYf5xi4fz15CsbJv7bjFOp3kqUKM4PBdwPNjZtUwFxQW7yQf7lXeGhsHxwfu6RC8cgo_x6boBQA55ZTR2iL9muS6Ug0JDipCBxklUSuIOQDQ_JpwkYI4B0bLapB"
+         class="card-img-top"
+         alt="Arsenal Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">Arsenal</p>
+                      <p class="mb-3 small text-muted-green">2003-04 | €150.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="card card-dark flex-shrink-0 col-md-3 col-sm-6" style="min-width: 240px;">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjJ5IN3Yzwws1pJEA6pal1jlbjjGPFEtTRIKsC_tjhcjIMJ25gBwfmkhLqpie23dE-iOoG1IzYhSgdpu49u80nQ9WznhesqdDpJvoQ5mQEUCkxAyM94-2oRfil-cd0RTroUvSDDNX0JeaYx1WCqF7FVC14c7YDVyLdhzAJJwnCTXqTqMVKSsTJ3FkOfGqCnkCbIZSNM6ELURA46SEuAoHJeXhS2J-9jd5B-wxXDarYI_rmjW7gJsRL6UlscjAmqXugaS9lK_j65iQB"
+         class="card-img-top"
+         alt="Manchester United Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">Manchester United</p>
+                      <p class="mb-3 small text-muted-green">1998-99 | €140.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card card-dark flex-shrink-0 col-md-3 col-sm-6" style="min-width: 240px;">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi4W7ONGcwRHd9HkYgp3cuBdtIYblNVWoF-bYt88aRgKo0uNnr1YIFKCkYU2HsjGgA7fXctxlrX6oRSpLB00txOKDExeOx_Vy-ttPfFZPcC63v3DqtbSa5JU5fy0Ya5V1bVdEftZdf024pVDIWGHU1WezPsfHDojULXc7DcNcBzVodMOTzlOLhUWuYKphGTXBFerzz1YuZDg1_EjBZVKpVjLN5l4OkRP33vIYzlXjFAysp361f0bJtdpRH_EgQC3DG31EG6IDGiBCG"
+         class="card-img-top"
+         alt="Netherlands Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">Netherlands</p>
+                      <p class="mb-3 small text-muted-green">1988 | €180.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="card card-dark flex-shrink-0 col-md-3 col-sm-6" style="min-width: 240px;"> 
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-t_s1_6o9c54TuF2aiCOC6OLjWcZMLmBAtMMolxed8G_tXqMsZFoIAdaC8fq7xDPtToMHFDToits00_E46nBCFgFt96cggS-TSWT9h9qD7fePg7I9Jb82zNG5oMCdKQKUQB7Gg_2sSmR_rQl7rCI8ahrHMEo3EAjqe8985M10xemqjcv4YJ_yGLMYpDqbf9yhAoFDeq-LGn7EG-WX3ch8C33Xy4UJKiFf0TSBjFYk8-XOAY1JtIJrt35QC6JAe3-r_mNjgvX77zjD"
+         class="card-img-top"
+         alt="Argentina Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">Argentina</p>
+                      <p class="mb-3 small text-muted-green">1986 | €200.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div> 
+                <!-- NEW ARRIVALS -->
+          <section class="container my-5">
+            <h2 class="h5 fw-bold px-2 mb-3 text-white">New Arrivals</h2>
+            <div class="row g-4">
+              <!-- Item 1 -->
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="card card-dark position-relative h-100">
+                  <div class="new-badge">NEW</div> 
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm4Ht5ZT3sJKdx5mAV6ELOCivdum1XWWWrGpp37uz90BHcv2iKbBfu_8M9cYu2OZVxVPm4hjhXjRD92W_NTpinoY8ijY6SXTHNOeVEYiOC4RSNbJ9urT0cyjbPOBQyaoEGfLcE5XksqjjC8Fve27NjyPyMli0XwWZ-86HtNli0wOjzwQHSjyXPcSks3Hvh2c1EUfY9m2nYKYkrit2sA9yuqVYLneBFzLh_BjJLC2dXLPCgUkoXT70fHlsKLzTMBeBbiNWz1S7H800P"
+         class="card-img-top"
+         alt="Liverpool Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">Liverpool</p>
+                      <p class="mb-3 small text-muted-green">1989-91 | €135.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="card card-dark position-relative h-100">
+                  <div class="new-badge">NEW</div> 
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYihh8zjWIPPPwCZNjmn_PZy71xRUkz2oEOMsXGUNIe9Z_nylOlNGSVaP7ZcV4KjxeURz56w3UXeumpZgSe-wQLwqfrJmCLaakoPqDfS67dwojpZMI7pB11Cj96YCK1kxhuoEa8iz8iT_OPSDNd3SKZGm_4qTcUaCat1ptdFZUQEjZCaRWSGOETKdLYDGUP9Ot6kMV5NDj-M7UBzAqfxvR1JbovgvUVV-RIoZpzKu3z8in-_RcYQKjopRxRMVfPZQ54T4aex86n-Pw"
+         class="card-img-top"
+         alt="Juventus Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">Juventus</p>
+                      <p class="mb-3 small text-muted-green">1995-97 | €160.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="card card-dark position-relative h-100">
+                  <div class="new-badge">NEW</div>
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpTXYY3wM6IEUetzdbfw7iJfNo1tkoz9cfkT3WN0KM6BGom3tpi5JY4QTxiVcdNvrFV3gwia71Q1dLC_ldBHz0260wzNtAoa8yMPo9r09DyATxbZVi9bLCskXPUpdNjiFeMYoJmgC43pVc152R9NtgpyuTOdKnRPfuloBGoDzfANNx2p5xZZxdfS75-YkinqDiQPIP4w5jq9DxUuAWgWCvqF0JTGMmb-PmbYismdG9tvl3Kxn9PVxkI2_c3qPkQdlUYP5OlMcAKidz"
+         class="card-img-top"
+         alt="Dortmund Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">Borussia Dortmund</p>
+                      <p class="mb-3 small text-muted-green">1996-97 | €170.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 4 -->
+              <div class="col-12 col-sm-6 col-md-3">
+                <div class="card card-dark position-relative h-100">
+                  <div class="new-badge">NEW</div> 
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4iidb9qkYBmzlvgBY-c7W9O4QpJNS1wA-4NXHPbLY8Lx8TE2Nu1Bw9EQkwVWLV6_53INTa8jJxFlz53C8QLuwL-M3Ib7pbpTbk4DIHQHdaBjd34JTSAB16xqp0lEFKTqTVU5-HToe-UJcRSbc_yd38Qq5Li8OFCxbPpVmeNwF5aRvufsa2aQgHEMsOmbalG6XfjGAIanYvEXkx9FGJQkuRTNhLNpQ2Gw-bRwQ-RRdmOtxH007N0Ew7EL49MsomKNCj7k5CYmIzco_"
+         class="card-img-top"
+         alt="Brazil Jersey">
+                  <div class="card-body d-flex flex-column justify-content-between pt-3">
+                    <div>
+                      <p class="mb-0 fw-medium">Brazil</p>
+                      <p class="mb-3 small text-muted-green">1998 | €190.00</p>
+                    </div>
+                    <button class="btn btn-chip w-100 fw-bold small">
+                      Quick View
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SHOP BY CATEGORY -->
+          <section class="container my-5">
+            <h2 class="h5 fw-bold text-center mb-3 text-white">Shop by Category</h2>
+            <div class="row g-4">
+              <!-- Category 1 -->
+              <div class="col-sm-6 col-md-3">
+                <a href="#" class="text-decoration-none text-white">
+                  <div class="aspect-video category-card rounded-3 position-relative">   
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVSS4OYakfNwY89DsV7FcEYZmAcH9-ucZQlXPqn6yuYT6FzyPEX7xgB4KmBeVvX9PHZEq8qIRpTZrdRnqCN9lnGNhsxd5BmsgtnkmMhVrkzlsIW4S1ZsrH_TAdSsIlxJGXupuMR4V7ekQDCRzOrTVsYoxgLHzfI1Vh1D1oIsAzqY-VcN7Bnx33xh3pvhfPgxQHFFH6eJ73ITSXYUx2k066mZsqHjn3nBdIg1Blui1mesWp0pSf7lQj3wGgrdHRjYX4oozdFZLF3o-D"
+         class="category-bg"
+         alt="Clubs Category">
+                    <div class="category-overlay rounded-3"></div>
+                    <h3 class="position-absolute bottom-0 start-0 m-3 fw-bold fs-5">
+                      Clubs
+                    </h3>
+                  </div>
+                </a>
+              </div>
+
+              <!-- Category 2 -->
+              <div class="col-sm-6 col-md-3">
+                <a href="#" class="text-decoration-none text-white">
+                  <div class="aspect-video category-card rounded-3 position-relative">  
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfH_b9bnPXKMf8RRvAjTG8Y8uXqoRyys5pCCsBkQaF9cQFGH5Qdfv5uGdzafGFemfR__qHp3hjMtJnTR7myrwoRTfKsp8nt_Nj54tYpKZmjWhFaz-B-pAwSohP0XpZyKS7fWZbdeePwmudWi3KvMbbE78KRSOjm8oRUMmBQitfPc6FuaVJOmiTfxm6ew_Z0OnOHIq0eRkgBWqpzAgYjzAIkuvwr_DqVnvErHvob8tTz01uCEgwjIm6CoJRMT6zmAL5WIQLop1ICk1P"
+         class="category-bg"
+         alt="National Teams Category">
+                    <div class="category-overlay rounded-3"></div>
+                    <h3 class="position-absolute bottom-0 start-0 m-3 fw-bold fs-5">
+                      National Teams
+                    </h3>
+                  </div>
+                </a>
+              </div>
+
+              <!-- Category 3 -->
+              <div class="col-sm-6 col-md-3">
+                <a href="#" class="text-decoration-none text-white">
+                  <div class="aspect-video category-card rounded-3 position-relative"> 
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClwlF_7FnO1rl8CK0vhKq5AZGTinWv3yzOog7KFwH8VnafN_91kbxTlG_25dghD2R0fgOIMfSt0ZfBNxiQB8TyBj-JkwUKhL7IIVWS6oBh8BjSEAZRRsu_yhzb7wHyQTqrvdYxeRj2ySL5cQogwCGkEnOihVMzSowIWwUbajzcdqF1ZNvqVnaH31_KQqDJgjZLEu_6xR6kQQ-3znQzXJJhDUv693Hyi_r4Y9L3850WkU2zpac7UV8L1sc-g8rjYblSx3iibi0z5Lap"
+         class="category-bg"
+         alt="Vintage Eras Category">
+                    <div class="category-overlay rounded-3"></div>
+                    <h3 class="position-absolute bottom-0 start-0 m-3 fw-bold fs-5">
+                      Vintage Eras
+                    </h3>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- FEATURED BRANDS -->
+          <section class="container my-5">
+            <h2 class="h5 fw-bold text-white mb-4">Featured Brands</h2>
+            <div class="row g-4">
+              <img
+                class="col-md-3 col-sm-6 brand-logo"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgZcV2R_Uv1TxAaWx_qcEJb5oIH7PpivSOj7_z3wxrxliMarvRVANRGQ5MbXBFkU0P3_7QdYWYqiJxgqe1-50Xq8TrVNjZMkWyTnXl8dsZ3W1Jw2GlTFbRkHaytWBDJZEz62pBjaV-viC31DOf6e48JxnQWbf84rfGuJIq0W6vrK80vJlUhve5Fsl_Car9k0hwwtf7NBtJrPbi77i5SXXv56mTmTWfU19inzTVFWGMCQUqPTBnhyiiQe6g07HYaFZQOJnXehXdthLO"
+                alt="Adidas logo"
+              />
+              <img
+                class="col-md-3 col-sm-6 brand-logo"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3O038vc_fRJC6C-mvVcbgwHZpJp_5Yb5s4ICblQILaOR-C9Z2LlHs8x2jGpAJWBfh7ylq9hVv2a1c1z1MnSXMJB1vndCSiE0YU_FoCT8H0WxHUM7pTIH_fy9zKuHbQIjHYtql4pc_PmKT2mLZKIhHi-oTGSlApX81DuyhAcj1ZahgwI2wHKVsS-rMykQCaOe9LsylR_ICo99ziGjfcIVgvhsp6uGsaqySxIgGlYKJrXDiwAJhQcEXr9jZiRsCYemR6gWRBlsnt3QG"
+                alt="Nike logo"
+              />
+              <img
+                class="col-md-3 col-sm-6 brand-logo"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFT6EcKrBX17CyKDOvmA1lvvXFCtPsBQlVSyM6yLYJBnATXmfy4AgvHw-VmDGDjj63PaWHeppVoD5V2qr6a_ZGEuRNfkSH2BWvw0HJYAiqq0pAuvDmDAOAjPQjPzCD3j1mndn0pkMmiD_KZkOdXHEmF_eYV8yWZRjiFfu-7_3mcKM4Jf1sMQ3D-e_AtIanTUIyvyw2RkzJYEBvaZhKWHBMQPL_64OR56Rrrs5bqs1Bi7HFqshzUBrXpfp7bM4kYxmVBNarCqpTXleW"
+                alt="Puma logo"
+              />
+              <img
+                class="col-md-3 col-sm-6 brand-logo"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiRHJQ-oI51o5jwU4HiLoSCSCshMLY8LqHWXPy9N2J1jC85VUFpEoJ5V1JufXsk0JMwNZOpvKpQFSZwMdPk0DkgGx5o1mUhr5qKjIXO-WArC_zIV8YpLfzeWpSIIrLSXR1dgdsPVP_5bCjkrozI7OyrOzoihhbRbw8RRtB7b5Byv-UFf0nj5pHMzJoVX-Q-CNyGxXE_sO8hhqQj0iDvrHdrLP9YpuNOVsWfVpP6MkCevPr7GkdI_tnEACqGJPCF72UmKV7l6aGep-1"
+                alt="Umbro logo"
+              />
+              <img
+                class="col-md-3 col-sm-6 brand-logo"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj7xA2xGvWSA3kYy6h_F4vYJqt1ShGoZlYUHRtAZd6N2JVZXCvGIzsbqh6Ptn6EHa_86p0rtQG_P5TUeDMD6zmE9XPELXuauuzcJY0ACZ1JpCOMAwLCbU612Sejqqb81AZM5Saw6CoJIGf2tCcSwDunH40dPdwOnvFMlRl_nfPTkaK1Ad0NS_8Qk5EqUk-z33z8DL2b7q3vn84F2e5yiKtCPEvbWncaPNEvdn8oW5jcQ7kYsZfamG1M-d63DXVLkCcUEVf4b73gXup"
+                alt="Kappa logo"
+              />
+            </div>
+          </section>
+
+          <!-- COMMUNITY LOVE -->
+          <section class="container my-5">
+            <h2 class="h5 fw-bold mb-4 text-white">Community Love</h2>
+            <div class="row g-4 justify-content-center mx-auto" style="max-width: 900px;">
+              <!-- Review 1 -->
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-dark h-100 p-4 text-start">
+                  <div class="d-flex align-items-center mb-3">
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhwIJpBs4x0MzGTsg1Gqk55FcEPOWUrp1cgQbmRx7Kg5U2tQjuFkDH5S7hUAn_nJ-sa-L-MkS771j94nPvispmw8QvLUvsoAPJWK82drPD_UBCjM0dMwFqbcS0xf9paEtuGsxqAKozxS98j4DGrQPIHe7-CzSw3IOUhl7VqBRGHjKzohOKQe-dTrM0Oh3zTOFCC2c07aj8G6FQizyBmtMXLyvGqThwjRWAga69yaAYm7MrjQacHWWXfBm0ODRNMAOL3JwjfYirydTT"
+                      class="avatar me-3"
+                      alt="Alex Johnson"
+                    />
+                    <div>
+                      <p class="fw-bold mb-1">Alex Johnson</p>
+                      <div class="d-flex text-primary">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="small text-muted-green mb-0">
+                    "Absolutely love the quality. The '88 Netherlands jersey is a
+                    masterpiece. Fast shipping and great service!"
+                  </p>
+                </div>
+              </div>
+
+              <!-- Review 2 -->
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-dark h-100 p-4 text-start">
+                  <div class="d-flex align-items-center mb-3">
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8QxtMXtNyjpqQTkwjWgOZROh_cB90k0t1XK5EXIqYl7dwy9m6H1jv5BZKykTShqUoNXbHPEbK6trjmMxtpYy4DbkC-CuiayuboU_3Rp4C7aOC81pS4bT0RFG3IoV5oCAc_5yN_5l92rYpzTRZiiOawwhkoeUCXhbtVpZZC9iasiDtoKDbMMr5z-7a3N0HNLX3DVLcskk-FGj2Ftt9yiYbPzjRBpRh_HJUP82vNu5oFA1jPCsmBE01VXVJSZibGsXBp6QXMr4f1BP8"
+                      class="avatar me-3"
+                      alt="Maria Garcia"
+                    />
+                    <div>
+                      <p class="fw-bold mb-1">Maria Garcia</p>
+                      <div class="d-flex text-primary">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="small text-muted-green mb-0">
+                    "Found the exact AC Milan jersey I was looking for. The condition is
+                    pristine. Highly recommend this store to any collector."
+                  </p>
+                </div>
+              </div>
+
+              <!-- Review 3 -->
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-dark h-100 p-4 text-start">
+                  <div class="d-flex align-items-center mb-3">
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVQ04uSwZVBU-56o7GK57CK0YTZwNwd3DtCI-xLsb7iER1iMLhj856GwT-w4wsQzMYmRMTmPJU47_WDywF8Fw1BgNcZLizuJyRDptS0rCfkpy3bNESVjlTLb0RFeD0fE4gimZrmAh3-Hx9TTh_KwSWNMRn94xUGMomTwN0NYdr84VAAXrjmFzHHk71FEWdVevfL_gwXgskRXdx3w8b0tSsFb2rnoHfTd5axgb3Jlg-WxOh-k3BEoRdfjULwyitZfSbgHmtpWVG2Rr3"
+                      class="avatar me-3"
+                      alt="David Smith"
+                    />
+                    <div>
+                      <p class="fw-bold mb-1">David Smith</p>
+                      <div class="d-flex text-primary">
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star</span>
+                        <span class="material-symbols-outlined" style="font-size: 16px;">star_half</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="small text-muted-green mb-0">
+                    "Incredible selection of classic kits. My go-to place for football
+                    nostalgia. The website is clean and easy to use."
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- JOIN OUR COMMUNITY -->
+          <section class="bg-card-dark rounded-3 p-4 p-md-5 text-center mb-5">
+            <h2 class="h4 fw-bold mb-2 text-white">Join Our Community</h2>
+            <p class="text-muted-green mb-4 mx-auto" style="max-width: 420px;">
+              Get exclusive access to new drops, special offers, and stories behind the
+              legendary jerseys.
+            </p>
+            <form class="d-flex flex-column flex-sm-row gap-2 justify-content-center mx-auto" style="max-width: 420px;">
+              <input
+                type="email"
+                class="form-control bg-chip border-0 text-white"
+                placeholder="Enter your email"
+              />
+              <button type="submit" class="btn btn-primary-custom fw-bold px-4">
+                Subscribe
+              </button>
+            </form>
+          </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="border-top border-custom pt-4 pb-3 px-2 text-center text-md-start">
+          <div class="row g-4">
+            <div class="col-12 col-md-4">
+              <h3 class="fw-bold h5 text-white mb-2">Retro XI</h3>
+              <p class="small text-muted-green mb-0">
+                Your home for authentic vintage football jerseys, celebrating the
+                history and culture of the beautiful game.
+              </p>
+            </div>
+            <div class="col-6 col-md-2">
+              <h4 class="fw-semibold text-white mb-3 small">Shop</h4>
+              <ul class="list-unstyled small mb-0">
+                <li><a href="#" class="text-muted-green text-decoration-none">All Products</a></li>
+                <li><a href="#" class="text-muted-green text-decoration-none">Featured</a></li>
+                <li><a href="#" class="text-muted-green text-decoration-none">New Arrivals</a></li>
+              </ul>
+            </div> 
+            <div class="col-6 col-md-2">
+              <h4 class="fw-semibold text-white mb-3 small">About</h4>
+              <ul class="list-unstyled small mb-0">
+                <li><a href="#" class="text-muted-green text-decoration-none">Our Story</a></li>
+                <li><a href="#" class="text-muted-green text-decoration-none">Sustainability</a></li>
+                <li><a href="#" class="text-muted-green text-decoration-none">Careers</a></li> 
+                <li><a href="#" class="text-muted-green text-decoration-none">Press</a></li>
+              </ul>
+            </div>
+            <div class="col-6 col-md-3">
+              <h4 class="fw-semibold text-white mb-3 small">Help</h4>
+              <ul class="list-unstyled small mb-0">
+                <li><a href="#" class="text-muted-green text-decoration-none">Contact Us</a></li>
+                <li><a href="#" class="text-muted-green text-decoration-none">FAQ</a></li>
+                <li><a href="#" class="text-muted-green text-decoration-none">Shipping &amp; Returns</a></li>
+              </ul>
+            </div>
+            <div class="col-12 col-md-3">
+              <h4 class="fw-semibold text-white mb-3 small">Connect</h4>
+              <div class="d-flex justify-content-center justify-content-md-start gap-3">
+                <a href="#" class="text-muted-green">
+                  <!-- Instagram icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+                <a href="#" class="text-muted-green">
+                  <!-- Twitter icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"
+                    ></path>
+                  </svg>
+                </a>
+                <a href="#" class="text-muted-green">
+                  <!-- Facebook icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="footer-border-top mt-4 pt-3 text-center">
+            <p class="text-muted-green small mb-0">
+              © 2024 Retro XI. All Rights Reserved.
+            </p>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

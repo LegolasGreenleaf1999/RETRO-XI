@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account Page</title> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body{
+            font-family: 'Lexend',sans-serif;    
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat;
+        }
+        .overlay-bg {
+            background: linear-gradient(rgba(26, 67, 20, 0.85), rgba(26, 67, 20, 0.85));
+        }
+
+        input.form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .form-control{
+            background-color: rgba(255,255,255,0.15);
+            border:none; 
+            color: white;
+        }
+        .form-control:focus{
+            border: 2 px solid #d4af37;
+            box-shadow: none;
+            background-color: rgba(255,255,255,0.2);
+        } 
+        .icon-size{
+            font-size:70px;
+            color: white;
+        } 
+        .gradient-container{
+            padding:20px;
+        }
+        .submit-btn{
+            background:#d4af37;
+            color:#1a4314;
+            font-weight: bold;
+        } 
+        .submit-btn:hover{
+            background:#c29c2f;
+        } 
+    </style>
+</head>
+<body class="overlay-bg" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDoEJ3i8nMEEK7KYMVp-wwP23p1Bq4H6tOV2mRCuKGUfkvqQfCrFv43ZBKorZ4iFwnw9QfWu6wdfNqbh34-3w_z4MFwmryqwsKrAugLcY1WHUK1HERxuJ531-bhh9o1bfmWlOmjk4-0fq55Yiuy-imN-mK0tauOQF5Q0inFUmNKYw0ALS5PZktnQNd3eoFHin6G_8yz3u8kBd-Tc3d5zIBlKlwe32SRf3aHs3PirAhweh6NQaBKJWpGZr_x6iJkY3oRCBBdqhTtNUsn');">
+    <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <div class="col-md-6 col-lg-4 gradient-container">
+            <div class="text-center mb-4">            
+                <span class="material-symbols-outlined icon-size"> 
+                    shield
+                </span>
+            </div>
+            <h2 class="text-center text-white fw-bold mb-2">Join the Club</h2>
+            <p class="text-center text-white mb-4">Create your account to start collecting iconic football jerseys</p> 
+            <div class="bg-dark bg-opacity-25 rounded p-4 shadow-lg backdrop-blur">    
+                {% if messages %}
+                    {% for message in messages %}
+                        <p style="color:red;">{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3"> 
+                        <label class="form-label text-white">Full Name</label>
+                        <input type="text" class="form-control" placeholder="Enter full name" name='fullname' required>
+                    </div> 
+                    <div class="mb-3"> 
+                        <label class="form-label text-white">Email Address</label>
+                        <input type="email" class="form-control" placeholder="Enter email" name='email' required>
+                    </div>
+                    <div class="mb-3"> 
+                        <label class="form-label text-white">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter password" name='password' required>
+                    </div>
+                    <div class="mb-3"> 
+                        <label class="form-label text-white">Confirm Password</label>
+                        <input type="password" class="form-control" placeholder="Confirm password" name='confirm_password' required>
+                    </div>
+                    <button type="submit" class="btn submit-btn w-100 py-2 mt-2">  
+                        Create Account
+                    </button>
+                </form>
+                <div class="my-2 fw-bold" style="color:white;">OR</div>         
+                <a href="/accounts/google/login/" class="btn google-btn w-100 py-2 d-flex align-items-center justify-content-center"> 
+                    <img src="https://developers.google.com/identity/images/g-logo.png" width="22" class="me-2"> 
+                    Sign In With Google
+                </a>
+                <a href="/accounts/facebook/login/" class="btn facebook-btn w-100 py-2 d-flex align-items-center justify-content-center">
+                    <i class="fab fa-facebook-f me-2"></i>
+                    Sign In With Facebook
+                </a>
+            </div> 
+            <p class="text-center text-white-50 mt-3">
+                Already have an account?
+                <a href="{% url 'login' %}" class="text-warning fw-bold">Login</a>
+            </p> 
+        </div>
+    </div> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
