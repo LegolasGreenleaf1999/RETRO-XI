@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect 
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth import login,authenticate 
+from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth import update_session_auth_hash
 from .forms import SignupForm 
 from django.core.mail import send_mail 
@@ -9,16 +9,21 @@ from datetime import timedelta
 import random  
 from .models import Profile,Address,PasswordChangeOTP,EmailChangeOTP,OTP
 from django.dispatch import receiver 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404             
 from django.db.models.signals import post_save  
-from .models import Customer,Profile,Wallet
+from .models import Customer,Profile,Wallet,Address
 from django.contrib import messages 
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse  
 from django.views.decorators.http import require_GET 
-from django.views.decorators.cache import never_cache
-# Create your views here. 
+from django.views.decorators.cache import never_cache          
+
+# Create your views here.     
+@never_cache
+def user_logout(request):     
+    logout(request)          
+    return redirect('login')             
 @never_cache
 @login_required 
 def wallet_page(request):
@@ -28,10 +33,14 @@ def wallet_page(request):
         'wallet':wallet,  
         'transactions':transactions,
     }   
-    return render(request,'user/wallet.html',context)
-@never_cache
-@login_required
-def verify_password_otp(request):
+    return render(request,'user/wallet.html',context)       
+@login_required            
+def verify_password_otp(request):  
+    print("Session keys:", list(request.session.keys()))      
+    print("new_password:", repr(request.session.get('new_password')))
+    print("Session exists:", bool(request.session.session_key))
+    print("All session keys:", list(request.session.keys()))      
+    print("new_password value:", request.session.get('new_password'))
     if request.method=='POST':
         user_otp=request.POST.get('otp','').strip()  
         try:
@@ -39,12 +48,21 @@ def verify_password_otp(request):
         except PasswordChangeOTP.DoesNotExist:
             messages.error(request,'invalid otp') 
             return redirect('passotp')   
-        if record.is_expired():
+        if record.is_expired():      
             messages.error(request,'otp expired')
             return redirect('changepassword')      
-        request.user.password=record.new_password_hash               
-        request.user.save()
-        update_session_auth_hash(request,request.user) 
+        new_password=request.session.get('new_password')    
+        new_password = request.session.get('new_password')
+        if new_password:
+            request.user.set_password(new_password)
+        else:
+            messages.error(request, 'No new password found in session')
+            return redirect('passotp')
+        request.user.save()         
+        print("NEW PASSWORD FROM SESSION:", request.session.get('new_password'))
+        print("STORED PASSWORD HASH:", request.user.password)
+        update_session_auth_hash(request,request.user)  
+        del request.session['new_password']
         record.delete() 
         messages.success(request,'password changed')     
         return redirect('profile') 
@@ -66,21 +84,30 @@ def verify_email_otp(request):
             messages.error(request,'otp expired. please request a new one')  
             record.delete() 
             return redirect('changeemail')  
-        request.user.email=record.new_email          
+        request.user.email=record.new_email  
+        request.user.username = record.new_email         
         request.user.save()
         record.delete()     
         messages.success(request,'email updated successfully')   
         return redirect('profile')   
     return render(request,'user/emailotp.html')         
-@never_cache
 @login_required
 def change_pass(request): 
     if request.method=='POST':
-        new1=request.POST.get('newpassword1') 
-        new2=request.POST.get('newpassword2')
-        if new1!=new2:  
-            messages.error(request,'new passwords do not match')   
-            return redirect('changepassword')   
+        print("POST data:", dict(request.POST))  
+        new1 = request.POST.get('newpassword1', '').strip()
+        new2 = request.POST.get('newpassword2', '').strip()
+        print(f"new1: '{new1}' (len: {len(new1)})")  
+        print(f"new2: '{new2}' (len: {len(new2)})")  
+        if not new1 or not new2:
+            messages.error(request, 'Please fill both password fields')
+            return redirect('changepassword')
+        if new1 != new2:  
+            messages.error(request, 'New passwords do not match') 
+            return redirect('changepassword')    
+        request.session['new_password'] = new1
+        print("Session set to:", repr(request.session['new_password']))
+        request.session.save()
         otp=f'{random.randint(100000,999999)}' 
         expires=timezone.now()+timedelta(minutes=10)
         PasswordChangeOTP.objects.create(
@@ -122,7 +149,7 @@ def change_email(request):
             fail_silently=False,
         )           
         messages.success(request,'OTP has been sent to your email') 
-        return redirect('passotp')
+        return redirect('emailotp')
     return render(request,'user/changeemail.html')
 @never_cache
 @login_required
@@ -140,8 +167,14 @@ def address_detail(request,id):
 @login_required
 def profile(request):       
     user=request.user  
-    profile,created=Profile.objects.get_or_create(user=user)
-    return render(request,'user/profile.html',{'user':user,'profile':profile})   
+    profile,created=Profile.objects.get_or_create(user=user)  
+    default_address=(Address.objects.filter(user=user,is_default=True).first())        
+    context={
+        'user':user,
+        'profile':profile,
+        'default_address':default_address
+    }
+    return render(request,'user/profile.html',context)   
 @never_cache
 @login_required
 def edit_profile(request): 
@@ -201,8 +234,12 @@ def delete_address(request,id):
     addr=get_object_or_404(Address,id=id,user=request.user)         
     addr.delete() 
     return JsonResponse({'status':'success','message':'address deleted'})
+
+@never_cache
+@login_required(login_url='login') 
 def home_view(request):
-    return render(request,'user/home.html')  
+    return render(request, 'user/home.html')
+
 @never_cache
 def forgot_pass(request):
     if request.method=='POST':
@@ -277,7 +314,9 @@ def verify_otp(request):
         return redirect('otp')
     return render(request,'user/otp.html') 
 @never_cache
-def login_view(request):
+def login_view(request):   
+    if request.user.is_authenticated:    
+        return redirect('home')
     if request.method=='POST': 
         email=request.POST.get('email')
         password=request.POST.get('password') 
@@ -311,23 +350,31 @@ def delete_address(request,id):
 @never_cache
 def reset_pass(request):
     email=request.session.get('email')   
+    print('reset password email from session=',email)
     if not email:
         messages.error(request,'session expired, please try again')  
         return redirect('forgotpassword')
     if request.method=='POST':
-        new_password=request.POST.get('password')  
-        confirm_password=request.POST.get('confirm')  
+        new_password=request.POST.get('password1')  
+        confirm_password=request.POST.get('password2')           
+        print('new password=',new_password)        
+        print('confirm password=',confirm_password)
         if new_password!=confirm_password:
             messages.error(request,'passwords do not match!') 
             return redirect('resetpassword')
-        user=Customer.objects.get(email=email) 
-        user.password=make_password(new_password)  
-        user.save()  
-        request.session.flush()  
+        user=Customer.objects.get(email=email)      
+        print('user found=',user.email)                
+        print('old password hash=',user.password)
+        user.set_password(new_password) 
+        user.save()          
+        print('new password check=',user.check_password(new_password))    
+        print('new passowrd hash=',user.password)              
+        request.session.pop('email',None)
+        request.session.pop('otp',None)   
+        request.session.pop('forgotpassword',None)
         messages.success(request,'password updated successfully')  
         return redirect('login')  
     return render(request,'user/resetpassword.html') 
-@login_required
 def resend_otp(request):
     if request.method=='POST': 
         print('resend otp endpoint hit')
@@ -339,7 +386,7 @@ def resend_otp(request):
         if not email:
             return JsonResponse({'message':'email not found in session'},status=400)
         send_mail(
-            subject='your otp code',
+            subject='new otp code',
             message=f'your new otp is {otp}', 
             from_email='ashwincsanthosh@gmail.com', 
             recipient_list=[email],

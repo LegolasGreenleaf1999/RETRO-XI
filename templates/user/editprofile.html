@@ -46,22 +46,10 @@
                 <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control bg-transparent text-white border-secondary">
             </div>
 
-            <!-- Email -->
-            <div class="col-md-6">
-                <label class="form-label text-light">Email Address</label>
-                <input type="email" name="email" value="{{ user.email }}" class="form-control bg-transparent text-white border-secondary" readonly>
-            </div>
-
-            <!-- Phone -->
+            <!-- Phone -->                  
             <div class="col-md-6">
                 <label class="form-label text-light">Phone Number</label>
                 <input type="text" name="phone" value="{{ profile.phone }}" class="form-control bg-transparent text-white border-secondary">
-            </div>
-
-            <!-- Address -->
-            <div class="col-12">
-                <label class="form-label text-light">Address</label>
-                <textarea name="address" rows="3" class="form-control bg-transparent text-white border-secondary">{{ profile.address }}</textarea>
             </div>
 
             <!-- Profile Picture -->

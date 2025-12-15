@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,9 +32,12 @@
 <header class="border-bottom border-secondary py-3 px-4 d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center text-white">
         <span class="me-2 text-warning">
-            <svg width="30" viewBox="0 0 48 48" fill="currentColor">
-                <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"/>
-            </svg>
+            <img
+  src="{% static 'images/retroxi.png' %}"
+  width="24"
+  height="24"
+  alt="Retroxi"
+/>
         </span>
         <h4 class="fw-bold">RETRO XI</h4>
     </div>
@@ -108,9 +112,15 @@
         <div class="col-4 text-secondary">Phone Number</div>
         <div class="col-8">{{profile.phone}}</div>
         <div class="col-4 text-secondary">Address</div>
-    <div class="col-8">
-        {{profile.address}}
-    </div>
+        <div class="col-8">        
+            {%if default_address%} 
+                {{default_address.address_line}},
+                {{default_address.city}}-
+                {{default_address.pincode}}   
+            {%else%}           
+                <span class="text-white-50">No address set</span> 
+            {%endif%}
+        </div>
 </div>
     </div>
 

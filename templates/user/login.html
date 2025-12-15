@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,13 +51,16 @@
         } 
     </style>
 </head>
-<body class="overlay-bg" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDoEJ3i8nMEEK7KYMVp-wwP23p1Bq4H6tOV2mRCuKGUfkvqQfCrFv43ZBKorZ4iFwnw9QfWu6wdfNqbh34-3w_z4MFwmryqwsKrAugLcY1WHUK1HERxuJ531-bhh9o1bfmWlOmjk4-0fq55Yiuy-imN-mK0tauOQF5Q0inFUmNKYw0ALS5PZktnQNd3eoFHin6G_8yz3u8kBd-Tc3d5zIBlKlwe32SRf3aHs3PirAhweh6NQaBKJWpGZr_x6iJkY3oRCBBdqhTtNUsn');">
+<body class="overlay-bg">
     <div class="container min-vh-100 d-flex justify-content-center align-items-center">
         <div class="col-md-6 col-lg-4 gradient-container">
             <div class="text-center mb-4">            
-                <span class="material-symbols-outlined icon-size"> 
-                    shield
-                </span>
+                <img
+  src="{% static 'images/retroxi.png' %}"
+  width="100"
+  height="100"
+  alt="Retroxi"
+/>
             </div>
             <h2 class="text-center text-white fw-bold mb-2">Login</h2>
             <p class="text-center text-white mb-4">Resume where you left off</p> 
@@ -80,6 +84,15 @@
                         Login
                     </button> 
                 </form>
+                <div class="my-2 fw-bold text-center" style="color:white;">OR</div>         
+                <a href="/accounts/google/login/" class="btn google-btn submit-btn py-2 d-flex align-items-center justify-content-center"> 
+                    <img src="https://developers.google.com/identity/images/g-logo.png" width="22" class="me-2"> 
+                    Sign In With Google
+                </a>
+                <a href="/accounts/facebook/login/" class="mt-1 btn facebook-btn submit-btn py-2 d-flex align-items-center justify-content-center">
+                    <i class="fab fa-facebook-f me-2"></i>
+                    Sign In With Facebook
+                </a>
             </div> 
             <p class="text-center text-white-50 mt-3">
                 Don't have an account?

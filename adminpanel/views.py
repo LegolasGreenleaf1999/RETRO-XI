@@ -1,23 +1,36 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate,login 
+from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from user.models import Customer
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse 
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+from django.contrib.admin.views.decorators import staff_member_required 
+from django.views.decorators.cache import never_cache
+# Create your views here.            
+@staff_member_required
+def admin_logout(request):
+    logout(request) 
+    return redirect('my_login')    
+@never_cache
 def admin_login(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     if request.method=='POST':
         email=request.POST.get('email') 
         password=request.POST.get('password')  
-        user=authenticate(request,email=email,password=password)
+        user=authenticate(request,username=email,password=password)
         if user is not None and user.is_superuser:
             login(request,user)
             return redirect('dashboard')
         messages.error(request,'invalid admin credentials')
     return render(request,'admin/my_login.html')
+@login_required(login_url='my_login')
+@never_cache
 def user_list(request): 
+    if not request.user.is_superuser:
+        return redirect('my_login')
     search_query=request.GET.get('search','')
     users=Customer.objects.filter(is_superuser=False).order_by('-id') 
     if search_query:
@@ -50,8 +63,9 @@ def unblock_user_ajax(request):
         user.save() 
         return JsonResponse({'status':'success','message':'user unblocked successfully'})   
     return JsonResponse({'status':'error','message':'invalid request'})
-@login_required(login_url='login')
+@login_required(login_url='my_login')
+@never_cache
 def admin_dashboard(request):  
     if not request.user.is_superuser:
-        return redirect('login')
+        return redirect('my_login')
     return render(request,'admin/dashboard.html')

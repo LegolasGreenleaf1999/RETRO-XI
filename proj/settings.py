@@ -9,24 +9,36 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)n(ctlga*^-_@i)-z@ate!$%yx=s57^(t_2@o$1z$@_djcn9^t'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'tillie-leaden-monique.ngrok-free.dev',
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://tillie-leaden-monique.ngrok-free.dev',
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+USE_X_FORWARDED_HOST = True
+SECURE_SSL_REDIRECT = False
 
 # Application definition
 
@@ -37,15 +49,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'adminpanel',
-    'home',
-    'allauth',
+    'django.contrib.sites',               
+    'sslserver',     
+    'allauth',                          
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook', 
-    'sslserver',
     'user.apps.PlayConfig',
+    'adminpanel',
+    
 ]
 
 MIDDLEWARE = [
@@ -85,8 +98,12 @@ WSGI_APPLICATION = 'proj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':  os.getenv('DB_NAME'),
+        'USER':  os.getenv('DB_USER'),
+        'PASSWORD':  os.getenv('DB_PASSWORD'),
+        'HOST':  os.getenv('DB_HOST'), 
+        'PORT':  os.getenv('DB_PORT'),
     }
 }
 
@@ -126,6 +143,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -144,17 +164,29 @@ EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER='ashwincsanthosh@gmail.com'  
 EMAIL_HOST_PASSWORD='hbxxygpgscgczgph' 
+           
+SITE_ID=1                
 
-SITE_ID=1    
-
-LOGIN_REDIRECT_URL='/'     
+LOGIN_URL='login'
+LOGIN_REDIRECT_URL='home'     
+LOGOUT_REDIRECT_URL = 'login'
 
 ACCOUNT_LOGOUT_REDIRECT_URL='/'
 
 MEDIA_URL='/media/' 
 MEDIA_ROOT=BASE_DIR/'media'
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = "none"
+
+
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 1209600 
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': "1055855455656-9ehdjl08m98ib5gqd2ttm1pppdqiobpe.apps.googleusercontent.com",
+            'secret': "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",
+            'key': ""
+        }
+    }
+}

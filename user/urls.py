@@ -1,5 +1,5 @@
 from django.urls import path 
-from .views import home_view,login_view,signup_view,verify_otp,forgot_pass,reset_pass,profile,edit_profile,addresses,add_address,edit_address,delete_address,address_detail,change_pass,verify_password_otp,wallet_page,change_email,verify_email_otp,resend_otp
+from .views import home_view,login_view,signup_view,verify_otp,forgot_pass,reset_pass,profile,edit_profile,addresses,add_address,edit_address,delete_address,address_detail,change_pass,verify_password_otp,wallet_page,change_email,verify_email_otp,resend_otp,user_logout
 urlpatterns=[
     path('',login_view,name='login'),
     path('register/',signup_view,name='register'), 
@@ -19,5 +19,6 @@ urlpatterns=[
     path('wallet/',wallet_page,name='wallet'), 
     path('changeemail/',change_email,name='changeemail'),
     path('emailotp/',verify_email_otp,name='emailotp'),
-    path('resend-otp/',resend_otp,name='resend_otp')
+    path('resend-otp/',resend_otp,name='resend_otp'),
+    path('logout/',user_logout,name='user_logout'),
 ]

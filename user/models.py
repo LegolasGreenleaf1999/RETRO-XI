@@ -59,7 +59,6 @@ class OTP(models.Model):
 class Profile(models.Model):
     user=models.OneToOneField(Customer,on_delete=models.CASCADE)
     phone=models.CharField(max_length=15) 
-    address=models.TextField(blank=True)  
     profile_image=models.ImageField(upload_to='profileimages/',blank=True,null=True)
     def __str__(self):
         return self.user.first_name
