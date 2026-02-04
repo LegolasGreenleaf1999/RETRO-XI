@@ -23,7 +23,7 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     'www.retroxi.com'
@@ -204,4 +204,6 @@ RAZORPAY_KEY_SECRET=os.getenv('RAZORPAY_KEY_SECRET')
     #SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True 
+
+DJANGO_ENV=os.getenv('DJANGO_ENV')
