@@ -1,0 +1,135 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+  <style>
+
+    .product-card {
+  font-size: 0.9rem;
+}
+
+.product-card img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-card .card-body {
+  padding: 0.75rem;
+}
+
+.product-card h6 {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.product-card small {
+  font-size: 0.75rem;
+}
+
+.product-card .btn {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+    .hero {
+      min-height: 480px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 0.75rem;
+      position: relative;
+    }
+
+    .hero-overlay {
+      background: linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.4));
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+
+    .product-img {
+      aspect-ratio: 3/4;
+      background-size: cover;
+      background-position: center;
+      border-radius: 0.5rem;
+    }
+
+    .badge-new {
+      position: absolute;
+      top: .5rem;
+      right: .5rem;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<!-- HERO -->
+<section class="container my-4">
+  <div class="hero p-4 d-flex align-items-end text-white"
+       style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNiJAeMI6xz7vyNPcrxA__xfSY6R0_u8M8yw2tD-lZHpBivVpjG18Lg2sPY8I3-wZ_ad96o9KCED1T0k-hhghU8gpSMbHmEF-UNISNqPVJ5MrjVPMhSr7_jtS3bfwgpnVuYNMC0y5ZwilOoDpCSw_s9ksuvESuGM97_ZKYagfeKuMYOQAaAK2ecehfHPAUXP4m_Dwi09YH1Fa4DaZGwqjGrVfJCGk9vIyGsxoI3gCNex0ajvpHkjnR6x3kt6BfVHm72FuSbvIFS5_w');">
+    <div class="hero-overlay"></div>
+
+    <div class="position-relative">
+      <h1 class="fw-black display-5">Latest Additions</h1>
+      <p>Discover the newest treasures in our collection of classic jerseys.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="row g-4">
+  {% for product in products %}
+<div class="col-sm-6 col-xl-4">
+  <div class="card product-card h-100 shadow-sm">
+
+    <img src="{{ product.main_img.url }}"
+         class="card-img-top"
+         alt="{{ product.team }}">
+
+    <div class="card-body">
+      <small class="text-muted fw-semibold">
+        {{ product.season }}
+      </small>
+
+      <h6 class="fw-bold mt-1">
+        {{ product.team }}
+      </h6>
+
+      {% with variant=product.variants.all.0 %}
+        {% if variant %}
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="fw-bold text-primary-custom">
+              Rs. {{ product.min_price }}
+            </span>
+          </div>
+        {% else %}
+          <span class="text-muted">Unavailable</span>
+        {% endif %}
+      {% endwith %}
+
+      <div class="d-flex gap-2 mt-3">
+        <a href="{% url 'productdetail' product.slug product.uuid %}"
+           class="btn btn-outline-secondary btn-sm w-100">
+           View
+        </a>
+
+        {% with variant=product.first_available_variant %}
+          {% if variant %}
+            <button type="button"
+                    class="btn btn-success btn-sm w-100 add-to-cart-btn"
+                    data-url="{% url 'add_to_cart' variant.id %}">
+              Add to Cart
+            </button>
+          {% else %}
+            <button class="btn btn-secondary btn-sm w-100" disabled>
+              Unavailable
+            </button>
+          {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% empty %}
+<p class="text-muted">No products found.</p>
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,616 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"> 
+<link rel="stylesheet" href="https://unpkg.com/cropperjs@1.6.1/dist/cropper.min.css">
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f6f8f6;
+  }
+  .sidebar {
+    width: 260px;
+    min-height: 100vh;
+    border-right: 1px solid #dce5df;
+  }
+  .sidebar a {
+    text-decoration: none;
+  }
+  .sidebar .active {
+    background-color: rgba(23, 207, 84, 0.2);
+    font-weight: 600;
+  }
+  .material-symbols-outlined {
+    vertical-align: middle;
+  }
+  .image-title {
+    position: relative;
+    aspect-ratio: 1/1;
+  }
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    opacity: 0;
+    transition: .2s;
+  }
+  .image-tile:hover .image-overlay {
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+<div class="d-flex">
+
+  <!-- Sidebar -->
+  <aside class="sidebar bg-white p-4 d-flex flex-column">
+    <div class="d-flex align-items-center mb-4">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuByoK6rt7IKhn-fwetXLqr5AsbaRkZ0M4aeGv1KC8OI9WTlsWiV0hGGIavKOcytrRM3QOaaaFCckHzE8kmXvYkT9yH6iRqxnIuibUwN0bJz8zxcmvtbMOj45BA-O1N36Zn3cq9oKhrBxmA4iAZ7YYB9Q85jhQ_3qz_habXDcJtdPG_I8SOcode73-gIi-2xKMbm95m_KkHqFQhKHbbQaSpQbUBq3If93DG0gOoICPgCrl68fC1CqVx9Hl4hjiR5KvrzTXkAvDye88MZ"
+           class="rounded-circle me-3" width="40" height="40">
+      <div>
+        <div class="fw-medium">Admin Name</div>
+        <small class="text-muted">Administrator</small>
+      </div>
+    </div>
+
+    <nav class="nav flex-column gap-1">
+      <a class="nav-link text-dark" href="#"><span class="material-symbols-outlined me-2">dashboard</span>Dashboard</a>
+      <a class="nav-link text-dark" href="#"><span class="material-symbols-outlined me-2">shopping_cart</span>Orders</a>
+      <a class="nav-link active text-dark rounded" href="#"><span class="material-symbols-outlined me-2">style</span>Products</a>
+      <a class="nav-link text-dark" href="#"><span class="material-symbols-outlined me-2">group</span>Customers</a>
+      <a class="nav-link text-dark" href="#"><span class="material-symbols-outlined me-2">bar_chart</span>Analytics</a>
+    </nav>
+
+    {% if messages %}
+    <div class="container mt-3">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+    <div class="mt-auto">
+      <a class="nav-link text-dark" href="#"><span class="material-symbols-outlined me-2">settings</span>Settings</a>
+      <a class="nav-link text-dark" href="#"><span class="material-symbols-outlined me-2">logout</span>Logout</a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-fill">
+
+    <!-- Header -->
+    <div class="border-bottom bg-white p-4 d-flex flex-wrap justify-content-between align-items-center">
+      <div>
+        <h2 class="fw-black mb-0">Edit Product</h2>
+        <small class="text-muted">SKU: {{product.sku}}</small>
+      </div>
+      <div class="d-flex gap-2">
+        <a class="btn btn-light" href="{%url 'product_list'%}">Cancel</a>
+        <button form="editProductForm" class="btn btn-success">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-4">
+<form id="editProductForm" method="post" enctype="multipart/form-data">
+  {%csrf_token%}
+      <div class="accordion" id="productAccordion">
+
+        <!-- Basic Info -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#basicInfo">
+              Basic Information
+            </button>
+          </h2>
+          <div id="basicInfo" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              <div class="mb-3">
+                <label class="form-label">Team</label>
+                <input class="form-control" name="team" value="{{product.team}}">          
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Season</label>
+                <input class="form-control" name="season" value="{{product.season}}">
+              </div>
+               <div class="mb-3">
+                  <label class="form-label">Player Name</label>
+                  <input name="player_name" class="form-control" value="{{ product.player_name }}">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Slug(URL)</label>
+                  <input type="text" name="slug" class="form-control" value="{{ product.slug }}">
+                </div>
+                <div class="mb-3">
+  <label class="form-label">Description</label>
+  <textarea name="description"
+            class="form-control"
+            rows="4"
+            required>{{ product.description }}</textarea>
+</div>
+            </div>
+            <div class="mb-3">
+                  <label class="form-label">Category</label>
+                  <select name="category" class="form-select">
+                    <option value="">None</option>
+                    {% for category in categories %}
+                      <option value="{{ category.id }}"
+                        {% if product.category_id == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+          </div>
+        </div>
+
+        <!-- Media -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#media">
+              Media
+            </button>
+          </h2>
+          <div id="media" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <div class="image-tile">
+                      {% if product.main_img %}
+  <img id="mainPreview" src="{{ product.main_img.url }}" class="img-fluid rounded">
+{% else %}
+  <img id="mainPreview" src="{% static 'images/no-image.png' %}" class="img-fluid rounded">
+{% endif %}
+<div class="text-center small fw-semibold text-success mt-1">Main Image</div>
+<button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="startExistingMainCrop()">
+  Crop this image
+</button>
+<button type="button" class="btn btn-sm btn-success mt-2 d-none" id="applyExistingMainCropBtn" onclick="applyExistingMainCrop()">
+  Apply Crop
+</button> 
+<input type="file" name="cropped_main" id="croppedMainInput" class="d-none">
+                  </div>
+                </div>         
+                {%for img in product.images.all%} 
+                <div class="col-6 col-md-3">
+                  <div class="image-title text-center">
+                    <img src="{{img.img.url}}" id="galleryExisting-{{img.id}}" class="img-fluid rounded">
+                    <button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="startExistingGalleryCrop({{img.id}})">
+                      Crop
+                    </button>
+                    <button type="button" class="btn btn-sm btn-success mt-2 d-none" id="applyExistingGallery-{{img.id}}" onclick="applyExistingGalleryCrop({{img.id}})"> 
+                      Apply
+                    </button>
+                    <input type="file" name="cropped_gallery_{{img.id}}" id="croppedGalleryInput-{{img.id}}" class="d-none">
+                  </div> 
+                </div>
+                {%endfor%}
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Change Main Image</label>
+                    <input type="file" id="mainInput" name="main_img" class="form-control" accept="image/*">
+                  </div>
+                  <div class="col-12 col-md-4">
+                    <label class="form-label">Replace other images(2)</label>
+                    <input type="file" id="galleryInput" name="images" multiple class="form-control" accept="image/*">
+                    <small class="text-muted">Upload 2 images to replace gallery</small>
+                    <div id="galleryPreview" class="row g-2 mt-2"></div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </form>
+ 
+ <!-- ================= ADD VARIANT ================= -->
+<div class="card mb-4">
+  <div class="card-header fw-bold">Add Variant</div>
+
+  <form method="post" action="{% url 'add_variant' product.id %}" class="card-body row g-3">
+    {% csrf_token %}
+
+    <div class="col-md-3">
+      <label class="form-label">Size</label>
+      <select name="size" class="form-select" required>
+        <option value="">Select</option>
+        <option value="S">Small</option>
+        <option value="M">Medium</option>
+        <option value="L">Large</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Price</label>
+      <input type="number" step="0.01" name="price" class="form-control" required>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Stock</label>
+      <input type="number" name="stock" class="form-control" required>
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label">Status</label>
+      <select name="is_active" class="form-select">
+        <option value="1">Active</option>
+        <option value="0">Inactive</option>
+      </select>
+    </div>
+
+    <div class="col-md-1 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary w-100">
+        Add
+      </button>
+    </div>
+  </form>
+</div>
+<!-- ================= EXISTING VARIANTS ================= -->
+<div class="card">
+  <div class="card-header fw-bold">Existing Variants</div>
+
+  <table class="table mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Size</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for variant in product.variants.all %}
+      <tr> 
+        <form method="post" action="{%url 'edit_variant' product.id variant.id%}"> 
+          {%csrf_token%}
+        <td>{{ variant.get_size_display }}</td>
+        <td><input type="number" step="0.01" name="price" value="{{variant.price}}" class="form-control form-control-sm" required></td>
+        <td><input type="number" name="stock" value="{{variant.stock}}" min="0" class="form-control form-control-sm" required></td>
+        <td>
+          <select name="is_active" class="form-select form-select-sm">
+            <option value="1" {%if variant.is_active%}selected{%endif%}>Active</option>
+            <option value="0" {%if not variant.is_active%}selected{%endif%}>Inactive</option>
+          </select>
+        </td> 
+        <td>
+          <button type="submit" class="btn btn-sm btn-success">
+            Save
+          </button>
+        </td>
+      </tr>
+      {% empty %} 
+      <tr>
+        <td colspan="5" class="text-center text-muted">
+          No variants
+        </td>
+      </tr> 
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+<script src="https://unpkg.com/cropperjs@1.6.1/dist/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* =========================================================
+   GLOBALS
+========================================================= */
+let cropper = null;
+
+// Existing image elements
+const mainPreview = document.getElementById("mainPreview");
+
+// Hidden inputs for cropped URL images
+const croppedMainInput = document.getElementById("croppedMainInput");
+
+// New upload inputs
+const mainInput = document.getElementById("mainInput");
+const galleryInput = document.getElementById("galleryInput");
+const galleryPreview = document.getElementById("galleryPreview");
+
+// Form
+const editForm = document.getElementById("editProductForm");
+
+// Track croppers for new gallery images
+let newGalleryCroppers = [];
+let newMainCropper = null;
+
+
+/* =========================================================
+   SECTION 1: CROP EXISTING (URL) MAIN IMAGE
+========================================================= */
+
+function startExistingMainCrop() {
+  if (cropper) cropper.destroy();
+
+  cropper = new Cropper(mainPreview, {
+    aspectRatio: 4 / 5,
+    viewMode: 1,
+    autoCropArea: 1,
+    background: false
+  });
+
+  document.getElementById("applyExistingMainCropBtn").classList.remove("d-none");
+}
+
+function applyExistingMainCrop() {
+  if (!cropper) return;
+
+  const canvas = cropper.getCroppedCanvas({
+    width: 800,
+    height: 1000,
+    imageSmoothingQuality: "high"
+  });
+
+  // Update preview
+  mainPreview.src = canvas.toDataURL("image/jpeg");
+
+  canvas.toBlob(function (blob) {
+    const croppedFile = new File([blob], "main_cropped.jpg", { type: "image/jpeg" });
+
+    const dt = new DataTransfer();
+    dt.items.add(croppedFile);
+    croppedMainInput.files = dt.files;
+
+    cropper.destroy();
+    cropper = null;
+
+    alert("Main image cropped successfully!");
+  });
+}
+
+
+/* =========================================================
+   SECTION 2: CROP EXISTING (URL) GALLERY IMAGES
+========================================================= */
+
+function startExistingGalleryCrop(imageId) {
+  const img = document.getElementById(`galleryExisting-${imageId}`);
+  const applyBtn = document.getElementById(`applyExistingGallery-${imageId}`);
+
+  if (cropper) cropper.destroy();
+
+  cropper = new Cropper(img, {
+    aspectRatio: 4 / 5,
+    viewMode: 1,
+    autoCropArea: 1,
+    background: false
+  });
+
+  applyBtn.classList.remove("d-none");
+}
+
+function applyExistingGalleryCrop(imageId) {
+  if (!cropper) return;
+
+  const img = document.getElementById(`galleryExisting-${imageId}`);
+  const hiddenInput = document.getElementById(`croppedGalleryInput-${imageId}`);
+
+  const canvas = cropper.getCroppedCanvas({
+    width: 800,
+    height: 1000,
+    imageSmoothingQuality: "high"
+  });
+
+  // Update preview
+  img.src = canvas.toDataURL("image/jpeg");
+
+  canvas.toBlob(function (blob) {
+    const croppedFile = new File([blob], `gallery_${imageId}.jpg`, { type: "image/jpeg" });
+
+    const dt = new DataTransfer();
+    dt.items.add(croppedFile);
+    hiddenInput.files = dt.files;
+
+    cropper.destroy();
+    cropper = null;
+
+    alert("Gallery image cropped successfully!");
+  });
+}
+
+
+/* =========================================================
+   SECTION 3: CROP NEW MAIN IMAGE (FILE INPUT)
+========================================================= */
+
+mainInput.addEventListener("change", function () {
+  if (!this.files.length) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    mainPreview.src = e.target.result;
+
+    if (newMainCropper) newMainCropper.destroy();
+
+    newMainCropper = new Cropper(mainPreview, {
+      aspectRatio: 4 / 5,
+      viewMode: 1,
+      autoCropArea: 1,
+      background: false
+    });
+
+    alert("Adjust crop for new main image. It will be applied on Save.");
+  };
+  reader.readAsDataURL(this.files[0]);
+});
+
+
+/* =========================================================
+   SECTION 4: CROP NEW GALLERY IMAGES (FILE INPUT)
+========================================================= */
+
+galleryInput.addEventListener("change", function () {
+  galleryPreview.innerHTML = "";
+  newGalleryCroppers = [];
+
+  const files = Array.from(this.files);
+
+  if (files.length !== 2) {
+    alert("Please upload exactly 2 images.");
+    galleryInput.value = "";
+    return;
+  }
+
+  files.forEach((file, index) => {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      const col = document.createElement("div");
+      col.className = "col-6";
+
+      col.innerHTML = `
+        <div class="border p-2 rounded text-center">
+          <img src="${e.target.result}" id="newGallery-${index}" class="img-fluid rounded mb-2"
+               style="width:100%; height:auto; cursor:pointer;">
+          <button type="button" class="btn btn-sm btn-outline-secondary"
+                  onclick="startNewGalleryCrop(${index})">Crop</button>
+        </div>
+      `;
+
+      galleryPreview.appendChild(col);
+    };
+
+    reader.readAsDataURL(file);
+  });
+});
+
+function startNewGalleryCrop(index) {
+  const img = document.getElementById(`newGallery-${index}`);
+
+  if (newGalleryCroppers[index]) {
+    newGalleryCroppers[index].destroy();
+  }
+
+  newGalleryCroppers[index] = new Cropper(img, {
+    aspectRatio: 4 / 5,
+    viewMode: 1,
+    autoCropArea: 1,
+    background: false
+  });
+
+  alert("Adjust crop. It will be applied on Save.");
+}
+
+
+/* =========================================================
+   SECTION 5: APPLY CROPS BEFORE FORM SUBMIT
+========================================================= */
+
+editForm.addEventListener("submit", function (e) {
+  let hasAsyncWork = false;
+
+  /* ---- APPLY NEW MAIN IMAGE CROP ---- */
+  if (newMainCropper) {
+    e.preventDefault();
+    hasAsyncWork = true;
+
+    const canvas = newMainCropper.getCroppedCanvas({
+      width: 800,
+      height: 1000,
+      imageSmoothingQuality: "high"
+    });
+
+    canvas.toBlob(function (blob) {
+      const croppedFile = new File([blob], "main_cropped.jpg", { type: "image/jpeg" });
+
+      const dt = new DataTransfer();
+      dt.items.add(croppedFile);
+      mainInput.files = dt.files;
+
+      newMainCropper.destroy();
+      newMainCropper = null;
+
+      if (!hasGalleryCroppers()) {
+        editForm.submit();
+      }
+    });
+  }
+
+  /* ---- APPLY NEW GALLERY IMAGE CROPS ---- */
+  if (hasGalleryCroppers()) {
+    e.preventDefault();
+    hasAsyncWork = true;
+
+    const dt = new DataTransfer();
+    let processed = 0;
+    const total = newGalleryCroppers.length;
+
+    newGalleryCroppers.forEach((cropper, index) => {
+      if (!cropper) {
+        processed++;
+        if (processed === total && !newMainCropper) {
+          galleryInput.files = dt.files;
+          editForm.submit();
+        }
+        return;
+      }
+
+      const canvas = cropper.getCroppedCanvas({
+        width: 800,
+        height: 1000,
+        imageSmoothingQuality: "high"
+      });
+
+      canvas.toBlob(function (blob) {
+        const croppedFile = new File([blob], `gallery_${index}.jpg`, { type: "image/jpeg" });
+        dt.items.add(croppedFile);
+        processed++;
+
+        if (processed === total && !newMainCropper) {
+          galleryInput.files = dt.files;
+          editForm.submit();
+        }
+      });
+    });
+  }
+
+  // If no cropping is pending, form submits normally
+});
+
+
+function hasGalleryCroppers() {
+  return newGalleryCroppers.some(cropper => cropper !== null);
+}
+</script>
+<script>
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+}
+
+function updateSlug() {
+  const team = document.querySelector('input[name="team"]').value;
+  const player = document.querySelector('input[name="player_name"]').value;
+  const season = document.querySelector('input[name="season"]').value;
+  const slugInput = document.getElementById('slugInput');
+
+  if (slugInput && !slugInput.value) {
+    slugInput.value = slugify(`${team}-${player}-${season}`);
+  }
+}
+
+['team','player_name','season'].forEach(name => {
+  const el = document.querySelector(`input[name="${name}"]`);
+  if (el) el.addEventListener('input', updateSlug);
+});
+</script>
+</body> 
+</html>

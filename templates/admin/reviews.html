@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JerseyKing Admin - Product Reviews</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: #152111;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: #152111;
+      border-right: 1px solid rgba(255,255,255,.1);
+    }
+
+    .sidebar a {
+      color: #9ca3af;
+      text-decoration: none;
+    }
+
+    .sidebar a.active,
+    .sidebar a:hover {
+      background: rgba(73,230,25,.15);
+      color: #49e619;
+      border-radius: 12px;
+    }
+
+    /* Main */
+    .content {
+      margin-left: 260px;
+    }
+
+    .card-dark {
+      background: #1e2f19;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+    }
+
+    .badge-approved {
+      background: rgba(73,230,25,.15);
+      color: #49e619;
+      border: 1px solid rgba(73,230,25,.3);
+    }
+
+    .badge-pending {
+      background: rgba(234,179,8,.15);
+      color: #eab308;
+      border: 1px solid rgba(234,179,8,.3);
+    }
+
+    .badge-flagged {
+      background: rgba(239,68,68,.15);
+      color: #ef4444;
+      border: 1px solid rgba(239,68,68,.3);
+    }
+
+    .table-dark-custom th {
+      background: rgba(0,0,0,.25);
+      color: #9ca3af;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .table-dark-custom tbody tr:hover {
+      background: rgba(255,255,255,.05);
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: #9ca3af;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255,255,255,.1);
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="d-flex">
+
+<!-- Sidebar -->
+<aside class="sidebar d-flex flex-column position-fixed h-100 p-4">
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <div class="bg-success bg-opacity-25 rounded-circle p-2 text-success">
+      <span class="material-symbols-outlined">checkroom</span>
+    </div>
+    <h5 class="fw-bold text-white mb-0">JerseyKing</h5>
+  </div>
+
+  <nav class="d-flex flex-column gap-2">
+    <a href="#" class="px-3 py-2 rounded">Dashboard</a>
+    <a href="#" class="px-3 py-2 rounded">Inventory</a>
+    <a href="#" class="px-3 py-2 rounded active">Reviews</a>
+    <a href="#" class="px-3 py-2 rounded">Users</a>
+    <a href="#" class="px-3 py-2 rounded">Settings</a>
+  </nav>
+
+  <div class="mt-auto pt-4 border-top border-secondary border-opacity-25">
+    <div class="d-flex align-items-center gap-3">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV7qqTlVNEdyB-U1WoYjoGk4jdyD5YqKx0nhZswqj_sSf4LG5jDBmoWQWr3Cm2gx7IUyEC75Sdmlpnh5mYchb79x3Z0QGMH1hW7SZBYotM01giqiaCO3oMVLlef7_XjsV4dl9AByErlOlQLwKK8MenVPMTKj5WfYKY3UvMoG1a8bM5sZqTuE9OIOx3ofu1lobKWEeCnlfd6uWETI7AwzGPz_WcprMpwT6V-nx7bZVI69M4Q2Vw2W5CKq24X9H1Vi1bAwN9WgWY0Ss"
+           class="rounded-circle border border-success" width="40">
+      <div>
+        <div class="fw-bold text-white">Admin User</div>
+        <small class="text-secondary">admin@jerseyking.com</small>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="content flex-grow-1 p-4">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h2 class="fw-black text-white">Product Reviews</h2>
+    <p class="text-secondary">Manage and moderate customer feedback across all jerseys.</p>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card card-dark p-3">
+        <small class="text-secondary">Total Reviews</small>
+        <h3 class="fw-bold text-white">1,240</h3>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-dark p-3">
+        <small class="text-secondary">Approved</small>
+        <h3 class="fw-bold text-white">1,105</h3>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-dark p-3 border-warning">
+        <small class="text-warning fw-semibold">Pending</small>
+        <h3 class="fw-bold text-white">45</h3>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-dark p-3">
+        <small class="text-secondary">Avg Rating</small>
+        <h3 class="fw-bold text-white">4.8 / 5</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Table -->
+  <div class="card card-dark">
+    <div class="card-body p-0">
+      <table class="table table-dark table-hover mb-0 table-dark-custom">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Product</th>
+            <th>Reviewer</th>
+            <th>Rating</th>
+            <th>Review</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+            {%for review in reviews%}
+          <tr class="{%if not review.is_approved%} table-warning bg-opacity-10 {%endif%}">
+            <td><input type="checkbox"></td>
+            <td> 
+                <strong>{{review.product.season}} {{review.product.team}}</strong><br>
+                <small class="text-muted">{{review.product.player_name}}</small>
+            </td>
+            <td>{{review.user.first_name|default:review.user.email}}</td>
+            <td>★★★★★</td>
+            <td>Feels just like the original one I had as a kid.</td>
+            <td><span class="badge badge-approved">Approved</span></td>
+            <td>Oct 12, 2023</td>
+            <td class="text-end">
+              <button class="icon-btn"><span class="material-symbols-outlined">visibility</span></button>
+              <button class="icon-btn text-danger"><span class="material-symbols-outlined">delete</span></button>
+            </td>
+          </tr>
+
+          <tr class="table-warning bg-opacity-10">
+            <td><input type="checkbox"></td>
+            <td>2006 Italy Away</td>
+            <td>Andrea P.</td>
+            <td>★★★★☆</td>
+            <td>Sizing runs a bit small.</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td>Oct 11, 2023</td>
+            <td class="text-end">
+              <button class="btn btn-success btn-sm">Approve</button>
+              <button class="btn btn-danger btn-sm">Reject</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="p-3 d-flex justify-content-between align-items-center">
+      <small class="text-secondary">Showing 1–4 of 1,240</small>
+      <div class="btn-group">
+        <button class="btn btn-outline-secondary btn-sm" disabled>Previous</button>
+        <button class="btn btn-success btn-sm">1</button>
+        <button class="btn btn-outline-secondary btn-sm">2</button>
+        <button class="btn btn-outline-secondary btn-sm">Next</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

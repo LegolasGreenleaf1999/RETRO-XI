@@ -1,0 +1,134 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+  <style>
+
+    .hero {
+      min-height: 480px;
+      background:
+        linear-gradient(rgba(16,34,21,.6), rgba(16,34,21,.9)),
+        url("https://lh3.googleusercontent.com/aida-public/AB6AXuDX1PB8UXKJoko0HjI7r9aj0v-oVbFV2Tj4mHclHhSHh4WV8J3HIIVznzPT865juHkaSitIax-yk-FAZrbiR8qHDoM17SLpWCL-_9enOPUYo33oNxxI4pa1QvVpwd58HpNdOwSrjBviqUNZTls7zIW1KkPWnpETAelDMC1G7v_cy6WlZi12-K4i2pjfmPR0M3mZxjMH064wb43esqZij5vJMvf3vuzrX9bzSXF6x6S7NCdJUbDLKMfVmjB950qsMgVX8vJQac5E5NI");
+      background-size: cover;
+      background-position: center;
+      border-radius: 1rem;
+    }
+
+    .bg-image {
+      background-size: cover;
+      background-position: center;
+      border-radius: .75rem;
+    }
+
+    .image-grid {
+  height: 320px; /* or 300–360px */
+}
+  </style>
+  {% endblock %}
+
+
+{% block content %}
+<main class="container py-5">
+
+  <!-- Hero -->
+  <section class="hero d-flex flex-column justify-content-center align-items-center text-center p-5 mb-5">
+    <h1 class="display-4 fw-black text-white mb-3">
+      Where Football Heritage Lives On
+    </h1>
+    <p class="lead text-white-50 mb-4">
+      Passion for the beautiful game. Authentic retro kits.
+    </p>
+    <a href="{% url 'productlist' %}" class="btn bg-primary-custom fw-bold px-4 py-2">
+      Explore Jerseys
+    </a>
+  </section>
+
+  <!-- Our Beginning -->
+  <section class="row align-items-start g-5 mb-5">
+    <div class="col-md-6">
+      <h2 class="fw-bold mb-3">Our Beginning</h2>
+      <p class="text-muted-50">
+        Our journey began from a shared love for football's golden eras.
+        A classic jersey is more than apparel — it’s history.
+      </p>
+    </div>
+    <div class="col-md-6">
+      <div class="row g-2 image-grid">
+        <div class="col-8">
+          <div class="bg-image h-100" style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCYsX3vVAGMjKCo9s04Mv9OINxdONUSUqleOfWK-l-jTef8zaRyYVupBFHSRjikgPwySoB7u_X7yWSFJ96pE0X-R7ZhUaTOZViMSx9uAeijyN8rdz7h3S0BgQ-97mEoUh5UMHSmYD2xXrJFRiZY0diEhZI2q2Wu2gez1WWojwJ-bK_5LksAWfhNN_FRDvgL2YSHQGQANb42sMohviC0ddi-6yFNy4bfI-2boDhApiVj_SQ0DJguXmPgjAo0fVWOlmcyh9mMcKcWdx4');"></div>
+        </div>
+        <div class="col-4 d-flex flex-column gap-2">
+          <div class="bg-image flex-fill" style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuB5bGOiW11kh45g7oqLUJ7L6gkgsRfCUEmCvtohEid4Kyh4PkVXze7nF9_Q7A7QOzHIVfL5mM-YHDi01azSVhDDEqeF_PM1ISSkLE9SBR678qkGc7skPuca5O8nYs1nXxeTbXsD3FmDvcZ-z84lqz9yXAANaalFI24VtpNCwOkEFZAfMZ3VIC3FrgQY5_MqVB1ZhS4bBjKKAGLSB9SE-vx0J4AWGoIMLaF2GRev0ZQJvdfkSR-MLs0x4k7zmPmjSbqUVCjTwN4WknA');"></div>
+          <div class="bg-image flex-fill" style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCWCzCKKVOpoUM_j06QDGaGbQIeBsZzytqoA5l-4NOG15K9AZRQiNZHvCyJEhgJu1qFudlBsIHZ38nJWfFJiVphM8UI6-4oOVeFxa3DBrRWgeKjZIXfGhjLqCbwiseMe9RIXlwGHzPYdSjjMy3jT8-v9DokJcks-5cbpgcpO8x9YilmykQLwgIieBa236xnKcsJi3PqhKrh2UbhvLJdiFY7IeAXPwOFmdME5ePFn_uXY58xlIK_HZD4To9qUvkQ2TVvkBMLcjV1v_w');"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="text-center mb-5">
+    <h2 class="fw-bold mb-3">Our Mission & Values</h2>
+    <p class="text-muted-50 mb-4">
+      Preserving football history through authentic retro jerseys.
+    </p>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card bg-dark border-secondary h-100 text-center p-4">
+          <span class="material-symbols-outlined text-success mb-3">verified</span>
+          <h5 class="fw-bold">Authenticity</h5>
+          <p class="text-white-50">Faithful to original designs.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-dark border-secondary h-100 text-center p-4">
+          <span class="material-symbols-outlined text-success mb-3">groups</span>
+          <h5 class="fw-bold">Community</h5>
+          <p class="text-white-50">Built by fans, for fans.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-dark border-secondary h-100 text-center p-4">
+          <span class="material-symbols-outlined text-success mb-3">thumb_up</span>
+          <h5 class="fw-bold">Quality</h5>
+          <p class="text-white-50">Premium fabric & stitching.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLECTION & CRAFTSMANSHIP -->
+<section class="row align-items-center g-5 mb-5">
+  <div class="col-md-6 order-md-2">
+    <div class="bg-image" style="height:320px;background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjyya8BCIWpuQ-40hUFbWYt-eqEfaCYqmJnLvGbAZUSFPFiNwShWIJpdLOH1aTq68Axoiy2ATpWucDmYPhCC4aLKLGhWVzFraHlz3KflKJxOh8aG2Z6LVn9cs94Pqma4pQZhY6PssR-njRiLaKJg2haBkCvvPuMmAhJghgeVif4OhTWyYbQ8-YjSwJtLQJdKNfZsRMUbPs2uOwB7upni45qzVGin4IL16x9Ya9J970nduP0urMOmE0YkZAcg0FpW11hHehmwispNs');"></div>
+  </div>
+  <div class="col-md-6">
+    <h2 class="fw-bold mb-3">Collection & Craftsmanship</h2>
+    <p class="text-muted-50">
+      Each kit is recreated using period-correct fabrics, flawless stitching,
+      and authentic crests — so you can wear history with pride.
+    </p>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="text-center mb-5">
+  <h2 class="fw-bold mb-4">For the Fans, By the Fans</h2>
+  <div class="card bg-dark border-secondary p-4 mx-auto" style="max-width:600px">
+    <p class="fs-5 fst-italic text-white">
+      “This isn’t just a shirt — it’s a memory.”
+    </p>
+    <p class="text-success fw-bold mb-0">— Alex R., Manchester</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="bg-dark border-top border-secondary py-5 text-center">
+  <h2 class="fw-bold mb-2 text-white">Find Your Piece of History</h2>
+  <p class="text-white-50 mb-4">
+    Browse our curated collection of classic jerseys.
+  </p>
+  <a href="{% url 'productlist' %}" class="btn bg-primary-custom fw-bold px-4 py-2">
+    Shop Now
+  </a>
+
+</main>
+{% endblock %}

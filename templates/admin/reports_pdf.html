@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #000; padding: 6px; }
+    th { background: #eee; }
+  </style>
+</head>
+<body>
+
+<h2>Sales Report ({{ type|title }})</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Period</th>
+      <th>Orders</th>
+      <th>Gross</th>
+      <th>Discounts</th>
+      <th>Net</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>
+        {% if type == 'daily' %}{{ row.date }}
+        {% elif type == 'weekly' %}{{ row.week }}
+        {% elif type == 'yearly' %}{{ row.year }}
+        {% endif %}
+      </td>
+      <td>{{ row.orders }}</td>
+      <td>{{ row.gross_sales }}</td>
+      <td>{{ row.discounts }}</td>
+      <td>{{ row.net_sales }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</body>
+</html>

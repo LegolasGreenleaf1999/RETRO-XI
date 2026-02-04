@@ -1,0 +1,92 @@
+{% extends "user/base.html" %}
+{% block content %}
+<!-- Main -->
+<main class="container my-5">
+
+  <!-- Success Header -->
+  <div class="text-center mb-5">
+    <div class="icon-circle mx-auto mb-3">
+      <span class="material-symbols-outlined fs-1 text-primary-brand">check_circle</span>
+    </div>
+    <h1 class="fw-bold">Thank You for Your Order!</h1>
+    <p class="text-secondary">Your order has been placed successfully.</p>
+  </div>
+
+  <!-- Order Card -->
+  <div class="card bg-dark border-secondary mb-4">
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <small class="text-secondary">Order ID</small>
+          <div class="fw-semibold text-secondary">{{order.id}}</div>
+        </div>
+        <div class="col-md-6">
+          <small class="text-secondary">Order Date</small>
+          <div class="fw-semibold text-secondary">{{order.created_at|date:'F d,Y'}}</div>
+        </div>
+      </div>
+
+      <h5 class="fw-bold mb-3">Order Summary</h5>
+
+      <!-- Product -->
+       {%for item in items%}
+      <div class="d-flex mb-4">
+        <img src="{{item.product.main_img.url}}"
+             class="rounded border border-secondary me-3" width="90" alt="{{item.product.name}}">
+        <div class="flex-grow-1">
+          <div class="d-flex justify-content-between text-secondary">
+            <strong>{{item.product}}</strong>
+            <strong>Rs.{{item.price}}</strong>
+          </div>
+          <small class="text-secondary">Size: {{item.size}} · Qty {{item.quantity}}</small>
+        </div>
+      </div> 
+      {%endfor%}
+
+      <hr class="border-secondary">
+
+      <!-- Totals -->
+      <div class="d-flex justify-content-between text-secondary">
+        <span>Subtotal</span><span>Rs.{{order.subtotal}}</span>
+      </div>
+      <div class="d-flex justify-content-between text-secondary">
+        <span>Shipping</span><span>Rs.{{order.shipping}}</span>
+      </div>
+      <div class="d-flex justify-content-between text-secondary">
+        <span>Taxes</span><span>Rs.{{order.tax}}</span>
+      </div>
+      <div class="d-flex justify-content-between fw-bold mt-2 text-secondary">
+        <span>Total</span><span>Rs.{{order.total}}</span>
+      </div>
+
+      <hr class="border-secondary">
+
+      <!-- Address -->
+      <div class="row">
+        <div class="col-md-6">
+          <h6 class="fw-bold">Shipping Address</h6>
+          <small class="text-secondary">
+            {{order.first_name}}<br>
+            {{order.address}}
+          </small>
+        </div>
+        <div class="col-md-6 text-secondary">
+          <h6 class="fw-bold">Payment Method</h6>
+          {{ order.get_payment_method_display }}
+        </div>
+      </div>
+
+      <div class="alert mt-4 text-center" style="background: rgba(238,189,43,.15); color:#eebd2b;">
+        Estimated delivery in 5–7 business days
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="text-center d-flex justify-content-center gap-3 flex-wrap">
+    <a class="btn btn-primary-warning px-4 py-2" href="{%url 'productlist'%}">Continue Shopping</a>
+    <a class="btn btn-outline-primary px-4 py-2" href="{%url 'orderdetails' order.id%}">Track Order</a>
+  </div>
+
+</main>
+{% endblock %}

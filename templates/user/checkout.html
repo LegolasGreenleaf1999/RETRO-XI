@@ -1,0 +1,261 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+  <style>
+    body {
+      font-family: 'Lexend', sans-serif;
+      background: #f6f8f6;
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      color: #439c16;
+    }
+    .btn-primary {
+      background-color: #439c16;
+      border-color: #439c16;
+    }
+    .btn-primary:hover {
+      background-color: #357c11;
+      border-color: #357c11;
+    }
+    .text-muted-custom {
+      color: #6f8764;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<!-- Main -->
+<main class="container py-5"> 
+  <form method="post">
+        {%csrf_token%}
+  <div class="row g-5">
+
+    <!-- Left: Checkout Form -->
+    <div class="col-lg-7">
+      <h1 class="fw-black mb-2">Secure Checkout</h1>
+      <p class="text-muted-custom mb-4">Please enter your details to complete the purchase.</p>
+
+      <div class="accordion" id="checkoutAccordion">
+
+        <!-- Shipping Info -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#shippingInfo" type="button">
+              1. Shipping & Billing Information
+            </button>
+          </h2>
+          <div id="shippingInfo" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              <div class="mb-3">
+                <label class="form-label">Email address</label>
+                <input type="email" class="form-control form-control-lg" value="{{prefill_email}}" name="email" required>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">First name</label>
+                  <input type="text" name="first_name" class="form-control form-control-lg" value="{{prefill_name}}" required>
+                </div>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Phone number</label>
+                  <input type="text" name="phone" class="form-control form-control-lg" value="{{prefill_phone}}" required>
+                </div>
+              </div>
+
+              <div class="mt-3">
+                <label class="form-label">Address</label>
+                <textarea name="address" class="form-control form-control-lg" rows="3" required>{{prefill_address}}</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping Options -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#shippingOptions" type="button">
+              2. Shipping Options
+            </button>
+          </h2>
+          <div id="shippingOptions" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              <div class="form-check border rounded p-3 mb-3">
+                <input class="form-check-input" type="radio" name="shipping" value="standard" {% if request.session.shipping_method == "standard" %}checked{% endif %}>
+                <label class="form-check-label d-flex justify-content-between w-100">
+                  <span>Standard Shipping (5–7 days)</span>
+                  <strong>Rs. 10.00</strong>
+                </label>
+              </div>
+              <div class="form-check border rounded p-3">
+                <input class="form-check-input" type="radio" name="shipping" value="express" {% if request.session.shipping_method == "express" %}checked{% endif %}>
+                <label class="form-check-label d-flex justify-content-between w-100">
+                  <span>Express Shipping (2–3 days)</span>
+                  <strong>Rs. 15.00</strong>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#paymentMethod" type="button">
+      3. Payment Method
+    </button>
+  </h2>
+
+  <div id="paymentMethod" class="accordion-collapse collapse">
+    <div class="accordion-body">
+ 
+      <!-- Payment Options -->
+      <div class="mb-4">
+        <label class="form-label fw-semibold">Choose Payment Method</label>
+
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="radio" name="payment_method" id="wallet" value="wallet">
+          <label class="form-check-label" for="wallet">
+            Use Wallet Balance (Rs. {{request.user.wallet.balance}})
+          </label>
+        </div>
+
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod" checked>
+          <label class="form-check-label" for="cod">
+            Cash on Delivery (COD)
+          </label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="payment_method" id="razorpay" value="razorpay">
+          <label class="form-check-label" for="razorpay">
+            Razor Pay
+          </label>
+        </div>
+      </div>
+
+      <!-- COD Info -->
+      <div id="codFields">
+        <div class="alert alert-secondary">
+          Pay with cash when your order is delivered.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+      </div>
+    </div>
+
+    <!-- Right: Order Summary -->
+    <div class="col-lg-5">
+      <div class="bg-white rounded shadow-sm p-4 sticky-top" style="top: 20px;">
+        <h4 class="fw-bold mb-4">Order Summary</h4>
+
+        <!-- Items -->
+         {%for item in cart_items%}
+        <div class="d-flex mb-3">
+          <img src="{{item.product.main_img.url}}" class="rounded me-3" width="80" height="80">
+          <div class="flex-grow-1">
+            <div class="fw-medium">{{item.product.season}} {{item.product.team}} Kit</div>
+            <small class="text-muted-custom">Quantity {{item.quantity}}</small>
+          </div>
+          <strong>Rs.{{item.total_price}}</strong>
+        </div>
+        {%endfor%}
+
+        <!-- Coupon -->
+        <div class="input-group mb-4">
+          <input class="form-control" placeholder="Coupon code">
+          <button class="btn btn-outline-secondary" type="button">Apply</button>
+        </div>
+
+        <!-- Totals -->
+        <div class="border-top pt-3 small">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal</span><strong>Rs.{{subtotal}}</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Shipping</span><strong>Rs.{{shipping}}</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span>Tax</span><strong>Rs.{{tax}}</strong>
+          </div>
+          <div class="d-flex justify-content-between fw-bold fs-5 border-top pt-3">
+            <span>Total</span><span>Rs.{{grand_total}}</span>
+          </div>
+        </div>
+
+  <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">
+    Place Order & Pay →
+  </button>
+
+
+        <p class="text-center text-muted-custom small mt-3">
+          Your payment is 100% secure
+        </p>
+      </div>
+    </div>
+
+  </div>
+  </form>
+</main>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+  radio.addEventListener('change', async () => {
+    const response = await fetch('{% url 'set_shipping' %}', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
+      },
+      body: JSON.stringify({ shipping: radio.value })
+    });
+
+    console.log('Shipping save status:', response.status);
+    const data = await response.text();
+    console.log('Response body:', data);
+  });
+});
+
+function getCookie(name) {
+  return document.cookie.split('; ')
+    .find(row => row.startsWith(name + '='))?.split('=')[1];
+}
+</script>
+<script>
+  const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+  const cardFields = document.getElementById('cardFields');
+  const netbankingFields = document.getElementById('netbankingFields');
+  const gpayFields = document.getElementById('gpayFields');
+  const codFields = document.getElementById('codFields');
+
+  paymentRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      cardFields.classList.add('d-none');
+      netbankingFields.classList.add('d-none');
+      gpayFields.classList.add('d-none');
+      codFields.classList.add('d-none');
+
+      if (radio.value === 'card') {
+        cardFields.classList.remove('d-none');
+      } else if (radio.value === 'netbanking') {
+        netbankingFields.classList.remove('d-none');
+      } else if (radio.value === 'gpay') {
+        gpayFields.classList.remove('d-none');
+      } else if (radio.value === 'cod') {
+        codFields.classList.remove('d-none');
+      }
+    });
+  });
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% endblock %}

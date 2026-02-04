@@ -23,12 +23,10 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    'tillie-leaden-monique.ngrok-free.dev',
+    'www.retroxi.com'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -58,7 +56,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook', 
     'user.apps.PlayConfig',
     'adminpanel',
-    
+    'product',
+    'payments',
+    'reports',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS':{'min_length':8,}
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -143,6 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT=BASE_DIR/'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -155,6 +157,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='user.Customer'
 
 AUTHENTICATION_BACKENDS=[
+    'adminpanel.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -171,6 +174,8 @@ LOGIN_URL='login'
 LOGIN_REDIRECT_URL='home'     
 LOGOUT_REDIRECT_URL = 'login'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 ACCOUNT_LOGOUT_REDIRECT_URL='/'
 
 MEDIA_URL='/media/' 
@@ -179,7 +184,8 @@ MEDIA_ROOT=BASE_DIR/'media'
 
 
 SESSION_SAVE_EVERY_REQUEST = True
-SESSION_COOKIE_AGE = 1209600 
+
+SESSION_COOKIE_AGE = 10*60 
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -190,3 +196,12 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+ 
+RAZORPAY_KEY_ID=os.getenv('RAZORPAY_KEY_ID')
+RAZORPAY_KEY_SECRET=os.getenv('RAZORPAY_KEY_SECRET')
+
+#if DEBUG:
+    #SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True

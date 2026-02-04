@@ -1,0 +1,126 @@
+{% extends 'user/profile_base.html' %}
+{% block extra_css %}
+<style>
+  /* Wishlist image container */
+.wishlist-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;     /* Jersey-like ratio */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 16px 16px 0 0;
+  background-color: #f1f3f2;
+  overflow: hidden;
+}
+
+/* Heart button */
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: #e63946;
+  z-index: 2;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.08);
+  transition: 0.2s ease;
+}
+
+/* Card hover effect */
+.wishlist-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+</style>
+{% endblock %}
+{% block profile_top %}{% endblock %}
+{% block profile_content %}
+<!-- ===================== MAIN ===================== -->
+<div class="container-fluid">
+  <div class="row">
+
+
+    <!-- ===================== CONTENT ===================== -->
+    <main class="col-md-9 col-lg-10 p-4 p-md-5">
+
+      <h1 class="fw-black mb-1">My Wishlist</h1>
+      <p class="text-muted mb-4">Items you’re keeping an eye on.</p>
+
+      <div class="row g-4">
+
+        {%for item in wishlist_items%}
+        {%with jersey=item.jersey variant=item.default_variant%}
+        <!-- CARD -->
+        <div class="col-sm-6 col-lg-4 col-xl-3">
+          <div class="card wishlist-card h-100">
+            <div class="wishlist-img" style="background-image:url('{{jersey.main_img.url}}')">
+              <a class="favorite-btn text-decoration-none" href="{%url 'toggle_wishlist' jersey.id%}">
+                <span class="material-symbols-outlined">favorite</span>
+              </a>
+            </div>
+
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <h6 class="fw-semibold">{{jersey.team}} {{jersey.season}} {{jersey.player_name}}</h6>
+                <span class="fw-bold text-primary-custom">Rs.{{variant.price}}</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center my-2">
+                {% if variant and variant.stock > 0 %}
+                <span class="badge bg-success-subtle text-success">In Stock</span>
+                {%else%}
+                <span class="badge bg-danger-subtle text-danger">Out of Stock</span>
+                {%endif%} 
+                {% if variant %}
+                <select class="form-select form-select-sm w-auto">  
+                    {%for v in jersey.variants.all%}
+                    {%if v.stock > 0%}
+                  <option value="{{v.id}}"
+                  {%if v.id == variant.id%}selected{%endif%}>
+                  {{v.get_size_display}}
+                  </option>
+                  {%endif%}
+                  {%endfor%}
+                </select>
+                {%endif%}
+              </div>
+
+              {% if variant and variant.stock > 0 %}
+              <a href="{%url 'add_to_cart' variant.id%}" class="btn bg-primary-custom text-white w-100 rounded-pill">
+                Add to Cart
+              </a> 
+              {%else%} 
+              <button class="btn btn-secondary w-100 rounded-pill" disabled>Out of Stock</button> 
+              {%endif%}
+            </div>
+          </div>
+        </div>
+        {%endwith%} 
+        {%empty%}
+        <div class="col-12 text-center p-5">
+            <h5 class="fw-semibold">Your wishlist is empty 💔</h5>    
+            <p class="text-muted">Start adding your favourite jerseys</p>
+        </div>
+        <!-- Repeat cards as needed -->
+        {%endfor%}
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock %}
+

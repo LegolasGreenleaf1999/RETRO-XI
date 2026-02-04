@@ -1,5 +1,5 @@
 from django.urls import path 
-from .views import home_view,login_view,signup_view,verify_otp,forgot_pass,reset_pass,profile,edit_profile,addresses,add_address,edit_address,delete_address,address_detail,change_pass,verify_password_otp,wallet_page,change_email,verify_email_otp,resend_otp,user_logout
+from .views import home_view,login_view,signup_view,verify_otp,forgot_pass,reset_pass,profile,edit_profile,addresses,add_address,edit_address,delete_address,address_detail,verify_password_otp,wallet_page,change_email,verify_email_otp,resend_otp,user_logout,wishlist_view,toggle_wishlist,order_confirmation,apply_coupon,remove_coupon,order_detail_view,cancel_order,return_item,download_invoice,my_orders,verify_old_password,set_new_password,refer_and_earn,ourstory,sustainability,press,contact,faq,shipping
 urlpatterns=[
     path('',login_view,name='login'),
     path('register/',signup_view,name='register'), 
@@ -14,11 +14,28 @@ urlpatterns=[
     path('myaddresses/edit/<int:id>/',edit_address,name='edit_address'),
     path('myaddresses/delete/<int:id>/',delete_address,name='delete_address'),
     path('myaddresses/detail/<int:id>/',address_detail,name='address_detail'), 
-    path('changepassword/',change_pass,name='changepassword'),
-    path('passotp/',verify_password_otp,name='passotp'),
+    path('change-password/',verify_old_password,name='verify_old_password'),
+    path('change-password/new',set_new_password,name='set_new_password'),
     path('wallet/',wallet_page,name='wallet'), 
     path('changeemail/',change_email,name='changeemail'),
     path('emailotp/',verify_email_otp,name='emailotp'),
     path('resend-otp/',resend_otp,name='resend_otp'),
-    path('logout/',user_logout,name='user_logout'),
+    path('logout/',user_logout,name='user_logout'), 
+    path('wishlist/',wishlist_view,name='wishlist'),
+    path('wishlist/toggle/<int:jersey_id>/',toggle_wishlist,name='toggle_wishlist'),
+    path('confirmation/<uuid:order_uuid>/',order_confirmation,name='order_success'),
+    path('apply-coupon/',apply_coupon,name='apply_coupon'), 
+    path('remove-coupon/',remove_coupon,name='remove_coupon'), 
+    path('orderdetails/<uuid:order_uuid>/',order_detail_view,name='orderdetails'),
+    path('order/cancel/<uuid:order_uuid>/',cancel_order,name='cancel_order'),
+    path('order/return/<int:item_id>/',return_item,name='return_item'),
+    path('order/<uuid:order_uuid>/invoice',download_invoice,name='download_invoice'),
+    path('orderhistory/',my_orders,name='orderhistory'),
+    path('referandearn/',refer_and_earn,name='refer'),
+    path('ourstory/',ourstory,name='ourstory'),
+    path('sustainability/',sustainability,name='sustainability'),
+    path('press/',press,name='press'),
+    path('contact/',contact,name='contact'),
+    path('faq/',faq,name='faq'),
+    path('shipping/',shipping,name='shipping'),
 ]

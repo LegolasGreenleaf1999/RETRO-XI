@@ -1,0 +1,363 @@
+{% extends "user/base.html" %}
+{% load static %}
+{% block extra_css %}
+<style>
+    :root {
+  --primary: #13ae47;
+  --bg-light: #f6f8f6;
+  --text-dark: #1c1c1c;
+  --text-muted: #6b7280;
+  --card-bg: #ffffff;
+  --border-light: #e5e7eb;
+}
+
+body {
+  font-family: 'Lexend', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+}
+
+/* Brand helpers */
+.bg-brand {
+  background-color: var(--card-bg);
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-secondary {
+  color: var(--text-muted) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #119b40;
+  border-color: #119b40;
+}
+
+.btn-outline-light {
+  color: var(--text-dark);
+  border-color: var(--border-light);
+}
+
+.btn-outline-light:hover {
+  background-color: #f3f4f6;
+  color: var(--text-dark);
+}
+
+/* Product images */
+.product-img {
+  aspect-ratio: 4/5;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  background-color: #f1f3f2;
+}
+
+/* Thumbnail images */
+.thumb-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 8px;
+  opacity: 0.7;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.thumb-img.active {
+  border: 2px solid var(--primary);
+  opacity: 1;
+}
+
+/* Zoom wrapper */
+.product-img-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.product-img-zoom {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
+
+.product-img-wrapper:hover .product-img-zoom {
+  transform: scale(1.8);
+}
+
+/* Cards */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+}
+
+/* Breadcrumbs */
+.breadcrumb a {
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+.breadcrumb a:hover {
+  color: var(--primary);
+}
+
+/* Wishlist / CTA buttons */
+.btn-danger {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+}
+
+  </style>
+{% endblock %}
+{% block content %}
+<!-- MAIN -->
+<div class="container py-5">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb">
+  <ol class="breadcrumb bg-transparent p-0 mb-3">
+
+    <li class="breadcrumb-item">
+      <a href="{% url 'home' %}">Home</a>
+    </li>
+
+    <li class="breadcrumb-item">
+      <a href="{% url 'productlist' %}">Shop</a>
+    </li>
+
+    <li class="breadcrumb-item active text-secondary" aria-current="page">
+
+      {{ product.team }} {{ product.season }}
+    </li>
+
+  </ol>
+</nav>
+
+
+  <div class="row g-5">
+
+    <!-- IMAGE COLUMN -->
+    <div class="col-lg-6">
+      <div class="product-img-wrapper mb-3">
+        {%if product.main_img%}
+  <img
+    id="mainImage"
+    src="{{ product.main_img.url }}"
+    class="product-img-zoom"
+    alt="{{ product.team }} {{ product.season }}"
+  > 
+  {%else%}
+  <img id="mainImage" src="{%static 'images/no-image.png'%}" class="product-img-zoom" alt="No image">
+  {%endif%}
+</div>
+
+
+      <div class="row g-3 mt-2">
+
+  {% if product.main_img %}
+  <div class="col-3">
+    <img src="{{ product.main_img.url }}"
+         class="thumb-img active"
+         data-img="{{ product.main_img.url }}">
+  </div>
+  {% endif %}
+
+  {% for image in other_images %}
+  <div class="col-3">
+    <img src="{{ image.img.url }}"
+         class="thumb-img"
+         data-img="{{ image.img.url }}">
+  </div>
+  {% endfor %}
+
+</div>
+
+    </div>
+
+    <!-- INFO COLUMN -->
+    <div class="col-lg-6">
+      <p class="text-secondary">{{product.season}} Season</p>
+      <h1 class="fw-black display-5">{{product.team}} {{product.season}} Shirt</h1>
+      <p class="text-primary fs-5 fw-bold">{{product.description}}</p>
+
+      <h2 class="fw-bold my-4">₹{{ selected_variant.price }}</h2>
+
+      <!-- SIZE -->
+      <div class="mb-4">
+  <label class="fw-semibold mb-2">Size</label><br>
+
+  {% for variant in variants %}
+    {% if variant.stock > 0 %}
+      <a href="{% url 'productdetail' product.slug product.uuid %}?variant={{ variant.id }}"
+         class="btn btn-sm me-2
+                {% if variant.id == selected_variant.id %}
+                  btn-primary
+                {% else %}
+                  btn-outline-light
+                {% endif %}">
+        {{ variant.get_size_display }}
+      </a>
+    {% else %}
+      <button class="btn btn-outline-secondary btn-sm me-2" disabled>
+        {{ variant.get_size_display }}
+      </button>
+    {% endif %}
+  {% endfor %}
+</div>
+
+      
+
+      <!-- CTA -->
+      <div class="d-flex gap-3">
+        {%if selected_variant and selected_variant.stock > 0%}
+        <button type="button" class="btn btn-primary btn-lg flex-fill add-to-cart-btn" data-url="{% url 'add_to_cart' selected_variant.id %}">
+          🛒 Add to Cart
+        </button>
+        {%else%} 
+        <span class="badge bg-danger">Out of stock</span>
+        {%endif%}
+        <a class="btn btn-lg {%if is_wishlisted%} btn-danger {%else%} btn-outline-light {%endif%}" href="{%url 'toggle_wishlist' product.id%}">
+          {%if is_wishlisted%}
+          ❤️ Wishlisted
+          {%else%}
+          🤍 Add to Wishlist
+          {%endif%}
+        </a> 
+      </div>  
+      <button class="btn btn-primary btn-lg flex-fill mt-1">
+          Buy Now
+        </button> 
+       <a href="{%url 'product_review' product.uuid%}" class="btn btn-danger btn-lg flex-fill mt-1">
+          Go to Reviews 
+         </a>
+    </div>
+  </div>
+
+  <!-- DETAILS -->
+  <hr class="my-5">
+  <h3>Product Description</h3>
+  <p class="text-secondary col-lg-8">
+    {{product.description}}
+  </p>
+
+</div> 
+
+<hr class="my-5">
+<h3 class="mb-4">You may also like</h3>
+<div class="row g-4">
+  {%for item in recommended_products%}
+  {%with variant=item.first_available_variant%}
+  <div class="col-6 col-md-3">
+    <div class="card h-100 shadow-sm">
+      <a href="{%url 'productdetail' item.slug item.uuid%}" class="text-decoration-none text-dark">
+        <div class="product-img">
+          <img src="{{item.main_img.url}}" class="w-100 h-100 object-fit-cover rounded-top" alt="{{item.season}} {{item.team}}">
+        </div> 
+        <div class="card-body">
+          <h6 class="fw-semibold mb-1">{{item.season}} {{item.team}}</h6>
+          <p class="text-secondary small mb-2">
+            {{item.description|truncatechars:50}}
+          </p>
+          {%if variant%}
+          <p class="text-primary fw-bold mb-0">Rs. {{variant.price}}</p>
+          {%else%}
+          <p class="text-danger fw-semibold mb-0">
+            Out of Stock
+          </p>
+          {%endif%}
+        </div>
+      </a> 
+    </div>
+  </div> 
+  {%endwith%}
+  {%empty%}
+  <p class="text-secondary">No similar products found</p>
+  {%endfor%}
+</div>
+{% endblock %} 
+{% block extra_js %}
+<script>
+  const img = document.querySelector('.product-img-zoom');
+
+  if (img) {
+    img.addEventListener('mousemove', function (e) {
+      const rect = img.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      img.style.transformOrigin = `${x}% ${y}%`;
+    });
+
+    img.addEventListener('mouseleave', function () {
+      img.style.transformOrigin = 'center center';
+    });
+  }
+</script>
+<script>
+  const mainImage = document.getElementById('mainImage');
+  const thumbs = document.querySelectorAll('.thumb-img');
+
+  thumbs.forEach(thumb => {
+    thumb.addEventListener('click', function () {
+      const newSrc = this.getAttribute('data-img');
+      mainImage.src = newSrc;
+
+      // Remove active class from all thumbnails
+      thumbs.forEach(t => t.classList.remove('active'));
+
+      // Add active class to clicked thumbnail
+      this.classList.add('active');
+    });
+  });
+</script>
+<script>
+document.addEventListener("click", function (e) {
+  const btn = e.target.closest(".add-to-cart-btn");
+  if (!btn) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  const url = btn.dataset.url;
+
+  fetch(url, {
+    method: "GET",
+    headers: { "X-Requested-With": "XMLHttpRequest" }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      showToast("Added to cart 🛒", "success");
+
+      const cartCount = document.querySelector(".badge.bg-success");
+      if (cartCount) {
+        cartCount.textContent = data.total_items;
+      }
+    } else {
+      showToast(data.message || "Unable to add item", "danger");
+    }
+  })
+  .catch(() => {
+    showToast("Server error", "danger");
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+  <style>
+    
+    .hero {
+      min-height: 440px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      border-radius: 1rem;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(13, 27, 16, 0.75);
+      border-radius: 1rem;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .icon-lg {
+      font-size: 42px;
+    }
+
+   
+  </style>
+{% endblock %}
+{% block content %}
+<!-- HERO -->
+<section class="container my-5">
+  <div class="hero d-flex align-items-center justify-content-center text-center"
+       style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuBp3jV8ZiDS_wq_3x2EVDSgRpQ1bjZpOxQGfsW2Pcr6fxaNO9uO0lK0HIn-jcWljLnxwWu19t83pNUj4SHZgG-UjWwbgCO5QUjgbdqiSoQlSexeeNRacXPBPJL_f2Rrv_ZfNiJWu1B__lKX00aJmGEZfHw_BdBgymV7JtnVWHsAsK69J__JR2hJ31G45Z96Og-ffCR8GWOLDWotyK-IasmILE7n9xiq9R0E3C4R6NLY5NebDTf2zZHmomZQ9tWGIwOSMwnLtegMVow');">
+    <div class="hero-content text-white">
+      <h1 class="display-5 fw-black">In the Press</h1>
+      <p class="text-white-50 mb-4">
+        What the media & fans say about our collection.
+      </p>
+      <a class="btn bg-primary-custom fw-bold px-4">Explore Mentions</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED STORY -->
+<section class="container my-5">
+  <h2 class="fw-bold mb-4">Featured Story</h2>
+
+  <div class="card shadow border-success-subtle overflow-hidden">
+    <div class="row g-0">
+      <div class="col-md-5">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyNDnZLV6VWmvCRyLQMt9hJlxPr_b_jfox-5OqU-VndGoPasukOb9AqmeNkCHm1i7iz3F1iu_QTrTiMEpI7T_bAydJQ-4QUJsT1wKwKqLLiNh3PHE5jjvipzTu-TET4-_o2WWiM85m4uC-6P4FMOYsonaeHaYxp_jxu1WT6dJOe5bJizxee_GQ72XV945ALOSJOC23RL0-C6jFVYqG5NRBpxA2niTP3He7qAh5pEwZv7O6IPBox-xj_FGNvCdiKElG5p5mvrJHhAg"
+             class="img-fluid h-100 object-fit-cover" alt="">
+      </div>
+      <div class="col-md-7 p-4">
+        <p class="text-primary-custom fw-bold mb-1">Soccer Style Magazine</p>
+        <h3 class="fw-bold">The Timeless Allure of Retro Kits</h3>
+        <p class="text-muted">
+          An in-depth look at how Classic Football Jerseys is reviving the golden era of football fashion.
+        </p>
+        <p class="text-secondary small">October 22, 2023</p>
+        <a class="btn bg-primary-custom fw-bold">Read Full Article</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LATEST MENTIONS -->
+<section class="container my-5">
+  <h2 class="fw-bold mb-4">Latest Mentions</h2>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm p-4">
+        <p class="text-primary-custom fw-bold">The Football Herald</p>
+        <h5 class="fw-bold">A Nostalgic Trip Down Memory Lane</h5>
+        <p class="text-muted">Our review of the best retro jersey shop on the web.</p>
+        <small class="text-secondary">September 5, 2023</small>
+        <a class="mt-auto text-primary-custom fw-bold text-decoration-none d-inline-block mt-3" href="#">
+          View Article →
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm p-4">
+        <p class="text-primary-custom fw-bold">Kit Collector's Weekly</p>
+        <h5 class="fw-bold">Interview with the Founder</h5>
+        <p class="text-muted">We sit down with the visionary behind the brand.</p>
+        <small class="text-secondary">August 14, 2023</small>
+        <a class="mt-auto text-primary-custom fw-bold text-decoration-none d-inline-block mt-3" href="#">
+          Read More →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIA KIT + CONTACT -->
+<section class="container my-5">
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card text-center p-4 shadow">
+        <span class="material-symbols-outlined icon-lg text-primary-custom">download_for_offline</span>
+        <h4 class="fw-bold mt-3">Media & Press Kit</h4>
+        <p class="text-muted">
+          Download our brand logo, high-resolution photos, and brand story.
+        </p>
+        <button class="btn bg-primary-custom fw-bold">
+          Download Press Kit
+        </button>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card text-center p-4 shadow">
+        <span class="material-symbols-outlined icon-lg text-primary-custom">mail</span>
+        <h4 class="fw-bold mt-3">Get in Touch</h4>
+        <p class="text-muted">
+          For interviews or collaborations, email us.
+        </p>
+        <a href="mailto:press@classicjerseys.com"
+           class="fw-bold text-primary-custom text-decoration-none">
+          press@classicjerseys.com
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

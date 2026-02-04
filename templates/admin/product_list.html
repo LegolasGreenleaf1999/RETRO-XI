@@ -1,0 +1,169 @@
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+{% block extra_css %}
+<style>
+.product-cell {
+  min-width: 320px;
+}
+.table td,
+.table th {
+  white-space: nowrap;
+}
+
+.product-cell {
+  white-space: normal; /* allow wrapping only here */
+}
+.table-avatar {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+  <!-- Main Content -->
+  <main class="flex-fill p-4 p-lg-5">
+
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+      <h1 class="fw-black display-6 mb-2 mb-md-0">Products</h1>
+      <div class="d-flex gap-2">
+        <a class="btn btn-success fw-bold" href="{%url 'add_product'%}">Add New Product</a>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="input-group mb-3">
+      <span class="input-group-text bg-white">         
+        <span class="material-symbols-outlined">search</span>
+      </span>
+      <input type="text" name="search" class="form-control" value="search" placeholder="Search by product name, SKU...">
+    </div>
+
+    <!-- Table -->
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="table-light text-uppercase small">
+            <tr>
+              <th style="width: 35%;">Product</th>
+              <th>Variants</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Total Stock</th>
+              <th>Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody> 
+            {%for product in page_obj%}
+            <tr>              
+              <td class="d-flex align-items-center gap-3 product-cell">
+                {% if product.main_img %}
+  <img src="{{ product.main_img.url }}" class="table-avatar">
+{% else %}
+  <img src="{% static 'images/no-image.png' %}" class="table-avatar">
+{% endif %}
+                <div>
+                  <div class="fw-semibold">
+                    {{product.team}} {{product.season}} 
+                    {%if product.player_name%}
+                     -{{product.player_name}}
+                    {%endif%}          
+                  </div>
+                  <small class="text-muted">
+                    {{product.variants.count}} variants
+                  </small>
+                </div>
+              </td>
+              <td>
+                {%for v in product.variants.all%}
+                <span class="badge bg-light text-dark border">{{v.get_size_display}}</span>
+                {%empty%}
+                <span class="text-muted">-</span>
+                {%endfor%}
+              </td>
+              <td>{{product.category.name|default:'-'}}</td>
+              <td>
+                {%if product.min_price%}
+                {%if product.min_price == product.max_price%}
+                Rs. {{product.min_price}}
+                {%else%}
+                Rs. {{product.min_price}} - {{product.max_price}}
+                {%endif%}
+                {%else%}
+                <span class="text-muted">-</span>
+                {%endif%}
+              </td>
+              <td>
+                {% if product.total_stock > 0 %}
+                <span class="badge bg-success badge-stock">{{product.total_stock}} in stock</span>
+              {%else%}
+              <span class="badge bg-danger badge-stock">
+                    Out of stock
+                  </span>
+                  {%endif%}
+              </td> 
+              <td>
+              {%if product.is_active%}      
+             <span class="badge bg-primary">Published</span>
+             {%else%}          
+             <span class="badge bg-secondary">Hidden</span>  
+             {%endif%}
+              </td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-secondary" href="{%url 'edit_product' product.id%}"><span class="material-symbols-outlined">edit</span></a>
+                <a href="#"
+                   class="btn btn-sm btn-outline-danger"
+                   onclick="event.preventDefault();
+                            if(confirm('Delete this product?')){
+                              document.getElementById('delete-{{ product.id }}').submit();
+                            }">
+                  <span class="material-symbols-outlined">delete</span>
+                </a>
+
+                <form id="delete-{{ product.id }}"
+                      method="post"
+                      action="{% url 'delete_product' product.id %}"
+                      style="display:none;">
+                  {% csrf_token %}
+                </form>
+              </td>
+            </tr> 
+            {%empty%} 
+            <tr>
+              <td colspan="8" class="text-center text-muted py-4">
+                No products found 
+              </td>
+            </tr> 
+            {%endfor%}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-between align-items-center p-3">
+        <small>Showing {{page_obj.start_index}}-{{page_obj.end_index}} of {{page_obj.paginator.count}}</small>
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            {%if page_obj.has_previous%}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&search={{ search }}">‹</a></li> 
+            {%endif%}
+            <li class="page-item active"><a class="page-link">{{page_obj.number}}</a></li>
+            {%if page_obj.has_next%}
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&search={{ search }}">›</a></li>
+            {%endif%}
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+  </main>
+
+  {% endblock %}

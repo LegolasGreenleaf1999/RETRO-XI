@@ -1,0 +1,109 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+  <!-- Main Content -->
+  <main class="flex-fill p-4 p-md-5">
+    <div class="container-fluid">
+
+      <!-- Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <h1 class="fw-black display-6">Coupons / Discount Codes</h1> 
+
+        <form method="get" class="d-flex gap-2"> 
+          <input type="hidden" name="page" value="1">
+          <input type="text" name="q" value="{{query}}" class="form-control" placeholder="search by code">
+          <button class="btn btn-outline-success">Search</button>
+        </form> 
+
+        <a href="{%url 'add_coupon'%}" class="btn btn-success">+Add New Coupon</a>
+      </div>
+
+      <!-- Table -->
+      <div class="card shadow-sm">
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Coupon Code</th>
+                <th>Discount Type</th>
+                <th>Discount Value</th>
+                <th>Status</th> 
+                <th>Minimum Order Amount</th>
+                <th>Expiry Date</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for item in coupons%}
+              <tr>
+                <td class="fw-semibold">{{item.code}}</td>
+                <td>{{item.get_discount_type_display}}</td>
+                <td>
+                  {%if item.discount_type == 'percent'%}
+                  {{item.discount_value}}%
+                  {%else%}
+                  Rs. {{item.discount_value}}
+                  {% endif %}
+                </td>
+                <td>
+                  {%if item.is_active%}
+                  <span class="badge bg-success">Active</span>
+                {%else%}
+                  <span class="badge bg-secondary">Inactive</span>
+                  {%endif%}
+                </td>
+                <td>Rs. {{item.min_order_value}}</td>
+                <td>{%if item.expires_at%}
+              {{item.expires_at|date:'d M Y'}}
+              {%else%}
+              -
+              {% endif %}
+</td>
+                <td class="text-end"><a href="{%url 'toggle_coupon' item.id%}" class="btn btn-sm btn-outline-primary">
+                  {%if item.is_active%}Deactivate{%else%}Activate{%endif%}
+                </a></td>
+              </tr>
+              {%empty%}
+              <tr>
+                <td colspan="7" class="text-center py-4 text-muted">No Coupons Found</td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="card-footer bg-white d-flex justify-content-center">
+          <nav>
+            <ul class="pagination mb-0">
+  {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}&search={{ search }}">&laquo;</a>
+    </li>
+  {% endif %}
+
+  {% for num in page_obj.paginator.page_range %}
+    {% if page_obj.number == num %}
+      <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+    {% else %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ num }}&search={{ search }}">{{ num }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
+
+  {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}&search={{ search }}">&raquo;</a>
+    </li>
+  {% endif %}
+</ul>
+
+          </nav>
+        </div>
+
+    </div>
+  </main>
+
+{% endblock %}

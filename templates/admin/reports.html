@@ -1,0 +1,193 @@
+{% extends 'admin/admin_base.html' %}
+{% block extra_css %}
+<style>
+.bg-primary-custom {
+  background-color: #13ae47 !important;
+  border: 1px solid #13ae47;
+  color: #ffffff !important;
+}
+
+.bg-primary-custom:hover {
+  background-color: #109a3f;
+  border-color: #109a3f;
+}
+.btn-outline-secondary {
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+</style>
+{% endblock %}
+{% block content %}
+
+<!-- Main Content -->
+<div class="content">
+
+  <!-- Header -->
+  <header class="position-sticky top-0 glass-header border-bottom px-4 py-3 d-flex justify-content-between align-items-center">
+    <div>
+      <h4 class="fw-bold mb-0">Sales Report</h4>
+      <small class="text-muted">
+        {%if type == 'daily'%}Daily Report
+        {%elif type == 'weekly'%}Weekly Report
+        {%elif type == 'yearly'%}Yearly Report
+        {%else%}Custom Report{%endif%}
+      </small>
+    </div>
+
+    <div class="d-flex gap-2">
+      
+      <!-- EXPORT BUTTONS -->
+<div class="d-flex gap-2">
+  <a href="?type={{ type }}&export=excel{% if type == 'custom' %}&start={{ request.GET.start }}&end={{ request.GET.end }}{% endif %}"
+     class="btn btn-outline-success fw-bold">
+    <span class="material-symbols-outlined me-1">table</span> Excel
+  </a>
+
+  <a href="?type={{ type }}&export=pdf{% if type == 'custom' %}&start={{ request.GET.start }}&end={{ request.GET.end }}{% endif %}"
+     class="btn bg-primary-custom text-white fw-bold">
+    <span class="material-symbols-outlined me-1">picture_as_pdf</span> PDF
+  </a>
+</div>
+
+    </div>
+  </header>
+
+  <main class="p-4">
+
+    <!-- Filters -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div class="btn-group">
+          <a href="?type=daily"
+             class="btn {% if type == 'daily' %}bg-primary-custom text-white{% else %}btn-outline-secondary{% endif %}">
+            Daily
+          </a>
+          <a href="?type=weekly"
+             class="btn {% if type == 'weekly' %}bg-primary-custom text-white{% else %}btn-outline-secondary{% endif %}">
+            Weekly
+          </a>
+          <a href="?type=yearly"
+             class="btn {% if type == 'yearly' %}bg-primary-custom text-white{% else %}btn-outline-secondary{% endif %}">
+            Yearly
+          </a>
+        </div>
+        <a href="?type=custom" class="btn btn-outline-success">
+          <span class="material-symbols-outlined fs-6">tune</span> Custom Range
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm p-3">
+          <small class="text-muted">Revenue</small>
+          <h4 class="fw-bold">Rs.{{revenue|floatformat:2}}</h4>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm p-3">
+          <small class="text-muted">Orders</small>
+          <h4 class="fw-bold">{{orders_count}}</h4>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm p-3">
+          <small class="text-muted">Gross Sales</small>
+          <h4 class="fw-bold">Rs.{{gross_sales|floatformat:2}}</h4>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-2">
+        <div class="card shadow-sm p-3">
+          <small class="text-muted">Discounts</small>
+          <h4 class="fw-bold text-danger">Rs.{{discounts|floatformat:2}}</h4>
+        </div>
+      </div>
+
+    </div>
+      {%if type == 'custom'%}
+      <form method="get" class="row g-2 mb-4">
+        <input type="hidden" name="type" value="custom">
+        <div class="col-md-4">
+            <input type="date" name="start" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+            <input type="date" name="end" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+            <button class="btn bg-primary-custom text-white w-100">
+                Generate
+            </button>
+        </div>
+      </form>
+      {%if custom%}
+      <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card p-3">
+                <small class="text-muted">Total Orders</small>
+                <h4 class="fw-bold">{{custom.orders}}</h4>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3">
+                <small class="text-muted">Total Sales</small>
+                <h4 class="fw-bold">{{custom.net_sales}}</h4>
+            </div>
+        </div>
+      </div>
+      {%endif%}
+      {%endif%}
+      {%if type != 'custom'%}
+      <div class="card mt-4">
+        <div class="card-header fw-bold">Sales Breakdown</div>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead class="table-light small text-uppercase">
+                <tr>
+                    <th>Period</th>
+                    <th>Orders</th>
+                    <th class="text-end">Gross Sales</th>
+                    <th class="text-end">Discounts</th>
+                    <th class="text-end">Net Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for row in rows%}
+                <tr>
+                    <td>
+  {% if type == 'daily' %}
+    {{ row.date }}
+  {% elif type == 'weekly' %}
+    {{ row.week }}
+  {% elif type == 'yearly' %}
+    {{ row.year }}
+  {% endif %}
+</td>
+                    <td>{{row.orders}}</td>
+                    <td class="text-end">
+                        Rs.{{row.gross_sales|floatformat:2}}
+                    </td>
+                    <td class="text-end text-danger">
+                        Rs.{{row.discounts|floatformat:2}}
+                    </td>
+                    <td class="text-end fw-bold">
+                        Rs.{{row.net_sales|floatformat:2}}
+                    </td>
+                </tr>
+                {%empty%}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No data</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+          </table>  
+        </div>
+      </div>
+      {%endif%}
+  </main>
+</div>
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends 'admin/admin_base.html' %}
+{% block extra_css %}
+<style>
+  .badge {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 12px;
+    display: inline-block;
+}
+
+/* Return status colors */
+.badge-pending {
+    background-color: #f59e0b; /* amber */
+    color: #ffffff;
+}
+
+.badge-approved {
+    background-color: #22c55e; /* green */
+    color: #ffffff;
+}
+
+.badge-rejected {
+    background-color: #ef4444; /* red */
+    color: #ffffff;
+}
+
+.badge-refunded {
+    background-color: #3b82f6; /* blue */
+    color: #ffffff;
+}
+</style>
+{% endblock %}
+{% block content %}
+<!-- Main Content -->
+  <main class="flex-grow-1">
+
+    <!-- Header -->
+    <header class="bg-white border-bottom px-4 py-3 d-flex justify-content-between align-items-center">
+      <div>
+        <h5 class="fw-bold mb-0">Returns / RMA / Refunds</h5>
+        <small class="text-muted">Manage customer satisfaction and product exchanges</small>
+      </div>
+
+    </header>
+
+    <div class="p-4">
+
+      <!-- Stats -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-4 col-lg-2">
+          <div class="card card-stat p-3">
+            <small class="text-muted">Total Requests</small>
+            <h4 class="fw-bold">{{total_requests}}</h4>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="card card-stat p-3">
+            <small class="text-muted">Pending</small>
+            <h4 class="fw-bold">{{pending_count}}</h4>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="card card-stat p-3">
+            <small class="text-muted">Approved</small>
+            <h4 class="fw-bold">{{approved_count}}</h4>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="card card-stat p-3">
+            <small class="text-muted">Rejected</small>
+            <h4 class="fw-bold">{{rejected_count}}</h4>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="card card-stat p-3">
+            <small class="text-muted">Refunded</small>
+            <h4 class="fw-bold">{{refunded_count}}</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <a href="{%url 'admin_returns'%}" class="btn btn-sm btn-outline-secondary">All</a>
+        <a href="?status=requested" class="btn btn-sm btn-light">Pending</a> 
+        <a href="?status=approved" class="btn btn-sm btn-light">Approved</a>
+        <a href="?status=rejected" class="btn btn-sm btn-light">Rejected</a>
+        <a href="?status=refunded" class="btn btn-sm btn-light">Refunded</a>
+      </div>
+
+      <!-- Table -->
+      <div class="card border">
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead class="table-light text-uppercase small">
+              <tr>
+                <th><input type="checkbox"></th>
+                <th>RMA ID</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Refund Type</th>
+                <th>Requested</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for item in returns%}
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><strong>#RMA-{{item.id}}</strong><br><small class="text-muted">ORD-9921</small></td>
+                <td>{{item.order.user.get_full_name}}<br><small class="text-muted">{{item.order.user.email}}</small></td>
+                <td>{{item.product}}</td>
+                <td>{{item.return_reason|default:'-'}}</td>
+                <td>
+                  {%if item.return_status == 'requested'%}
+                  <span class="badge badge-pending">Pending</span>
+                  {%elif item.return_status == 'approved'%}
+                  <span class="badge badge-approved">Approved</span>
+                  {%elif item.return_status == 'rejected'%}
+                  <span class="badge badge-rejected">Rejected</span>
+                  {%elif item.return_status == 'refunded'%}
+                  <span class="badge badge-refunded">Refunded</span>
+                  {%endif%}
+                </td>
+                <td>Original Method</td>
+                <td>{{item.returned_at|timesince}} ago</td>
+                <td class="text-end">
+                  {%if item.return_status == 'requested'%}
+                  <a href="{%url 'approve_return' item.id%}" class="btn btn-sm btn-success">Approve</a>
+                  <a href="{%url 'reject_return' item.id%}" class="btn btn-sm btn-outline-danger">Reject</a>
+                  {%elif item.return_status == 'approved'%}
+                  <a href="{%url 'refund_to_wallet' item.id%}" class="btn btn-sm btn-primary">Refund</a>
+                  {%else%}
+                  <span class="text-muted">-</span>
+                  {%endif%}
+                </td>
+              </tr>
+              {%empty%}
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">
+                  No return requests found
+                </td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between align-items-center">
+          <small>Showing <strong>{{returns.start_index}}</strong>-<strong>{{returns.end_index}}</strong> of <strong>{{returns.paginator.count}}</strong></small>
+          <nav>
+            <ul class="pagination pagination-sm mb-0">
+              {%if returns.has_previous%}
+              <li class="page-item">
+                <a href="?page={{returns.previous_page_number}}{%if status%}&status={{status}}{%endif%}" class="page-link"><<</a>
+              </li>
+              {%else%}
+              <li class="page-item disabled"><span class="page-link"><<</span></li>
+              {%endif%}
+              {%for num in returns.paginator.page_range%}
+              {%if num == returns.number%}
+              <li class="page-item active">
+                <span class="page-link bg-success border-success">{{num}}</span>
+              </li> 
+              {%elif num >= returns.number|add:'-2' and num <= returns.number|add:'2'%}
+              <li class="page-item">
+                <a href="?page={{num}}{%if status%}&status={{status}}{%endif%}" class="page-link">
+                  {{num}}
+                </a>
+              </li>
+              {%endif%}
+              {%endfor%}
+              {%if returns.has_next%}
+              <li class="page-item">
+                <a href="?page={{returns.next_page_number}}{%if status%}&status={{status}}{%endif%}" class="page-link">>></a>
+              </li>
+              {%else%}
+              <li class="page-item disabled"><span class="page-link">>></span></li>
+              {%endif%}
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+    </div>
+  </main>
+{% endblock %}

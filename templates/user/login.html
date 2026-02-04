@@ -67,7 +67,9 @@
             <div class="bg-dark bg-opacity-25 rounded p-4 shadow-lg backdrop-blur">
                 {% if messages %}
                     {% for msg in messages %}  
-                        <p style="color:green">{{msg}}</p> 
+                    {% if 'admin' not in msg.tags %}
+                        <p style="color:green">{{msg}}</p>
+                        {% endif %} 
                     {% endfor %}
                 {% endif %}
                 <form method="POST">  

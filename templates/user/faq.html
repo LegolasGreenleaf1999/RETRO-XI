@@ -1,0 +1,131 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+  <style>
+    
+    .hero {
+      min-height: 420px;
+      background:
+        linear-gradient(rgba(16,34,16,.75), rgba(16,34,16,.9)),
+        url("https://lh3.googleusercontent.com/aida-public/AB6AXuBMcGH_CoRL2I7Hvs4pkfrvC8svKlIgZKtEo4JYczhhyNdWX2YLCGIBe-_jCYw4viZV05XhXtoGxV9xCWgQdu33spSbN3og9DJfgjoVw-7WzplXdWpvgz_kFUy-18fnJvYA77JI5e3-WO0ik9U35wBI6LoWoqAtQOCR1F_uD9nOuaSj8uLcqDhAZ0QIPr5goEfLcGdcrNC7D_mCJARb0vCySWyESuIO63j5p_v4jgewrGGYTmJr55rTmCD1FTrXjz4ny3JooYYF__zA")
+        center / cover no-repeat;
+    }
+
+    .icon {
+      font-family: 'Material Symbols Outlined';
+      font-size: 24px;
+      vertical-align: middle;
+    }
+
+  </style>
+{% endblock %}
+{% block content %}
+<!-- HERO -->
+<section class="hero text-center text-white d-flex align-items-center">
+  <div class="container">
+    <h1 class="fw-black display-5 mb-3">FAQ / Frequently Asked Questions</h1>
+    <p class="text-white-50 mb-4">
+      Find answers to common questions about orders, shipping, returns & more.
+    </p>
+
+    
+  </div>
+</section>
+
+<!-- CONTENT -->
+<section class="container py-5">
+  <div class="row g-4">
+
+    <!-- FAQ -->
+    <div class="col-md-8">
+
+      <h2 class="fw-bold mb-3">Orders & Payment</h2>
+      <div class="accordion mb-5" id="ordersAccordion">
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#q1">
+              What payment methods do you accept?
+            </button>
+          </h2>
+          <div id="q1" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              We accept major credit cards, PayPal, and secure gateways. All transactions are encrypted.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#q2">
+              How can I track my order?
+            </button>
+          </h2>
+          <div id="q2" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              You’ll receive a tracking number via email once your order ships.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <h2 class="fw-bold mb-3">Shipping & Delivery</h2>
+      <div class="accordion" id="shippingAccordion">
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#q3">
+              What are your shipping options?
+            </button>
+          </h2>
+          <div id="q3" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              Standard and express shipping options are available at checkout.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#q4">
+              Do you ship internationally?
+            </button>
+          </h2>
+          <div id="q4" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              Yes, international shipping is available. Customs duties may apply.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="col-md-4">
+      <div class="p-4 bg-success bg-opacity-10 rounded text-center mb-4">
+        <h5 class="fw-bold">Still need help?</h5>
+        <p class="text-muted small">Can't find what you're looking for?</p>
+        <button class="btn btn-success w-100">Contact Us</button>
+      </div>
+
+      <h5 class="fw-bold mb-3">Quick Links</h5>
+      <div class="row g-3">
+        <div class="col-6">
+          <a class="btn w-100 border py-3" href="#"><span class="icon text-primary-custom fs-3">local_shipping</span><br>Shipping</a>
+        </div>
+        <div class="col-6">
+          <a class="btn w-100 border py-3" href="#"><span class="icon text-primary-custom fs-3">straighten</span><br>Size Guide</a>
+        </div>
+        <div class="col-6">
+          <a class="btn w-100 border py-3" href="#"><span class="icon text-primary-custom fs-3">assignment_return</span><br>Returns</a>
+        </div>
+        <div class="col-6">
+          <a class="btn w-100 border py-3" href="#"><span class="icon text-primary-custom fs-3">mail</span><br>Contact</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</section>
+{% endblock %}

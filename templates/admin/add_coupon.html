@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create New Coupon / Discount Code</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f5f8f7;
+    }
+
+    .text-primary-custom { color: #0bda62 !important; }
+    .bg-primary-custom { background-color: #0bda62 !important; }
+
+    .form-control, .form-select {
+      border-radius: 0.5rem;
+    }
+
+    .btn-app {
+      height: 42px;
+      border-radius: 0.5rem;
+      font-weight: 500;
+    }
+
+    .modal-box {
+      border-radius: 0.75rem;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="d-flex align-items-center justify-content-center min-vh-100 p-4">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-xl-8">
+
+        <form method="post" class="modal-box">
+            {%csrf_token%}
+
+        <div class="modal-box">
+
+          <!-- Header -->
+          <div class="d-flex justify-content-between align-items-center border-bottom p-4">
+            <h4 class="fw-bold mb-0">Create New Coupon / Discount Code</h4>
+          </div>
+
+          {%if form.errors%}
+          <div class="alert alert-danger m-4"> 
+            please correct the errors below 
+          </div>
+          {%endif%}
+
+          <!-- Body -->
+          <div class="p-4">
+
+            <!-- Row 1 -->
+            <div class="row g-4 mb-4">
+              <div class="col-md-4">
+                <label class="form-label">Coupon Code</label>
+                {{form.code}}
+                {%if form.code.errors%}
+                <small class="text-danger">{{form.code.errors}}</small>
+                {%endif%}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Discount Type</label>
+                {{form.discount_type}}
+                {%if form.discount_type.errors%} 
+                <small class="text-danger">{{form.discount_type.errors}}</small>
+                {%endif%}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Discount Value</label>
+                {{form.discount_value}}
+                {%if form.discount_value.errors%}
+                <small class="text-danger">{{form.discount_value.errors}}</small>
+                {%endif%}
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row g-4 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">Minimum Order Amount (Optional)</label>
+                {{form.min_order_value}} 
+                {%if form.min_order_value.errors%}
+                <small class="text-danger">{{form.min_order_value.errors}}</small>
+                {%endif%}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Expiry date and time</label>
+                {{form.expires_at}}
+                {%if form.expires_at.errors%}
+                <small class="text-danger">{{form.expires_at.errors}}</small>
+                {%endif%}
+              </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="row g-4 mb-4">
+              <div class="col-md-4">
+                <label class="form-label">Status</label>
+                <div class="form-check form-switch">
+                    {{form.is_active}}
+                    <label class="form-check-label ms-2">Active</label>
+                </div>
+            </div>
+            </div>
+
+                     <!-- Footer -->
+          <div class="d-flex justify-content-end gap-3 border-top p-4">
+            <a href="{%url 'coupon_list'%}" class="btn btn-light px-4">Cancel</a>
+            <button type="submit" class="btn bg-primary-custom text-white px-4">Create Coupon</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

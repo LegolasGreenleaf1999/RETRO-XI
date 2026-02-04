@@ -1,0 +1,118 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+  <style>
+
+    .btn-primary {
+      background-color: #17cf17;
+      border: none;
+      color: #112111;
+      font-weight: 700;
+    }
+
+    .hero {
+      min-height: 520px;
+      background:
+        linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.6)),
+        url("https://lh3.googleusercontent.com/aida-public/AB6AXuB1MRCjHJWsidOt7Q3GpFpy67xAErGogu9bdvikLa3RfAtOcmXQmmlFA5kxeWkI7nFqKs5uVbFRFvb0P_kzhr_FI6yy-gIderhhpelb8BbxYnu-Tl_80xvfFkFFIL2JNEgmcWD3SsZYFpK8OjNlHA0QyvIj0dp5DKJvWOGYYz2NVUY65wtj3CfYDOv-Rz2mcK1SxVbsNwY8QDy-APbxvv1zYCsP0h-F4wotebq9XAvmh-WLJgSVIUO8hgLBfhBfcXy5g7bE95Nf43K1");
+      background-size: cover;
+      background-position: center;
+      border-radius: 1rem;
+    }
+
+    .feature-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(0,0,0,.1);
+      background: rgba(255,255,255,.7);
+    }
+
+    .stat-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 4px solid rgba(23,207,23,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+{% endblock %}
+
+
+{% block content %}
+<!-- HERO -->
+<section class="container my-5">
+  <div class="hero d-flex flex-column justify-content-center align-items-center text-center text-white p-4">
+    <h1 class="fw-black display-5">For the Love of the Game,<br>For the Good of the Planet</h1>
+    <p class="lead text-white-75 mt-2">
+      Preserving football’s heritage while protecting our future.
+    </p>
+  </div>
+</section>
+
+<!-- WHY SUSTAINABILITY -->
+<section class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Why Sustainability Matters for Us</h2>
+    <p class="text-muted mt-2">
+      We believe football’s timeless legacy deserves a future.
+    </p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="feature-card p-4 h-100">
+        <span class="material-symbols-outlined text-primary fs-2">recycling</span>
+        <h5 class="fw-bold mt-2">Recycled Materials</h5>
+        <p class="text-muted small">Premium recycled fabrics reduce waste.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="feature-card p-4 h-100">
+        <span class="material-symbols-outlined text-primary fs-2">eco</span>
+        <h5 class="fw-bold mt-2">Carbon Neutral</h5>
+        <p class="text-muted small">Net-zero impact from production to shipping.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="feature-card p-4 h-100">
+        <span class="material-symbols-outlined text-primary fs-2">groups</span>
+        <h5 class="fw-bold mt-2">Community Support</h5>
+        <p class="text-muted small">Supporting grassroots football programs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="container py-5 text-center">
+  <h2 class="fw-bold mb-4">What We’ve Achieved So Far</h2>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="stat-circle mx-auto">
+        <h3 class="fw-black">5M+</h3>
+      </div>
+      <h6 class="fw-bold mt-3">Bottles Recycled</h6>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-circle mx-auto">
+        <h3 class="fw-black">100%</h3>
+      </div>
+      <h6 class="fw-bold mt-3">Carbon Neutral</h6>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-circle mx-auto">
+        <h3 class="fw-black">10K+</h3>
+      </div>
+      <h6 class="fw-bold mt-3">Kids Supported</h6>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
+ 

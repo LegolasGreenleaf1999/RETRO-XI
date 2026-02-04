@@ -1,0 +1,179 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+  <style>
+
+    .bg-soft {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .border-soft {
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .text-muted-soft {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .hero {
+      min-height: 420px;
+      background:
+        linear-gradient(rgba(16,34,22,.7), rgba(16,34,22,.9)),
+        url("https://lh3.googleusercontent.com/aida-public/AB6AXuAlHmFQdAyh7bgF7jDEE3gSJ0sSE2-vXhCiF3izGDXqZ6fqGguDvtVk-3KTeMMJ3uwPenD29c1ezDDG6UHbCuYj2uWB7UiPQuJCmIFHf-XOJDmdfFSBhdQEtN5KbGciF6yd-IMOGTe-QEb5j24VibE_7Fc9_rtp1m2D92Jx4MWRr13gTm82iC24Ree6O5c4m9PUl-PyxRkE1M-aM9-c320i1jaYSSueuDWuIrATpfjbpogDCWKFvloYhdT-HFsQabWk6KdMzzwd_88")
+        center/cover no-repeat;
+      border-radius: 1rem;
+    }
+
+    .step {
+      width: 32px;
+      height: 32px;
+      background: rgba(17,212,82,0.2);
+      color: #11d452;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background-color: #11d452;
+      border-color: #11d452;
+      color: #102216;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      opacity: .9;
+    }
+  </style>
+{% endblock %} 
+{% block content %}
+<main class="container py-5">
+
+  <!-- HERO -->
+  <section class="hero d-flex flex-column justify-content-center align-items-center text-center text-white p-4 mb-5">
+    <h1 class="fw-black display-4">Shipping & Returns</h1>
+    <p class="text-white-50 mb-4">Fast shipping. Easy returns. Worry-free shopping.</p>
+    <a class="btn btn-primary btn-lg px-4" href="{% url 'productlist' %}">Shop Now</a>
+  </section>
+
+  <!-- INFO CARDS -->
+  <section class="row g-4 mb-5">
+    <div class="col-md-3">
+      <div class="bg-soft border-soft rounded p-4 h-100">
+        <span class="material-symbols-outlined text-success">local_shipping</span>
+        <h5 class="mt-3 fw-bold">Shipping & Delivery</h5>
+        <p class="text-muted small">Domestic shipping options, times, and costs.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bg-soft border-soft rounded p-4 h-100">
+        <span class="material-symbols-outlined text-success">package_2</span>
+        <h5 class="mt-3 fw-bold">Order Processing</h5>
+        <p class="text-muted small">How quickly orders leave our warehouse.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bg-soft border-soft rounded p-4 h-100">
+        <span class="material-symbols-outlined text-success">published_with_changes</span>
+        <h5 class="mt-3 fw-bold">Returns & Exchanges</h5>
+        <p class="text-muted small">Conditions for returns and swaps.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="bg-soft border-soft rounded p-4 h-100">
+        <span class="material-symbols-outlined text-success">public</span>
+        <h5 class="mt-3 fw-bold">International Orders</h5>
+        <p class="text-muted small">Customs, duties, and overseas returns.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="mb-5">
+    <h3 class="fw-bold mb-2">How to Return or Exchange</h3>
+    <p class="text-muted-50 mb-4">Follow these simple steps.</p>
+
+    <div class="d-flex gap-3 mb-3">
+      <div class="step">1</div>
+      <div>
+        <h6 class="fw-bold">Start Your Return</h6>
+        <p class="text-muted small mb-0">Enter order number and email.</p>
+      </div>
+    </div>
+
+    <div class="d-flex gap-3 mb-3">
+      <div class="step">2</div>
+      <div>
+        <h6 class="fw-bold">Package Your Items</h6>
+        <p class="text-muted small mb-0">Original packaging, tags intact.</p>
+      </div>
+    </div>
+
+    <div class="d-flex gap-3">
+      <div class="step">3</div>
+      <div>
+        <h6 class="fw-bold">Ship It Back</h6>
+        <p class="text-muted small mb-0">Use provided label and carrier.</p>
+      </div>
+    </div>
+
+    <a class="btn btn-outline-success mt-4" href="#">Start a Return</a>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mb-5">
+    <h3 class="fw-bold mb-4">Frequently Asked Questions</h3>
+    <div class="accordion accordion-flush" id="faq">
+      <div class="accordion-item bg-soft border-soft rounded mb-3">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed bg-soft text-muted" data-bs-toggle="collapse" data-bs-target="#q1">
+            How do I track my order?
+          </button>
+        </h2>
+        <div id="q1" class="accordion-collapse collapse">
+          <div class="accordion-body text-muted">
+            You'll receive a tracking link by email once shipped.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item bg-soft border-soft rounded mb-3">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed bg-soft text-muted" data-bs-toggle="collapse" data-bs-target="#q2">
+            What is your return window?
+          </button>
+        </h2>
+        <div id="q2" class="accordion-collapse collapse">
+          <div class="accordion-body text-muted">
+            Returns accepted within 30 days of delivery.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item bg-soft border-soft rounded">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed bg-soft text-muted" data-bs-toggle="collapse" data-bs-target="#q3">
+            Are returns free?
+          </button>
+        </h2>
+        <div id="q3" class="accordion-collapse collapse">
+          <div class="accordion-body text-muted">
+            Free for domestic orders. International returns are customer-paid.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-soft border-soft rounded p-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+    <div>
+      <h4 class="fw-bold mb-1">Need Help?</h4>
+      <p class="text-muted mb-0">Our support team is here for you.</p>
+    </div>
+    <a class="btn btn-primary px-4" href="{% url 'contact' %}">Contact Us</a>
+  </section>
+
+</main>
+{% endblock %}

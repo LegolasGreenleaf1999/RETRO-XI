@@ -1,10 +1,38 @@
-from django.urls import path 
-from .views import user_list,block_user_ajax,unblock_user_ajax,admin_dashboard,admin_login,admin_logout
+from django.urls import path,include 
+from .views import user_list,block_user_ajax,unblock_user_ajax,admin_dashboard,admin_login,admin_logout,admin_category_list,admin_product_list,edit_category,add_category,toggle_category,edit_product,toggle_product,add_product,admin_review_dashboard,coupon_list,toggle_coupon,add_coupon,admin_orders_dashboard,admin_order_cancel,order_edit,order_detail,admin_returns,approve_return,reject_return,refund_to_wallet,admin_offers,create_offer,edit_offer,delete_offer,edit_variant,delete_variant,add_variant,referral_admin_dashboard
 urlpatterns=[
     path('users/',user_list,name='user_list'),
-    path('users/block/',block_user_ajax,name='block_user'), 
+    path('users/block/',block_user_ajax,name='block_user'),
     path('users/unblock/',unblock_user_ajax,name='unblock_user'),
     path('dashboard/',admin_dashboard,name='dashboard'),
     path('',admin_login,name='my_login'),
-    path('logout/',admin_logout,name='my_logout')
+    path('logout/',admin_logout,name='my_logout'),
+    path('categories/',admin_category_list,name='category_list'), 
+    path('products/',admin_product_list,name='product_list'),
+    path('categories/<int:id>/edit/',edit_category,name='edit_category'), 
+    path('categories/add/',add_category,name='add_category'), 
+    path('categories/<int:id>/delete/',toggle_category,name='delete_category'),
+    path('products/<int:id>/edit',edit_product,name='edit_product'),
+    path('products/<int:id>/delete',toggle_product,name='delete_product'),    
+    path('products/add/',add_product,name='add_product'),
+    path('products/<int:product_id>/variants/add',add_variant,name='add_variant'),
+    path('products/<int:product_id>/variants/<int:id>/edit',edit_variant,name='edit_variant'),
+    path('products/<int:product_id>/variants/<int:id>/delete',delete_variant,name='delete_variant'),
+    path('reviews/',admin_review_dashboard,name='reviews'),
+    path('coupons/',coupon_list,name='coupon_list'), 
+    path('coupons/toggle/<int:coupon_id>',toggle_coupon,name='toggle_coupon'),
+    path('coupons/add',add_coupon,name='add_coupon'), 
+    path('orders/',admin_orders_dashboard,name='order_list'), 
+    path('orders/cancel/<uuid:order_id>/',admin_order_cancel,name='admin_cancel_order'),
+    path('orders/<uuid:order_id>/',order_detail,name='order_detail'),
+    path('orders/<uuid:order_id>/edit',order_edit,name='edit_order'),        
+    path('returns/',admin_returns,name='admin_returns'),
+    path('returns/<int:item_id>/approve/',approve_return,name='approve_return'),
+    path('returns/<int:item_id>/reject/',reject_return,name='reject_return'),
+    path('returns/<int:item_id>/refund/',refund_to_wallet,name='refund_to_wallet'),
+    path('offers/',admin_offers,name='admin_offers'),
+    path('offers/create/',create_offer,name='create_offer'),
+    path('offers/edit/<int:offer_id>/',edit_offer,name='edit_offer'),
+    path('offers/delete/<int:offer_id>/',delete_offer,name='delete_offer'),     
+    path('referrals/',referral_admin_dashboard,name='admin_referrals'),
 ]

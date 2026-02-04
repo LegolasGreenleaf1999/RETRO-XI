@@ -1,0 +1,396 @@
+{% extends "user/base.html" %}
+{% load static %}
+{% block content %}
+
+
+<section class="text-white text-center py-5 position-relative"
+  style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuAt0iDz9M3zuiO1VOz0DVGBiW6pSUgF4fFuXTntXATlSiLrJOe6sKI3eXTeADsi08Qkf5lHoxkvIr9jEruE0KRm9RBNg3GaxxdDWoAmXesEG9q9LLK3j9yRwGtXfTjOVec4e00tMkl-PqJNpHZUDXP0pGVB8dXCgF5_6TKtwKXxnTXQfEvGtSzelzy0TIHkxdyq8CnhHzfzh5KBEOS38CRiVpynZRsNxLACOUMeYjL2AuEJALRR-WbElBXls4GYWV1j6oX8vQz9za7w');
+  background-size:cover;">
+  <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
+  <div class="container position-relative">
+    <h1 class="display-5 fw-black">Shop All Jerseys</h1>
+    <p class="lead mt-3">Browse our full collection — classic kits from legendary clubs & eras</p>
+  </div>
+</section>
+<div class="container my-5">
+  <div class="row g-4">
+
+    <!-- Filters -->
+    <aside class="col-lg-3">
+      <h5 class="fw-bold mb-3">Filters</h5>
+
+      <div class="accordion" id="filters">
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#category">
+              Category
+            </button>
+          </h2>
+          <div id="category" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              <form method="get" class="action-collapse collapse show">
+              <div class="form-check">
+                {%for category in categories%}
+              <div class="form-check fw-semibold">
+                <input class="form-check-input" type="radio" name="category" value="{{category.slug}}" id="cat-{{category.id}}" {%if request.GET.category == category.slug%}checked{%endif%} onchange="this.form.submit()">
+                <label class="form-check-label" for="cat-{{category.id}}">{{category.name}}</label>
+              </div> 
+              {% for sub in category.subcategories.all %}
+              <div class="form-check ms-4">
+                <input type="radio" class="form-check-input" name="category" value="{{sub.slug}}" id="cat-{{sub.id}}"
+                {% if request.GET.category == sub.slug %}checked{% endif %}
+          onchange="this.form.submit()"
+        >
+        <label for="cat-{{sub.id}}" class="form-check-label small">
+          {{sub.name}}
+        </label>
+              </div> 
+              {% endfor %}
+              {%empty%}
+              <p class="text-muted small">No categories available</p>
+              {%endfor%}
+              <input type="hidden" name="q" value="{{request.GET.q}}">
+              <input type="hidden" name="min_price" value="{{request.GET.min_price}}">
+              <input type="hidden" name="max_price" value="{{request.GET.max_price}}">
+              <input type="hidden" name="sort" value="{{request.GET.sort}}">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed"
+            data-bs-toggle="collapse"
+            data-bs-target="#price">
+      Price Range
+    </button>
+  </h2>
+
+  <div id="price" class="accordion-collapse collapse">
+    <div class="accordion-body">
+
+      <form method="get" class="d-flex flex-column gap-3">
+
+        <div>
+          <label class="form-label small">Min Price (₹)</label>
+          <input
+            type="number"
+            name="min_price"
+            class="form-control form-control-sm"
+            value="{{ request.GET.min_price }}"
+            placeholder="0">
+        </div>
+
+        <div>
+          <label class="form-label small">Max Price (₹)</label>
+          <input
+            type="number"
+            name="max_price"
+            class="form-control form-control-sm"
+            value="{{ request.GET.max_price }}"
+            placeholder="10000">
+        </div>
+
+        <!-- Preserve other filters -->
+        <input type="hidden" name="q" value="{{ request.GET.q }}">
+        <input type="hidden" name="category" value="{{ request.GET.category }}">
+        <input type="hidden" name="sort" value="{{ request.GET.sort }}">
+
+        <button type="submit" class="btn btn-sm btn-primary">
+          Apply
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+      </div>
+    </aside>
+
+    <!-- Products -->
+    <section class="col-lg-9"> 
+      <!-- Products -->
+<section class="col-lg-9">
+
+  <!-- 🔹 BREADCRUMBS START HERE -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb bg-transparent p-0">
+
+      <li class="breadcrumb-item">
+        <a href="{% url 'home' %}">Home</a>
+      </li>
+
+      <li class="breadcrumb-item">
+        <a href="{% url 'productlist' %}">Shop</a>
+      </li>
+
+      {% if selected_category %}
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ selected_category|title }}
+        </li>
+      {% endif %}
+
+    </ol>
+  </nav>
+  <!-- 🔹 BREADCRUMBS END HERE -->
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <small class="text-muted">
+      Showing {{ products.start_index }}–{{ products.end_index }}
+      of {{ products.paginator.count }} products
+    </small>
+
+    <!-- sort dropdown -->
+  </div>
+
+  <div class="row g-4">
+    {% for product in products %}
+      ...
+    {% endfor %}
+  </div>
+
+</section>
+
+<div class="d-flex justify-content-between align-items-center mb-4"> 
+  <form method="get" class="d-flex gap-2 align-items-center">
+  <input
+    type="text"
+    name="q"
+    class="form-control form-control-sm"
+    placeholder="Search jerseys..."
+    value="{{ request.GET.q }}"
+  >
+
+<input type="hidden" name="category" value="{{ request.GET.category }}">
+          <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+          <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+          <input type="hidden" name="sort" value="{{ request.GET.sort }}">
+
+  <button class="btn btn-sm btn-outline-secondary" type="submit">
+    <i class="bi bi-search"></i>
+  </button>
+
+  {% if request.GET.q %}
+    <a href="{% url 'productlist' %}"
+       class="btn btn-sm btn-outline-danger">
+       Cancel
+    </a>
+  {% endif %}
+</form>
+
+
+
+  <small class="text-muted"> Showing {{ products.start_index }}–{{ products.end_index }}
+  of {{ products.paginator.count }} products</small>
+
+  <form method="get" class="d-flex align-items-center gap-2">
+  <label class="fw-semibold">Sort by:</label>
+
+  <input type="hidden" name="q" value="{{ request.GET.q }}">
+          <input type="hidden" name="category" value="{{ request.GET.category }}">
+          <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+          <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+
+<select
+    name="sort"
+    class="form-select form-select-sm w-auto"
+    onchange="this.form.submit()">
+
+    <option value="">Newest</option>
+
+    <option value="price_low"
+      {% if sort == 'price_low' %}selected{% endif %}>
+      Price: Low to High
+    </option>
+
+    <option value="price_high"
+      {% if sort == 'price_high' %}selected{% endif %}>
+      Price: High to Low
+    </option>
+
+    <option value="az"
+      {% if sort == 'az' %}selected{% endif %}>
+      A–Z
+    </option>
+
+    <option value="za"
+      {% if sort == 'za' %}selected{% endif %}>
+      Z–A
+    </option>
+
+  </select>
+</form>
+
+</div>
+<div class="row g-4">
+
+  {% for product in products %}
+  <div class="col-sm-6 col-xl-4">
+    <div class="card product-card h-100 shadow-sm">
+
+      <img src="{{ product.main_img.url }}"
+           class="card-img-top"
+           alt="{{ product.team }}">
+
+      <div class="card-body">
+        <small class="text-muted fw-semibold">
+          {{ product.season }}
+        </small>
+
+        <h6 class="fw-bold mt-1">
+          {{ product.team }}
+        </h6>
+
+        {% with variant=product.variants.all.0 %}
+  {% if variant %}
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      <span class="fw-bold text-primary-custom">
+        Rs. {{ product.min_price }}
+      </span>
+    </div>
+  {% else %}
+    <span class="text-muted">Unavailable</span>
+  {% endif %}
+{% endwith %}
+
+        <div class="d-flex gap-2 mt-3">
+          <a href="{% url 'productdetail' product.slug product.uuid %}"
+             class="btn btn-outline-secondary btn-sm w-100">
+             View
+          </a>
+
+          {% with variant=product.first_available_variant %}
+  {% if variant %}
+    <button type="button" class="btn btn-success btn-sm w-100 add-to-cart-btn" data-url="{% url 'add_to_cart' variant.id %}">
+      Add to Cart
+    </button>
+  {% else %}
+    <button class="btn btn-secondary btn-sm w-100" disabled>
+      Unavailable
+    </button>
+  {% endif %}
+{% endwith %}
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+{% if products.paginator.num_pages > 1 %}
+<nav class="mt-5">
+  <ul class="pagination justify-content-center">
+    {% if products.has_previous %}
+    <li class="page-item"><a class="page-link" 
+      href="?page={{products.previous_page_number}}
+      {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}
+           {% if request.GET.category %}&category={{ request.GET.category }}{% endif %}
+           {% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}
+           {% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}
+           {% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">
+          &laquo;</a></li>
+    {% else %}
+    <li class="page-item-disabled">
+      <span class="page-link">&laquo;</span>
+    </li> 
+    {% endif %}
+    {% for num in products.paginator.page_range %}
+    {% if products.number == num %}
+    <li class="page-item-active">
+      <span class="page-link">{{num}}</span>
+    </li>
+    {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+        <li class="page-item">
+          <a class="page-link"
+             href="?page={{ num }}
+             {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}
+             {% if request.GET.category %}&category={{ request.GET.category }}{% endif %}
+             {% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}
+             {% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}
+             {% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">
+            {{ num }}
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Next ▶ -->
+    {% if products.has_next %}
+      <li class="page-item">
+        <a class="page-link"
+        href="?page={{ products.next_page_number }}
+           {% if request.GET.q %}&q={{ request.GET.q }}{% endif %}
+           {% if request.GET.category %}&category={{ request.GET.category }}{% endif %}
+           {% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}
+           {% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}
+           {% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">
+          &raquo;
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">&raquo;</span>
+      </li>
+    {% endif %}
+
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener("click", function (e) {
+  const btn = e.target.closest(".add-to-cart-btn");
+  if (!btn) return;
+
+  e.preventDefault();
+
+  const url = btn.dataset.url;
+  btn.disabled = true;
+
+  fetch(url, {
+    headers: { "X-Requested-With": "XMLHttpRequest" }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      showToast("Added to cart 🛒", "success");
+
+      const cartCount = document.querySelector(".badge.bg-success");
+      if (cartCount) {
+        cartCount.textContent = data.total_items;
+      }
+    } else {
+      showToast(data.message || "Unable to add item", "danger");
+    }
+  })
+  .catch(() => {
+    showToast("Server error. Try again.", "danger");
+  })
+  .finally(() => {
+    btn.disabled = false;
+  });
+});
+
+function showToast(message, type) {
+  const container = document.getElementById("cart-toast-container");
+  const alert = document.createElement("div");
+
+  alert.className = `alert alert-${type} alert-dismissible fade show`;
+  alert.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+
+  container.appendChild(alert);
+  setTimeout(() => alert.remove(), 3000);
+}
+</script>
+{% endblock %}

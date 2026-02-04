@@ -1,0 +1,266 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+  <style>
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: #f6f8f7;
+    }
+    .brand-icon {
+      width: 24px;
+      height: 24px;
+    }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+    }
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+    }
+    .cart-img {
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .summary-card {
+      position: sticky;
+      top: 100px;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<!-- Main -->
+<main class="container py-5">
+
+  <!-- Breadcrumb -->
+  <nav class="mb-4">
+    <a href="{%url 'home'%}" class="text-muted text-decoration-none">Home</a> /
+    <a href="{%url 'productlist'%}" class="text-muted text-decoration-none">Shop</a> /
+    <span class="fw-semibold">Cart</span>
+  </nav>
+
+  <!-- Heading -->
+  <div class="mb-5">
+    <h1 class="fw-black display-6">Your Cart</h1>
+    <p class="text-muted">Review your selected jerseys before checkout</p>
+  </div>
+
+  <div class="row g-5">
+
+    {%load static%}
+    <!-- Cart Items -->
+    <div class="col-lg-8">
+
+      <h5 class="fw-bold border-bottom pb-3 mb-4">Cart Items({{cart_items|length}})</h5>
+
+      {%if cart_items%}
+      {%for item in cart_items%}
+      <div class="d-flex gap-4 mb-4" id="row-{{item.product.id}}">
+        <img src="{{item.product.main_img.url}}"
+             class="cart-img" alt="{{item.product.team}} jersey">
+
+        <div class="flex-grow-1">
+          <h6 class="fw-semibold mb-1">{{item.product.season}} {{item.product.team}} jersey</h6>
+          <small class="text-muted">Size: {{item.variant.size}}</small>
+          <div class="text-muted mt-2">Rs.{{item.variant.price}}</div>
+        </div>
+
+        <div class="text-end">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <button class="btn btn-light qty-btn update-cart" data-url="{%url 'update_cart' item.variant.id%}" data-action="dec" type="button">-</button>
+            <input type="text" id="qty-{{item.variant.id}}" class="form-control text-center p-0" style="width:40px" value="{{item.quantity}}" readonly>
+            <button data-url="{%url 'update_cart' item.variant.id%}" class="btn btn-light qty-btn update-cart" data-action="inc" type="button">+</button>
+          </div>
+          <button type="button" class="btn btn-link text-muted p-0 remove-cart" data-url="{%url 'remove_from_cart' item.variant.id%}">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>
+      {%endfor%}
+      {%else%}           
+      <div class="alert alert-info"> 
+        Your cart is empty
+      </div>
+      {%endif%}
+    </div>
+
+    <!-- Summary -->
+    <div class="col-lg-4">
+      <div class="card summary-card shadow-sm">
+        <div class="card-body">
+
+          <h5 class="fw-bold border-bottom pb-3 mb-4">Order Summary</h5>
+
+          <div class="d-flex justify-content-between text-muted mb-2">
+            <span>Subtotal</span><span>Rs.<span id="subtotal">{{subtotal}}</span></span>
+          </div>
+          <div class="d-flex justify-content-between text-muted mb-2">
+            <span>Shipping</span><span>Rs.<span id="shipping">{{shipping}}</span></span>
+          </div>
+          <div class="d-flex justify-content-between text-muted mb-3">
+            <span>Taxes</span><span>Rs.<span id="tax">{{tax}}</span></span>
+          </div>
+          <!-- DISCOUNT SUMMARY -->
+
+{% if offer_discount or discount %}
+  <div class="d-flex justify-content-between text-muted mb-3">
+    <span>
+      Discount
+      {% if offer_discount %}
+        </div>
+      </div>
+    </div>        <small class="text-success">
+          ({{ offer_type|title }} Offer{% if offer_name %}: {{ offer_name }}{% endif %})
+        </small>
+      {% elif referral_discount %}
+        <small class="text-success">(Referral)</small>
+      {% elif applied_coupon %}
+        <small class="text-success">(Coupon)</small>
+      {% endif %}
+    </span>
+
+    <span>
+      Rs.
+      {% if offer_discount %}
+        {{ offer_discount }}
+      {% else %}
+        {{ discount }}
+      {% endif %}
+    </span>
+  </div>
+{% endif %}
+
+          <div class="d-flex justify-content-between fw-bold fs-5 border-top pt-3 mb-4">
+            <span>Total</span><span>Rs.<span id="grand-total">{{grand_total}}</span></span>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label text-muted">Discount Code</label>
+            <form action="{%url 'apply_coupon'%}" method="post">
+            {%csrf_token%}
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Enter code" name="coupon_code" value="{{applied_coupon.code|default:''}}">
+              <button class="btn btn-outline-secondary" type="submit">Apply</button>
+            </div>
+          </form>
+
+          {%if coupon_error%}
+          <small class="text-danger">{{coupon_error}}</small> 
+          {%endif%} 
+
+          {%if applied_coupon%}
+          <small class="text-success"> 
+            Coupon <strong>{{applied_coupon.code}}</strong>applied successfully
+            (<a href="{%url 'remove_coupon'%}" class="text-decoration-none">Remove</a>)
+          </small> 
+          {%endif%}
+
+          {%if cart_items%}
+          <a class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2 py-2" href="{%url 'checkout'%}">
+            <span class="material-symbols-outlined">lock</span>
+            Proceed to Checkout
+          </a> 
+          {%else%} 
+          <button class="btn btn-secondary w-100" disabled>           
+            Cart is Empty
+          </button> 
+          {%endif%}
+          </div>
+
+          <a href="{%url 'product_list'%}" class="d-block text-center text-success mt-3">Continue Shopping</a>
+
+          <div class="d-flex justify-content-center gap-4 mt-4 text-muted small">
+            <div class="d-flex align-items-center gap-1">
+              <span class="material-symbols-outlined">verified_user</span>
+              Secure Payment
+            </div>
+            <div class="d-flex align-items-center gap-1">
+              <span class="material-symbols-outlined">workspace_premium</span>
+              Authentic Jerseys
+            </div>
+          </div>
+
+
+
+  </div>
+</main> 
+{% endblock %}
+{% block extra_js %}
+<script>
+console.log("CART SCRIPT LOADED");
+
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM READY");
+
+  document.body.addEventListener("click", function (e) {
+
+    // + / - BUTTON
+    if (e.target.closest(".update-cart")) {
+      e.preventDefault();
+
+      let btn = e.target.closest(".update-cart");
+      let url = btn.dataset.url;
+      let action = btn.dataset.action;
+
+      console.log("Updating:", url, action);
+
+      fetch(`${url}?action=${action}`, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+      })
+      .then(res => {
+        console.log("Status:", res.status);
+        return res.json();
+      })
+      .then(data => {
+        console.log("Response:", data);
+
+        // extract product id from URL for DOM update
+        let productId = url.split("/").filter(Boolean).pop();
+
+        if (data.status === "success") {
+          document.getElementById(`qty-${productId}`).value = data.qty;
+        }
+        else if (data.status === "removed") {
+          document.getElementById(`row-${productId}`).remove();
+        }
+        else {
+          alert(data.message);
+        }
+      })
+      .catch(err => console.error("FETCH ERROR:", err));
+    }
+
+    // DELETE BUTTON
+    if (e.target.closest(".remove-cart")) {
+      e.preventDefault();
+
+      let btn = e.target.closest(".remove-cart");
+      let url = btn.dataset.url;
+
+      console.log("Removing:", url);
+
+      fetch(url, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+      })
+      .then(res => {
+        console.log("Delete status:", res.status);
+        return res.json();
+      })
+      .then(data => {
+        console.log("Delete response:", data);
+
+        let productId = url.split("/").filter(Boolean).pop();
+
+        if (data.status === "success") {
+          document.getElementById(`row-${productId}`).remove();
+        }
+      })
+      .catch(err => console.error("DELETE ERROR:", err));
+    }
+
+  });
+});
+</script>
+{% endblock %}
+

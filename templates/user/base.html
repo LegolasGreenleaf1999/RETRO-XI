@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}RETRO XI{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <!-- Global Styles -->
+  <style>
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: #f6f8f6;
+    }
+    .bg-primary-custom { background-color: #13ae47; }
+    .text-primary-custom { color: #13ae47; }
+
+    .hero-overlay {
+      background: linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55));
+    }
+
+    .product-card img {
+      transition: transform .3s ease;
+    }
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
+  </style>
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top bg-white border-bottom">
+  <div class="container">
+
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{% url 'home' %}">
+      <img src="{% static 'images/retroxi.png' %}" width="24" height="24" alt="Retroxi">
+      RETRO XI
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">  
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'new_arrivals' %}">New Arrivals</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'productlist' %}">Shop</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a></li>
+      </ul>
+
+      <div class="d-flex gap-2">
+        <a href="{% url 'user_logout' %}" class="btn btn-light rounded-circle">
+                <span class="material-symbols-outlined">logout</span>
+        </a>
+        <a href="{% url 'profile' %}" class="btn btn-light rounded-circle">
+          <span class="material-symbols-outlined">person</span>
+        </a>
+        <a href="{% url 'cart' %}" class="btn btn-light rounded-circle position-relative">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          <span class="badge bg-success position-absolute top-0 end-0">
+            {{request.session.cart|length}}
+        </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="cart-toast-container"
+     class="position-fixed top-0 end-0 p-3"
+     style="z-index: 1055;">
+</div>
+
+<!-- Messages -->
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      {% if 'admin' not in message.tags %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+<!-- Main Content -->
+<main class="container my-4">
+  {% block content %}{% endblock %}
+</main>
+<footer class="border-top border-custom pt-4 pb-3 px-2 text-center text-md-start">
+          <div class="row g-4">
+            <div class="col-12 col-md-4">
+              <h3 class="fw-bold h5 text-dark mb-2">Retro XI</h3>
+              <p class="small text-muted-green mb-0">
+                Your home for authentic vintage football jerseys, celebrating the
+                history and culture of the beautiful game.
+              </p>
+            </div>
+            <div class="col-6 col-md-2">
+              <h4 class="fw-semibold text-dark mb-3 small">Shop</h4>
+              <ul class="list-unstyled small mb-0">
+                <li><a href="#" class="text-muted-green text-decoration-none">All Products</a></li>
+                <li><a href="#" class="text-muted-green text-decoration-none">Featured</a></li>
+                <li><a href="#" class="text-muted-green text-decoration-none">New Arrivals</a></li>
+              </ul>
+            </div> 
+            <div class="col-6 col-md-2">
+              <h4 class="fw-semibold text-dark mb-3 small">About</h4>
+              <ul class="list-unstyled small mb-0">
+                <li><a href="{% url 'ourstory' %}" class="text-muted-green text-decoration-none">Our Story</a></li>
+                <li><a href="{% url 'sustainability' %}" class="text-muted-green text-decoration-none">Sustainability</a></li>
+                <li><a href="{% url 'press' %}" class="text-muted-green text-decoration-none">Press</a></li>
+              </ul>
+            </div>
+            <div class="col-6 col-md-3">
+              <h4 class="fw-semibold text-dark mb-3 small">Help</h4>
+              <ul class="list-unstyled small mb-0">
+                <li><a href="{% url 'contact' %}" class="text-muted-green text-decoration-none">Contact Us</a></li>
+                <li><a href="{% url 'faq' %}" class="text-muted-green text-decoration-none">FAQ</a></li>
+                <li><a href="{% url 'shipping' %}" class="text-muted-green text-decoration-none">Shipping &amp; Returns</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-border-top mt-4 pt-3 text-center">
+            <p class="text-muted-green small mb-0">
+              © 2026 Retro XI. All Rights Reserved.
+            </p>
+          </div>
+        </footer>
+<!-- Bootstrap JS -->
+ 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+function showToast(message, type = "success") {
+  const container = document.getElementById("cart-toast-container");
+  if (!container) return;
+
+  const alert = document.createElement("div");
+  alert.className = `alert alert-${type === "success" ? "success" : "danger"} alert-dismissible fade show`;
+  alert.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+
+  container.appendChild(alert);
+
+  setTimeout(() => {
+    alert.classList.remove("show");
+    alert.remove();
+  }, 3000);
+}
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

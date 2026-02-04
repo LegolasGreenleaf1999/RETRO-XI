@@ -68,7 +68,9 @@
             <div class="bg-dark bg-opacity-25 rounded p-4 shadow-lg backdrop-blur">    
                 {% if messages %}
                     {% for message in messages %}
+                    {% if 'admin' not in message.tags %}
                         <p style="color:red;">{{message}}</p>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
                 <form method="POST">
@@ -88,6 +90,10 @@
                     <div class="mb-3"> 
                         <label class="form-label text-white">Confirm Password</label>
                         <input type="password" class="form-control" placeholder="Confirm password" name='confirm_password' required>
+                    </div>
+                    <div class="mb-3"> 
+                        <label class="form-label text-white">Referral Code<span class="text-muted">(optional)</span></label>
+                        <input type="text" class="form-control" placeholder="Enter referral code(optional)" name='referral_code'>
                     </div>
                     <button type="submit" class="btn submit-btn w-100 py-2 mt-2">  
                         Create Account

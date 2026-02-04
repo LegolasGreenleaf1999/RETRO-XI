@@ -51,6 +51,15 @@
         } 
     </style>
 </head>
+{% if messages %}
+  {% for message in messages %}
+    {% if 'admin' not in message.tags %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
 <body class="overlay-bg">
     <div class="container min-vh-100 d-flex justify-content-center align-items-center">
         <div class="col-md-6 col-lg-4 gradient-container">

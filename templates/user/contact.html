@@ -1,0 +1,130 @@
+{% extends "user/base.html" %}
+{% block extra_css %}
+<style>
+    .form-control,
+    .form-select {
+      background-color: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.2);
+      color: #4e4747;
+    }
+
+    .form-control::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(244,192,37,.25);
+    }
+
+    .icon-circle {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+</style>
+{% endblock %}
+{% block content %} 
+<section class="text-center text-white d-flex align-items-center"
+  style="
+    min-height:320px;
+    background:
+      linear-gradient(0deg, rgba(34,30,16,1), rgba(34,30,16,.6), rgba(34,30,16,1)),
+      url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMJMFPhct3aVn4gQYBzzmR30cMAQnVVcIJ-gJutim-bcpGCH1XdCDDTUseLnoPt1w51c7D6eswZm1576QOg6hQbOy7P1joUh0lqmabigLb1JaYiEZLceW_fiKD0XiCKMpSqx1W6FXp8LkVC64_0C9hgzwGXNkuLNi2pBHKOfpAIFQ9r4O_kediAIBZmaXyjC7klSUYRZqHkuvlgfSPIngDuJZTxbhSsBJPaK26jWnZpTU6ElY4B7U2ZM4FiM4In0IyNpSTG_8-gpc')
+      center/cover;">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Get in Touch</h1>
+    <p class="lead text-white-75">We’re here to help — drop us a message anytime.</p>
+  </div>
+</section>
+<section class="container py-5">
+  <div class="row g-5">
+
+    <!-- FORM -->
+    <div class="col-lg-7">
+      <h2 class="fw-bold mb-4">Send Us a Message</h2>
+
+      <form class="row g-4">
+        <div class="col-md-6">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-control" placeholder="Enter your full name">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-control" placeholder="you@example.com">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Subject / Topic</label>
+          <select class="form-select">
+            <option>Order Inquiry</option>
+            <option>Product Question</option>
+            <option>Returns & Exchanges</option>
+            <option>General Feedback</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Order ID (Optional)</label>
+          <input type="text" class="form-control" placeholder="#12345">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Message</label>
+          <textarea class="form-control" rows="5"></textarea>
+        </div>
+
+        <div class="col-12 d-flex gap-3">
+          <button class="btn bg-primary-custom fw-bold">Send Message</button>
+          <button class="btn btn-outline-light">Reset</button>
+        </div>
+      </form>
+    </div>
+        <!-- INFO -->
+    <div class="col-lg-5">
+      <h2 class="fw-bold mb-4">Contact Info & Quick Help</h2>
+
+      <div class="p-4 border border-light border-opacity-10 rounded mb-4">
+        <p class="text-muted-50 mb-1">Email</p>
+        <a href="mailto:support@retrojerserys.com" class="fw-medium text-muted">support@retrojerserys.com</a>
+      </div>
+
+      <!-- FAQ -->
+      <div class="accordion accordion-flush" id="faq">
+        <div class="accordion-item bg-transparent border-light border-opacity-10">
+          <h2 class="accordion-header">
+            <button class="accordion-button bg-transparent text-muted" data-bs-toggle="collapse" data-bs-target="#q1">
+              How do I track my order?
+            </button>
+          </h2>
+          <div id="q1" class="accordion-collapse collapse show">
+            <div class="accordion-body text-muted-75">
+              You will receive a tracking email once shipped.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item bg-transparent border-light border-opacity-10">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-transparent text-muted" data-bs-toggle="collapse" data-bs-target="#q2">
+              What is your return policy?
+            </button>
+          </h2>
+          <div id="q2" class="accordion-collapse collapse">
+            <div class="accordion-body text-white-75">
+              Returns accepted within 30 days.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payment Failed | Classic Jerseys</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #ffffff;
+            color: #131614;
+        }
+        .text-primary-custom { color: #1b4b29 !important; }
+        .bg-primary-custom { background-color: #1b4b29 !important; }
+        .border-primary-custom { border-color: #1b4b29 !important; }
+        .text-error-red { color: #DD6B6B !important; }
+        .bg-error-soft { background-color: rgba(221,107,107,0.1); }
+
+        .icon-btn {
+            background: #f4f4f5;
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+        }
+
+        .card-soft {
+            border: 1px solid #f1f3f2;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border-radius: 1rem;
+        }
+
+        footer {
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+<div class="d-flex flex-column min-vh-100">
+
+    <!-- Header -->
+    <header class="border-bottom py-3 px-3 px-md-5 bg-white sticky-top">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2 text-primary-custom">
+                <div style="width:32px;">
+                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h2 class="fs-5 fw-bold mb-0">Classic Jerseys</h2>
+            </div>
+
+            <nav class="d-none d-md-flex gap-4">
+                <a class="text-decoration-none text-dark fw-medium" href="#">Shop</a>
+                <a class="text-decoration-none text-dark fw-medium" href="#">Collections</a>
+                <a class="text-decoration-none text-dark fw-medium" href="#">Retro Kits</a>
+                <a class="text-decoration-none text-dark fw-medium" href="#">New Arrivals</a>
+            </nav>
+
+            <div class="d-flex gap-2">
+                <button class="icon-btn border-0">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </button>
+                <button class="icon-btn border-0">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    {% if messages %}
+  {% for message in messages %}
+    {% if 'admin' not in message.tags %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+    <!-- Main -->
+    <main class="flex-grow container py-5">
+
+        <!-- Breadcrumbs -->
+        <nav class="mb-4">
+            <a href="#" class="text-muted text-decoration-none">Home</a> /
+            <a href="#" class="text-muted text-decoration-none">Checkout</a> /
+            <span class="fw-semibold">Payment Failed</span>
+        </nav>
+
+        <!-- Hero -->
+        <div class="text-center mb-5">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-error-soft p-3 mb-4">
+                <span class="material-symbols-outlined text-error-red fs-1">error</span>
+            </div>
+            <h1 class="fw-bold mb-3">Oops! Your Payment Was Unsuccessful</h1>
+            <p class="text-muted fs-5 mx-auto" style="max-width:500px;">
+                We couldn't process your transaction. Don't worry, your items are still safe in your cart.
+            </p>
+        </div>
+
+        <!-- Transaction Card -->
+        <div class="mx-auto card-soft p-4 mb-5" style="max-width:640px;">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                <h5 class="fw-bold text-primary-custom mb-0">Transaction Details</h5>
+                <span class="badge text-bg-danger bg-error-soft text-error-red text-uppercase fw-bold px-3 py-2">Failed</span>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <p class="text-muted text-uppercase small fw-bold mb-1">Order ID</p>
+                    <p class="fw-semibold mb-0">{{order.id}}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-muted text-uppercase small fw-bold mb-1">Attempted Amount</p>
+                    <p class="fw-semibold mb-0">Rs.{{payment.amount}}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-muted text-uppercase small fw-bold mb-1">Payment Method</p>
+                    <p class="fw-semibold mb-0 d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined fs-6">credit_card</span> 
+                        {{payment.gateway|title}}
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-muted text-uppercase small fw-bold mb-1">Error Code</p>
+                    <p class="fw-semibold text-error-red mb-0">{{payment.error_message|default:'Transaction failed'}}</p>
+                </div>
+            </div>
+
+            <div class="p-3 rounded bg-primary bg-opacity-10 d-flex gap-2">
+                <span class="material-symbols-outlined text-primary-custom">info</span>
+                <p class="text-muted mb-0">
+                    If any funds were deducted, they will be automatically refunded by your bank within 3–5 business days.
+                </p>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex flex-column flex-sm-row gap-3 mx-auto mb-5" style="max-width:640px;">
+            <a class="btn bg-primary-custom text-white fw-bold py-3 w-100 d-flex align-items-center justify-content-center gap-2" href="{%url 'start_payment' order_uuid=order.id%}">
+                <span class="material-symbols-outlined">refresh</span> Retry Payment
+            </a>
+            <a class="btn btn-outline-success fw-bold py-3 w-100 border-primary-custom text-primary-custom" href="{%url 'cart'%}">
+                Go Back to Cart
+            </a>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="mx-auto bg-light rounded p-4 border" style="max-width:640px;">
+            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <span class="material-symbols-outlined text-muted">help_outline</span>
+                Why did this happen?
+            </h5>
+            <ul class="list-unstyled text-muted small">
+                <li class="mb-3"><strong>• Insufficient Funds:</strong> Ensure your card has enough balance.</li>
+                <li class="mb-3"><strong>• Bank Security Block:</strong> High-value purchases may trigger alerts.</li>
+                <li><strong>• Expired Card:</strong> Verify expiry date and CVV.</li>
+            </ul>
+
+            <div class="mt-4 pt-3 border-top text-center">
+                <p class="small text-muted mb-2 fw-medium">Still having trouble?</p>
+                <a href="#" class="fw-bold text-primary-custom text-decoration-underline">
+                    Contact Customer Support
+                    <span class="material-symbols-outlined fs-6">arrow_outward</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-top py-5 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2 text-primary-custom mb-3">
+                        <div style="width:24px;">
+                            <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <h6 class="fw-bold mb-0">Classic Jerseys</h6>
+                    </div>
+                    <p class="text-muted small">
+                        The ultimate destination for authentic vintage football kits and high-quality retro reproductions.
+                    </p>
+                </div>
+
+                <div class="col-md-3">
+                    <h6 class="fw-bold text-uppercase small mb-3">Company</h6>
+                    <ul class="list-unstyled text-muted small">
+                        <li><a href="#" class="text-decoration-none text-muted">Our History</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Authentication</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Size Guide</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3">
+                    <h6 class="fw-bold text-uppercase small mb-3">Support</h6>
+                    <ul class="list-unstyled text-muted small">
+                        <li><a href="#" class="text-decoration-none text-muted">Shipping & Returns</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Contact Us</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center text-muted small mt-4 pt-3 border-top">
+                © 2024 Classic Jerseys E-commerce. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>

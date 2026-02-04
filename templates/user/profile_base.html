@@ -1,0 +1,73 @@
+{% extends "user/base.html" %}
+
+{% block content %}
+
+{% block profile_top %}{% endblock %}
+
+<div class="container my-5">
+
+  <!-- Profile Tabs -->
+  <ul class="nav nav-tabs mb-4">
+      <li class="nav-item">
+          <a class="nav-link {% if active_tab == 'account' %}active fw-bold{% else %}text-muted{% endif %}"
+             href="{% url 'profile' %}">
+             Account Info
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link {% if active_tab == 'orders' %}active fw-bold{% else %}text-muted{% endif %}"
+             href="{% url 'orderhistory' %}">
+             Order History
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link {% if active_tab == 'wishlist' %}active fw-bold{% else %}text-muted{% endif %}"
+             href="{% url 'wishlist' %}">
+             Wishlist
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link {% if active_tab == 'addresses' %}active fw-bold{% else %}text-muted{% endif %}"
+             href="{% url 'addresses' %}">
+             My Addresses
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link {% if active_tab == 'email' %}active fw-bold{% else %}text-muted{% endif %}"
+             href="{% url 'changeemail' %}">
+             Change Email
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link {% if active_tab == 'password' %}active fw-bold{% else %}text-muted{% endif %}"
+             href="{% url 'verify_old_password' %}">
+             Change Password
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link {% if active_tab == 'refer' %}active fw-bold{% else %}text-muted{% endif %}"
+             href="{% url 'refer' %}">
+             Refer & Earn
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link {% if active_tab == 'wallet' %}active fw-bold{% else %}text-muted{% endif %}"
+             href="{% url 'wallet' %}">
+             Wallet
+          </a>
+      </li>
+  </ul>
+
+  <!-- Page specific content -->
+  {% block profile_content %}{% endblock %}
+
+</div>
+
+{% endblock %}

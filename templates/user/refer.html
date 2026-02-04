@@ -1,0 +1,98 @@
+{% extends 'user/profile_base.html' %}
+{% block extra_css %}
+<style>
+.icon-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+</style>
+{% endblock %}
+{% block profile_content %}
+  <!-- Main -->
+  <main class="flex-fill px-5 py-5" style="max-width:1100px">
+
+    <!-- Header -->
+    <header class="mb-5">
+      <h1 class="fw-black display-5">Refer & Earn</h1>
+      <p class="text-muted fs-5">Invite friends and earn rewards when they shop.</p>
+    </header>
+
+    <!-- Referral Card -->
+    <section class="mb-5">
+      <div class="card shadow-sm rounded-4 p-4">
+        <div class="row g-4 align-items-center">
+
+          <div class="col-md-4">
+            <div class="rounded-3 bg-secondary-subtle h-100"
+                 style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuBMCBqm9G8DVy3OZDe81PiNTfdrHjmZacgeLmGocZcUMhklbS7lLi1OdGr_Y1wAotRjWfRpcjx7rYVvjW_x6kx2X6tF-yLKYEXvLNGh_qfvxfFQanRNDcm4O8J3CvA7P6QPA9VQzU3ijrjrcHgMvd8bQBpYEETnAOQF0Uufw1IMhB1uK3mFD_2bs69UnavNVWQxsUnqXoDNsEnmmHKFUm67JKMPaeBuw5nRf7g9vaZZMOyfryU0ajc_wMRLIv7qWhHxIkRYWFIx3lgt');
+                 background-size:cover;"></div>
+          </div>
+
+          <div class="col-md-8">
+            <span class="badge bg-primary-soft text-primary-custom mb-3">Your Personal Code</span>
+            <div class="d-flex justify-content-between align-items-center bg-light border border-dashed rounded-4 p-3 mb-4">
+              <span class="fs-3 fw-black text-primary-custom letter-spacing">{{referral_code}}</span>
+              <button class="btn btn-success fw-bold btn-sm" onclick="navigator.clipboard.writeText('{{referral_code}}')">
+                <span class="material-symbols-outlined">content_copy</span> Copy
+              </button>
+            </div>
+
+            <small class="text-muted fw-semibold">Referral Link</small>
+            <div class="d-flex justify-content-between align-items-center bg-light rounded-3 p-2 mt-1">
+              <span class="text-truncate">{{referral_link}}</span>
+              <button class="btn btn-link fw-bold text-primary-custom btn-sm" onclick="navigator.clipboard.writeText('{{referral_link}}')">Copy</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="mb-5 text-center text-md-start">
+      <h5 class="fw-bold mb-4">How it works</h5>
+
+      <div class="row g-4">
+        <div class="col-md-4 text-center">
+          <div class="icon-circle border border-success text-success mx-auto mb-3">
+            <span class="material-symbols-outlined">share</span>
+          </div>
+          <h6 class="fw-bold">1. Share Code</h6>
+          <p class="text-muted small">Send your link to friends.</p>
+        </div>
+
+        <div class="col-md-4 text-center">
+          <div class="icon-circle border border-success text-success mx-auto mb-3">
+            <span class="material-symbols-outlined">shopping_cart_checkout</span>
+          </div>
+          <h6 class="fw-bold">2. Friend Orders</h6>
+          <p class="text-muted small">They get 10% off.</p>
+        </div>
+
+        <div class="col-md-4 text-center">
+          <div class="icon-circle border border-success text-success mx-auto mb-3">
+            <span class="material-symbols-outlined">payments</span>
+          </div>
+          <h6 class="fw-bold">3. Earn Rewards</h6>
+          <p class="text-muted small">You earn store credit.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="mb-5">
+      <div class="row g-3">
+        <div class="col-md-3"><div class="card p-3 text-center"><small>Total Referrals</small><h4>{{total_referrals}}</h4></div></div>
+        <div class="col-md-3"><div class="card p-3 text-center"><small>Successful</small><h4>{{successful_referrals}}</h4></div></div>
+        <div class="col-md-3"><div class="card p-3 text-center bg-primary-soft"><small>Total Rewards</small><h4 class="text-primary-custom">Rs. {{total_rewards}}</h4></div></div>
+        <div class="col-md-3"><div class="card p-3 text-center"><small>Pending</small><h4 class="text-warning">Rs. {{pending_rewards}}</h4></div></div>
+      </div>
+    </section>
+
+  </main>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+
+
+  <!-- Main Content -->
+  <main class="flex-fill p-4">
+
+    <!-- Header --> 
+    <form method="get" class="mb-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+      <div>
+        <h2 class="fw-bold">Orders Management</h2>
+        <p class="text-muted mb-0">View, filter, and manage all customer orders.</p>
+      </div>
+        <div class="input-group">
+          <span class="input-group-text bg-success bg-opacity-10 border-0">
+            <span class="material-symbols-outlined">search</span>
+          </span>
+          <input type="text" name="search" value="{{search_query}}" class="form-control bg-success bg-opacity-10 border-0" placeholder="Search by order id, email or name">
+        </div>
+      </div>
+    
+   <div class="row g-3">
+    <div class="col-md-2">
+      <select name="status" class="form-select">
+        <option value="">Order Status</option>
+        {% for key,label in status_choices %}
+        <option value="{{key}}"{% if status_filter == 'key' %}selected{% endif %}>
+          {{label}}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select name="payment_method" class="form-select">
+        <option value="">Payment Method</option>  
+        {% for key,label in payment_method_choices %}
+        <option value="{{key}}"{% if payment_method == 'key' %}selected{% endif %}>
+          {{label}}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <input type="date" name="date_from" value="{{date_from}}" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <input type="date" name="date_to" value="{{date_to}}" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <input type="number" step="0.01" name="min_amount" value="{{min_amount}}" class="form-control" placeholder="Min Rs.">
+    </div>
+    <div class="col-md-2">
+      <input type="number" step="0.01" name="max_amount" value="{{max_amount}}" class="form-control" placeholder="Max Rs.">
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+      <button type="submit" class="btn btn-success w-100">
+        Apply Filters
+      </button>
+      <a href="{% url 'order_list' %}" class="btn btn-outline-secondary w-100">
+        Clear
+      </a>
+    </div>
+   </div>
+   </form>
+
+    <!-- Orders Table -->
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th><input type="checkbox"></th>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%for order in orders%}
+            <tr>
+              <td><input type="checkbox"></td>
+              <td class="fw-semibold">#{{order.id}}</td>
+              <td>{{order.user.first_name}}</td>
+              <td>{{order.created_at|date:"M d, Y, h:i A"}}</td>
+              <td>{{order.item.count}}</td>
+              <td>Rs.{{order.total}}</td>
+              <td>{{order.delivery_type|title}}</td>
+              <td>
+                {% if order.status == "delivered" %}
+      <span class="badge badge-status completed">Delivered</span>
+    {% elif order.status == "shipped" %}
+      <span class="badge badge-status shipped">Shipped</span>
+    {% elif order.status == "paid" %}
+      <span class="badge badge-status completed">Paid</span>
+    {% elif order.status == "pending" %}
+      <span class="badge badge-status pending">Pending</span>
+    {% elif order.status == "cancelled" %}
+      <span class="badge badge-status cancelled">Cancelled</span>
+    {% endif %}
+              </td>
+              <td>
+                <a class="btn btn-sm btn-light" href="{%url 'order_detail' order.id%}"><span class="material-symbols-outlined">visibility</span></a>
+                <a class="btn btn-sm btn-light" href="{%url 'edit_order' order.id%}"><span class="material-symbols-outlined">edit</span></a>
+                <form action="{%url 'admin_cancel_order' order.id%}" method="post" style="display:inline">
+                  {%csrf_token%}
+                <button type="submit" class="btn btn-sm btn-light text-danger">
+                  <span class="material-symbols-outlined">cancel</span>
+                </button>
+                </form> 
+              </td>
+            </tr>
+            {%empty%}
+            <tr>
+              <td colspan="9" class="text-center text-muted py-4">
+                No orders found
+              </td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="card-footer d-flex justify-content-between align-items-center">
+        <span class="text-muted">Showing <strong>{{orders.start_index}}–{{orders.end_index}}</strong> of <strong>{{orders.paginator.count}}</strong></span>
+        <nav>
+          <ul class="pagination mb-0">
+            {%if orders.has_previous%}
+            <li class="page-item"><a class="page-link" href="?page={{orders.previous_page_number}}">Previous</a></li>
+            {%endif%}
+            {%for num in orders.paginator.page_range%} 
+            {%if orders.number == num%}
+            <li class="page-item active"><span class="page-link">{{num}}</span></li>
+            {%else%}
+            <li class="page-item"><a class="page-link" href="?page={{num}}">{{num}}</a></li>
+            {%endif%}
+            {%endfor%}
+            {%if orders.has_next%}
+            <li class="page-item active"><a class="page-link" href="?page={{orders.next_page_number}}">Next</a></li>         
+            {%endif%}
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+  </main>
+{% endblock %}

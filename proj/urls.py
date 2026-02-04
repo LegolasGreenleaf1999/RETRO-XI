@@ -25,7 +25,10 @@ urlpatterns = [
     path('secret-admin-panel-1729/',include('adminpanel.urls')),
     path('accounts/',include('allauth.urls')),
     path('password-reset/',auth_views.PasswordResetView.as_view(),name='password-reset'),
-    path('',include('user.urls'))
+    path('',include('user.urls')),
+    path('product/',include('product.urls')), 
+    path('payments/',include('payments.urls')),
+    path('reports/',include('reports.urls')),
 ] 
 
 if settings.DEBUG:
