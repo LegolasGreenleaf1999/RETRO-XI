@@ -28,7 +28,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = [
     '16.171.195.56',
     'www.retroxi.com'
-]
+] 
 
 CSRF_TRUSTED_ORIGINS = [
     'https://tillie-leaden-monique.ngrok-free.dev',
@@ -48,8 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',               
-    'sslserver',     
+    'django.contrib.sites',                    
     'allauth',                          
     'allauth.account',
     'allauth.socialaccount',
