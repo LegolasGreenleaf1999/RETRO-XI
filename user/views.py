@@ -479,7 +479,11 @@ def toggle_wishlist(request,jersey_id):
 @login_required
 def order_confirmation(request,order_uuid):
     order=get_object_or_404(Order,pk=order_uuid,user=request.user) 
-    items=order.item.select_related('product') 
+    items=order.item.select_related('product')  
+    request.session.pop('cart', None)
+    request.session.pop('coupon_id', None)
+    request.session.pop('referral_discount', None)
+    request.session.modified = True
     context={
         'order':order,
         'items':items,
