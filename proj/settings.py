@@ -27,11 +27,13 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     '16.171.195.56',
-    'www.retroxi.com'
+    'www.retroxi.in',
+    'retroxi.in',
 ] 
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://tillie-leaden-monique.ngrok-free.dev',
+    "https://retroxi.in",
+    "https://www.retroxi.in",
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -59,6 +61,7 @@ INSTALLED_APPS = [
     'product',
     'payments',
     'reports',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -171,15 +174,21 @@ EMAIL_HOST_PASSWORD='hbxxygpgscgczgph'
 SITE_ID=1                
 
 LOGIN_URL='login'
-LOGIN_REDIRECT_URL='home'     
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_USERNAME_REQUIRED = True
+
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 ACCOUNT_LOGOUT_REDIRECT_URL='/'
 
-MEDIA_URL='/media/' 
-MEDIA_ROOT=BASE_DIR/'media'
+#MEDIA_URL='/media/' 
+#MEDIA_ROOT=BASE_DIR/'media'
 
 
 
@@ -189,13 +198,11 @@ SESSION_COOKIE_AGE = 10*60
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'APP': {
-            'client_id': "1055855455656-9ehdjl08m98ib5gqd2ttm1pppdqiobpe.apps.googleusercontent.com",
-            'secret': "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",
-            'key': ""
-        }
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
     }
 }
+
  
 RAZORPAY_KEY_ID=os.getenv('RAZORPAY_KEY_ID')
 RAZORPAY_KEY_SECRET=os.getenv('RAZORPAY_KEY_SECRET')
@@ -207,3 +214,26 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True 
 
 DJANGO_ENV=os.getenv('DJANGO_ENV')
+
+# AWS S3 SETTINGS
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+
+AWS_STORAGE_BUCKET_NAME = "retroxi-media"
+AWS_S3_REGION_NAME = "eu-north-1"
+
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_QUERYSTRING_AUTH = False
+
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+
+#DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
