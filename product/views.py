@@ -118,7 +118,7 @@ def product_detail(request,slug,uuid):
     }                  
     return render(request,'user/product_detail.html',context) 
 def product_reviews(request,uuid):
-    product=get_object_or_404(JerseyProduct,uuid=uuid) 
+    product=get_object_or_404(JerseyProduct.objects.annotate(min_price=Min('variants__price',filter=Q(variants__is_active=True,variants__stock__gt=0))),uuid=uuid) 
     reviews=product.reviews.filter(is_approved=True)  
     avg_rating=reviews.aggregate(avg=Avg('rating'))['avg'] 
     context={
