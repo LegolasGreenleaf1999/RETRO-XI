@@ -465,6 +465,9 @@ def checkout(request):
         if payment_method=='razorpay':
             return redirect('start_payment',order_uuid=order.id) 
         else:
+            if grand_total>Decimal('1000.00'):
+                messages.error(request,'cash on delivery is possible only for a total amount less than Rs. 1000')
+                return redirect('checkout')
             order.status='pending'
             order.save()
             return redirect('order_success',order.id)
