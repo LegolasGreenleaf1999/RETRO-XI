@@ -36,6 +36,7 @@ from .utils import generate_referral_code,user_only
 from payments.models import Payment
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Min,Max,Q,Prefetch
+from django.core.validators import validate_email
 # Create your views here.     
 @never_cache
 def user_logout(request):     
@@ -170,7 +171,11 @@ def profile(request):
 def edit_profile(request): 
     profile,created=Profile.objects.get_or_create(user=request.user)  
     if request.method=='POST':
-        request.user.first_name=request.POST.get('first_name')    
+        first_name=request.POST.get('first_name')
+        name_error=is_valid_name(first_name)
+        if name_error:
+            return render(request,'user/editprofile.html',{'profile':profile,'error':name_error})   
+        request.user.first_name=first_name.strip() 
         request.user.save()
         profile.phone=request.POST.get('phone')  
         profile.address=request.POST.get('address') 
@@ -302,6 +307,21 @@ def forgot_pass(request):
         else:
             messages.error(request,'email not registered!')
     return render(request,'user/forgotpassword.html')  
+def is_valid_name(name):
+    if not name:
+        return 'name cannot be empty'
+    name=name.strip()
+    if len(name)<2:
+        return 'name must be at least 2 characters long'
+    if not re.match(r'^[A-Za-z ]+$',name):
+        return 'name can contain only letters and spaces'
+    return None
+def validate_email_format(email):
+    try:
+        validate_email(email)
+    except ValidationError:
+        return 'enter a valid email address'
+    return None
 def is_strong_password(password): 
     if not re.search(r'[A-Z]',password):
         return 'password must contain at least one uppercase character'
@@ -315,6 +335,14 @@ def signup_view(request):
         referral_input=request.POST.get('referral_code')
         fullname=request.POST.get('fullname')
         email=request.POST.get('email')
+        name_error=is_valid_name(fullname)
+        if name_error:
+            messages.error(request,name_error) 
+            return render(request,'user/register.html')
+        email_error=validate_email_format(email)
+        if email_error:
+            messages.error(request,email_error)
+            return render(request,'user/register.html')
         password=request.POST.get('password')
         confirm_password=request.POST.get('confirm_password')
         if password!=confirm_password:
