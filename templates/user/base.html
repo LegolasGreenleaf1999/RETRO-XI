@@ -61,9 +61,12 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'new_arrivals' %}">New Arrivals</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'productlist' %}">Shop</a></li>
+        {% if user.is_authenticated %}
         <li class="nav-item"><a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a></li>
+        {% endif %}
       </ul>
 
+      {% if user.is_authenticated %}
       <div class="d-flex gap-2">
         <a href="{% url 'user_logout' %}" class="btn btn-light rounded-circle">
                 <span class="material-symbols-outlined">logout</span>
@@ -77,7 +80,17 @@
             {{request.session.cart|length}}
         </span>
         </a>
+      </div> 
+      {% else %}
+      <div class="d-flex gap-2">
+        <a href="{% url 'login' %}" class="btn btn-light rounded-circle">
+                <span class="material-symbols-outlined">login</span>
+        </a>
+        <a href="{% url 'register' %}" class="btn btn-light rounded-circle">
+                <span class="material-symbols-outlined">app_registration</span>
+        </a>
       </div>
+      {% endif %}
     </div>
   </div>
 </nav>

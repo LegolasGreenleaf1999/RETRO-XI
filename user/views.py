@@ -246,8 +246,6 @@ def delete_address(request,id):
     return JsonResponse({'status':'success','message':'address deleted'})
 
 @never_cache
-@login_required(login_url='login') 
-@user_only
 def home_view(request):
     featured_products = (
         JerseyProduct.objects

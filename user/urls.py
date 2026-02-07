@@ -1,9 +1,9 @@
 from django.urls import path 
 from .views import home_view,login_view,signup_view,verify_otp,forgot_pass,reset_pass,profile,edit_profile,addresses,add_address,edit_address,delete_address,address_detail,verify_password_otp,wallet_page,change_email,verify_email_otp,resend_otp,user_logout,wishlist_view,toggle_wishlist,order_confirmation,apply_coupon,remove_coupon,order_detail_view,cancel_order,return_item,download_invoice,my_orders,verify_old_password,set_new_password,refer_and_earn,ourstory,sustainability,press,contact,faq,shipping
 urlpatterns=[
-    path('',login_view,name='login'),
+    path('login/',login_view,name='login'),
     path('register/',signup_view,name='register'), 
-    path('home/',home_view,name='home'),
+    path('',home_view,name='home'),
     path('otp/',verify_otp,name='otp'),  
     path('forgotpassword/',forgot_pass,name='forgotpassword'),
     path('resetpassword/',reset_pass,name='resetpassword'),
