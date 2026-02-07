@@ -117,7 +117,6 @@ def product_detail(request,slug,uuid):
         'other_images':other_images,
     }                  
     return render(request,'user/product_detail.html',context) 
-@login_required 
 def product_reviews(request,uuid):
     product=get_object_or_404(JerseyProduct,uuid=uuid) 
     reviews=product.reviews.filter(is_approved=True)  
