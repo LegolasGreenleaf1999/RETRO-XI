@@ -18,8 +18,6 @@ from .services import get_best_offer,calculate_discount_amount
 from user.utils import get_referral_discount,user_only
 import json
 # Create your views here.
-@login_required
-@user_only
 def product_list(request):
     q = request.GET.get('q')
     category = request.GET.get('category')
@@ -91,8 +89,6 @@ def product_list(request):
     }
 
     return render(request, 'user/product_list.html', context)
-@login_required
-@user_only
 def product_detail(request,slug,uuid):        
     product=get_object_or_404(JerseyProduct,uuid=uuid,is_active=True) 
     if product.slug!=slug:
