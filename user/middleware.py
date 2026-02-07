@@ -11,7 +11,7 @@ class PreventAdminOnUserSiteMiddleware:
     def __call__(self, request):
         # If admin is logged in and trying to access user-side pages
         if request.user.is_authenticated and request.user.is_staff:
-            if not request.path.startswith('/admin/'):
+            if not request.path.startswith('/secret-admin-panel-1729/'):
                 logout(request)
                 return redirect(reverse('login'))  # your user login page
 
