@@ -221,6 +221,8 @@ def update_cart(request,variant_id):
         'discount':float(totals['discount']),
         'grand_total':float(totals['grand_total']),
         'cart_count':sum(item['quantity'] for item in cart_items),
+        'coupon_code':totals['applied_coupon'].code if totals['applied_coupon'] else None,
+        'coupon_error':totals['coupon_error'],
     })
 @login_required
 def remove_from_cart(request, variant_id):

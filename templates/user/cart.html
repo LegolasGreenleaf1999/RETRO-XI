@@ -143,16 +143,20 @@
             </div>
           </form>
 
+          <div id="coupon-error" class="text-danger">
           {%if coupon_error%}
           <small class="text-danger">{{coupon_error}}</small> 
           {%endif%} 
+          </div>
 
+          <div id="coupon-section">
           {%if applied_coupon%}
           <small class="text-success"> 
             Coupon <strong>{{applied_coupon.code}}</strong>applied successfully
             (<a href="{%url 'remove_coupon'%}" class="text-decoration-none">Remove</a>)
           </small> 
           {%endif%}
+          </div>
           </div>
 
 
@@ -238,6 +242,26 @@ if (data.subtotal !== undefined) {
   document.getElementById("tax").innerText = data.tax.toFixed(2);
   document.getElementById("grand-total").innerText = data.grand_total.toFixed(2);
 }
+// ---- COUPON UI UPDATE ----
+let couponSection = document.getElementById("coupon-section");
+let couponError = document.getElementById("coupon-error");
+
+if (data.coupon_code) {
+  couponSection.innerHTML =
+    `Coupon <strong>${data.coupon_code}</strong> applied successfully
+     (<a href="/remove-coupon/" class="text-decoration-none">Remove</a>)`;
+  couponError.innerText = "";
+} else {
+  // Coupon became invalid (e.g., subtotal < minimum)
+  couponSection.innerHTML = "";
+}
+
+if (data.coupon_error) {
+  couponError.innerText = data.coupon_error;
+} else {
+  couponError.innerText = "";
+}
+
 
       })
       .catch(err => console.error("FETCH ERROR:", err));
@@ -276,6 +300,26 @@ if (data.subtotal !== undefined) {
   document.getElementById("tax").innerText = data.tax.toFixed(2);
   document.getElementById("grand-total").innerText = data.grand_total.toFixed(2);
 }
+// ---- COUPON UI UPDATE ----
+let couponSection = document.getElementById("coupon-section");
+let couponError = document.getElementById("coupon-error");
+
+if (data.coupon_code) {
+  couponSection.innerHTML =
+    `Coupon <strong>${data.coupon_code}</strong> applied successfully
+     (<a href="/remove-coupon/" class="text-decoration-none">Remove</a>)`;
+  couponError.innerText = "";
+} else {
+  // Coupon became invalid (e.g., subtotal < minimum)
+  couponSection.innerHTML = "";
+}
+
+if (data.coupon_error) {
+  couponError.innerText = data.coupon_error;
+} else {
+  couponError.innerText = "";
+}
+
 
       })
       .catch(err => console.error("DELETE ERROR:", err));
