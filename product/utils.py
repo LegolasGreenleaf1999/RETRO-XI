@@ -61,7 +61,8 @@ def get_cart_items(request):
     return cart_items,offer_discount,offer_type,offer_name 
 def calculate_cart_totals(request,cart_items,offer_discount,offer_type):
     TWOPLACES = Decimal('0.01')
-    subtotal = Decimal('0.00')
+    subtotal=sum(item['total_price'] for item in cart_items)
+    subtotal=subtotal if subtotal else Decimal('0.00')
     request.session['cart_total'] = float(subtotal)
 
     shipping = Decimal('10.00') if subtotal > 0 else Decimal('0.00')
