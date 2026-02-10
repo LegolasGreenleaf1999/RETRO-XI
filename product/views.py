@@ -397,6 +397,7 @@ def checkout(request):
     'subtotal':subtotal,
     'shipping':shipping, 
     'tax':tax,
+    'discount':discount,
     'grand_total':grand_total, 
     'shipping_method':shipping_method,
     'prefill_name':user.first_name,
