@@ -263,10 +263,8 @@ def add_to_cart(request, variant_id):
     current_qty = cart.get(key, {}).get('qty', 0)
 
     if current_qty >= variant.stock:
-        return JsonResponse({
-            'status': 'error',
-            'message': f'Only {variant.stock} units available'
-        })
+        messages.error(request,f'only {variant.stock} units available') 
+        return redirect(request.META.get('HTTP_REFERRER','home'))
 
     cart[key] = {'qty': current_qty + 1}
     request.session['cart'] = cart
@@ -274,11 +272,8 @@ def add_to_cart(request, variant_id):
 
     total_items = sum(item['qty'] for item in cart.values())
 
-    return JsonResponse({
-        'status': 'success',
-        'qty': cart[key]['qty'],
-        'total_items': total_items
-    })
+    messages.success(request,'item added to cart successfully')
+    return redirect(request.META.get('HTTP_REFERRER','home'))
 @login_required
 def update_cart(request, variant_id):
     cart = request.session.get('cart', {})
