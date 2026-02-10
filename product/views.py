@@ -16,6 +16,7 @@ from django.utils import timezone
 from django.http import JsonResponse
 from .services import get_best_offer,calculate_discount_amount 
 from user.utils import get_referral_discount,user_only
+from .utils import get_cart_items,calculate_cart_totals
 import json
 # Create your views here.
 def product_list(request):
@@ -146,107 +147,15 @@ def add_review(request,uuid):
 @login_required
 @user_only
 def cart_view(request):
-    TWOPLACES = Decimal('0.01')
-    coupon_error = request.session.pop('coupon_error', None)
-    cart = request.session.get('cart', {})
-    cart_items = []
-    subtotal = Decimal('0.00')
-    offer_discount=Decimal('0.00') 
-    offer_type=None
-    offer_name=None
-    for variant_id, item in cart.items():
-        variant = get_object_or_404(
-            JerseyVariant,
-            id=variant_id,
-            is_active=True,
-            stock__gt=0
-        )
-        product = variant.product
-
-        quantity = min(item['qty'], product.max_quantity_per_order, variant.stock)
-        offer_data=get_best_offer(variant)
-        unit_price=offer_data['final_price']
-        total_price = unit_price * quantity
-        subtotal += total_price
-        if offer_data['discount']>offer_discount:
-            offer_discount=offer_data['discount']
-            if offer_data['offer']:
-                offer_type=offer_data['offer'].scope
-                offer_name=offer_data['offer'].name
-        cart_items.append({
-            'variant': variant,
-            'product': product,
-            'quantity': quantity,
-            'unit_price': unit_price,
-            'original_price':variant.price,
-            'total_price': total_price,
-            'max_quantity': product.max_quantity_per_order,
-        })
-
-    request.session['cart_total'] = float(subtotal)
-
-    shipping = Decimal('10.00') if subtotal > 0 else Decimal('0.00')
-    tax = (subtotal * Decimal('0.08')).quantize(TWOPLACES,rounding=ROUND_HALF_UP)
-    shipping = shipping.quantize(TWOPLACES, rounding=ROUND_HALF_UP)
-    
-    # ---------------- COUPONS ----------------
-    coupon = None
-    coupon_discount=Decimal('0.00')
-    discount = Decimal('0.00')
-    coupon_error = None
-    coupon_id = request.session.get('coupon_id')
-
-    if coupon_id:
-        try:
-            coupon = Coupon.objects.get(id=coupon_id, is_active=True)
-
-            if coupon.expires_at and coupon.expires_at < timezone.now():
-                raise Exception('Coupon expired')
-
-            if subtotal < coupon.min_order_value:
-                raise Exception(f'Minimum order ₹{coupon.min_order_value} required')
-
-            if coupon.discount_type == 'percent':
-                coupon_discount = (coupon.discount_value / Decimal('100')) * subtotal
-            else:
-                coupon_discount = coupon.discount_value
-
-            discount = min(coupon_discount, subtotal)
-
-        except Exception as e:
-            coupon_error = str(e)
-            request.session.pop('coupon_id', None)
-            coupon = None
-            coupon_discount=Decimal('0.00')
-    referral_discount=get_referral_discount(request.user,subtotal)
-    if offer_type is not None:
-        discount = offer_discount
-        coupon = None  
-
-    elif coupon_discount > 0:
-        discount = coupon_discount
-
-    else:
-        discount = referral_discount
-    discount = discount.quantize(TWOPLACES, rounding=ROUND_HALF_UP)
-    grand_total = subtotal + shipping + tax - discount
-    grand_total = max(grand_total, Decimal('0.00'))
-    grand_total = grand_total.quantize(TWOPLACES, rounding=ROUND_HALF_UP)
-    context = {
-        'cart_items': cart_items,
-        'subtotal': subtotal,
-        'shipping': shipping,
-        'tax': tax,
-        'discount': discount,
-        'grand_total': grand_total,
-        'applied_coupon': coupon,
-        'coupon_error': coupon_error,
-        'referral_discount':referral_discount,
+    cart_items,offer_discount,offer_type,offer_name=get_cart_items(request)
+    totals=calculate_cart_totals(request,cart_items,offer_discount,offer_type)
+    context={
+        'cart_items':cart_items,
         'offer_discount':offer_discount,
         'offer_type':offer_type,
-        'offer_name':offer_name,
+        'offer_name':offer_name, 
+        **totals
     }
-
     return render(request, 'user/cart.html', context)
 @login_required
 def add_to_cart(request, variant_id):
@@ -275,39 +184,44 @@ def add_to_cart(request, variant_id):
     messages.success(request,'item added to cart successfully')
     return redirect(request.META.get('HTTP_REFERRER','home'))
 @login_required
-def update_cart(request, variant_id):
-    cart = request.session.get('cart', {})
-    key = str(variant_id)
-
+@user_only
+def update_cart(request,variant_id):
+    cart=request.session.get('cart',{})
+    key=str(variant_id)
     if key not in cart:
-        return JsonResponse({'status': 'error', 'message': 'Item not in cart'})
-
-    variant = get_object_or_404(JerseyVariant, id=variant_id, is_active=True)
-    product = variant.product
-
-    action = request.GET.get('action')
-    qty = cart[key]['qty']
-
-    if action == 'inc':
-        if qty >= variant.stock:
-            return JsonResponse({'status': 'error', 'message': 'Stock limit reached'})
-        if qty >= product.max_quantity_per_order:
-            return JsonResponse({'status': 'error', 'message': 'Max limit reached'})
-        cart[key]['qty'] += 1
-
-    elif action == 'dec':
-        if qty > 1:
-            cart[key]['qty'] -= 1
+        return JsonResponse({'status':'error','message':'item not in cart'})
+    variant=get_object_or_404(JerseyVariant,id=variant_id,is_active=True)
+    product=variant.product
+    action=request.GET.get('action')
+    qty=cart[key]['qty']
+    removed=False
+    if action=='inc':
+        if qty>=variant.stock:
+            return JsonResponse({'status':'error','message':'stock limit reached'})
+        if qty>=product.max_quantity_per_order:
+            return JsonResponse({'status':'error','message':'max limit reached'})
+        cart[key]['qty']+=1
+    elif action=='dec':
+        if qty>1:
+            cart[key]['qty']-=1
         else:
-            del cart[key]
-            request.session['cart'] = cart
-            request.session.modified = True
-            return JsonResponse({'status': 'removed'})
-
-    request.session['cart'] = cart
-    request.session.modified = True
-
-    return JsonResponse({'status': 'success', 'qty': cart.get(key, {}).get('qty', 0)})
+            del cart[key]  
+            removed=True
+    status='removed' if removed else 'success'
+    request.session['cart']=cart
+    request.session.modified=True
+    cart_items,offer_discount,offer_type,offer_name=get_cart_items(request)
+    totals=calculate_cart_totals(request,cart_items,offer_discount,offer_type)
+    return JsonResponse({
+        'status':status,
+        'qty':cart.get(key,{}).get('qty',0), 
+        'subtotal':float(totals['subtotal']),
+        'shipping':float(totals['shipping']),
+        'tax':float(totals['tax']),
+        'discount':float(totals['discount']),
+        'grand_total':float(totals['grand_total']),
+        'cart_count':sum(item['quantity'] for item in cart_items),
+    })
 @login_required
 def remove_from_cart(request, variant_id):
     cart = request.session.get('cart', {})
@@ -315,11 +229,21 @@ def remove_from_cart(request, variant_id):
 
     if key in cart:
         del cart[key]
-
+    
     request.session['cart'] = cart
     request.session.modified = True
-
-    return JsonResponse({'status': 'success', 'message': 'Item removed'})
+    cart_items,offer_discount,offer_type,offer_name=get_cart_items(request)
+    totals=calculate_cart_totals(request,cart_items,offer_discount,offer_type)
+    return JsonResponse({
+        'status': 'success', 
+        'message': 'Item removed',
+        'subtotal':float(totals['subtotal']),
+        'shipping':float(totals['shipping']),
+        'tax':float(totals['tax']),
+        'discount':float(totals['discount']),
+        'grand_total':float(totals['grand_total']),
+        'cart_count':sum(item['quantity'] for item in cart_items),
+        })
 @login_required
 def set_shipping(request):
     data=json.loads(request.body)

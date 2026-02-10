@@ -56,7 +56,7 @@
 
       {%if cart_items%}
       {%for item in cart_items%}
-      <div class="d-flex gap-4 mb-4" id="row-{{item.product.id}}">
+      <div class="d-flex gap-4 mb-4" id="row-{{item.variant.id}}">
         <img src="{{item.product.main_img.url}}"
              class="cart-img" alt="{{item.product.team}} jersey">
 
@@ -108,9 +108,7 @@
     <span>
       Discount
       {% if offer_discount %}
-        </div>
-      </div>
-    </div>        <small class="text-success">
+            <small class="text-success">
           ({{ offer_type|title }} Offer{% if offer_name %}: {{ offer_name }}{% endif %})
         </small>
       {% elif referral_discount %}
@@ -155,6 +153,8 @@
             (<a href="{%url 'remove_coupon'%}" class="text-decoration-none">Remove</a>)
           </small> 
           {%endif%}
+          </div>
+
 
           {%if cart_items%}
           <a class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2 py-2" href="{%url 'checkout'%}">
@@ -167,6 +167,8 @@
           </button> 
           {%endif%}
           </div>
+      </div>
+    </div>
 
           <a href="{%url 'product_list'%}" class="d-block text-center text-success mt-3">Continue Shopping</a>
 
@@ -218,15 +220,25 @@ document.addEventListener("DOMContentLoaded", function () {
         // extract product id from URL for DOM update
         let productId = url.split("/").filter(Boolean).pop();
 
-        if (data.status === "success") {
-          document.getElementById(`qty-${productId}`).value = data.qty;
-        }
-        else if (data.status === "removed") {
-          document.getElementById(`row-${productId}`).remove();
-        }
-        else {
-          alert(data.message);
-        }
+       if (data.status === "success") {
+  document.getElementById(`qty-${productId}`).value = data.qty;
+}
+else if (data.status === "removed") {
+  let row = document.getElementById(`row-${productId}`);
+  if (row) row.remove();
+}
+else {
+  alert(data.message);
+}
+
+// ---- UPDATE ORDER SUMMARY ----
+if (data.subtotal !== undefined) {
+  document.getElementById("subtotal").innerText = data.subtotal.toFixed(2);
+  document.getElementById("shipping").innerText = data.shipping.toFixed(2);
+  document.getElementById("tax").innerText = data.tax.toFixed(2);
+  document.getElementById("grand-total").innerText = data.grand_total.toFixed(2);
+}
+
       })
       .catch(err => console.error("FETCH ERROR:", err));
     }
@@ -252,9 +264,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let productId = url.split("/").filter(Boolean).pop();
 
-        if (data.status === "success") {
-          document.getElementById(`row-${productId}`).remove();
-        }
+       if (data.status === "success") {
+  let row = document.getElementById(`row-${productId}`);
+  if (row) row.remove();
+}
+
+// Update totals
+if (data.subtotal !== undefined) {
+  document.getElementById("subtotal").innerText = data.subtotal.toFixed(2);
+  document.getElementById("shipping").innerText = data.shipping.toFixed(2);
+  document.getElementById("tax").innerText = data.tax.toFixed(2);
+  document.getElementById("grand-total").innerText = data.grand_total.toFixed(2);
+}
+
       })
       .catch(err => console.error("DELETE ERROR:", err));
     }
