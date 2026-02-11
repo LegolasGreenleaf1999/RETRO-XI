@@ -433,7 +433,6 @@ def create_profile(sender,instance,created,**kwargs):
     if created:
         Profile.objects.create(user=instance)    
 @never_cache
-@login_required
 def reset_pass(request):
     email=request.session.get('email')   
     print('reset password email from session=',email)
