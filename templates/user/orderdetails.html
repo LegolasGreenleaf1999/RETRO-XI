@@ -164,18 +164,24 @@
                     {%else%}
                     <span class="text-muted small">Return available after delivery</span>
                     {%endif%} 
-                    {% if order.status == 'pending' or order.status == 'paid' %}
-                    {% if not item.cancelled %}
-                    <form method="post" action="{% url 'cancel_order_item' item.id %}" class="mt-2">
-                      {% csrf_token %}
-                      <button class="btn btn-outline-danger btn-sm">
-                        Cancel Item
-                      </button>
-                    </form> 
-                    {% else %} 
-                    <span class="badge bg-danger mt-2">Item Cancelled</span>
-                    {% endif %}
-                    {% endif %}
+                    <div class="mt-2">
+    <div class="text-muted small">
+        Status: {{ order.status }} | Cancelled: {{ item.cancelled }}
+    </div>
+
+    {% if order.status != 'shipped' and order.status != 'delivered' and order.status != 'cancelled' %}
+        {% if not item.cancelled %}
+        <form method="post" action="{% url 'cancel_order_item' item.id %}" class="mt-2">
+            {% csrf_token %}
+            <button class="btn btn-outline-danger btn-sm">
+                Cancel Item
+            </button>
+        </form>
+        {% else %}
+        <span class="badge bg-danger mt-2">Item Cancelled</span>
+        {% endif %}
+    {% endif %}
+</div>
                 </div>
                 <button class="btn btn-link text-primary-custom p-0 mt-2">Buy Again</button>
               </div>
