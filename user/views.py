@@ -566,7 +566,7 @@ def remove_coupon(request):
 @login_required
 def order_detail_view(request,order_uuid):
     order=get_object_or_404(Order,pk=order_uuid,user=request.user)
-    order_items=OrderItem.objects.filter(order=order)
+    order_items=(OrderItem.objects.filter(order=order).select_related('product','variant'))
     subtotal=Decimal('0.00')
     for item in order_items:
         subtotal+=item.price*item.quantity

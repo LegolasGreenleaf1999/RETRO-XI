@@ -165,9 +165,10 @@
                     <span class="text-muted small">Return available after delivery</span>
                     {%endif%} 
                     <div class="mt-2">
-    <div class="text-muted small">
-        Status: {{ order.status }} | Cancelled: {{ item.cancelled }}
-    </div>
+    <div style="font-size:12px;color:red;">
+    order.status = {{ order.status }} |
+    item.cancelled = {{ item.cancelled }}
+</div>
 
     {% if order.status != 'shipped' and order.status != 'delivered' and order.status != 'cancelled' %}
         {% if not item.cancelled %}
