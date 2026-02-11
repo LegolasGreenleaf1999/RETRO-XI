@@ -61,7 +61,7 @@ class Wallet(models.Model):
                 amount=Decimal(str(amount))
             if not isinstance(self.balance,Decimal):
                 self.balance=Decimal(str(self.balance))
-            self.balance+=amount  
+            self.balance=self.balance + amount  
             self.save()
             return True
         return False
