@@ -143,6 +143,7 @@ class OrderItem(models.Model):
     returned_at=models.DateTimeField(null=True,blank=True) 
     return_reason=models.TextField(blank=True)
     return_notes=models.TextField(blank=True)
+    cancelled=models.BooleanField(default=False)
     def __str__(self):
         return f'{self.product.team}({self.variant.get_size_display()})x{self.quantity}' 
 class ReferralReward(models.Model):

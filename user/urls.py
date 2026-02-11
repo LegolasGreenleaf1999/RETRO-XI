@@ -1,5 +1,5 @@
 from django.urls import path 
-from .views import home_view,login_view,signup_view,verify_otp,forgot_pass,reset_pass,profile,edit_profile,addresses,add_address,edit_address,delete_address,address_detail,verify_password_otp,wallet_page,change_email,verify_email_otp,resend_otp,user_logout,wishlist_view,toggle_wishlist,order_confirmation,apply_coupon,remove_coupon,order_detail_view,cancel_order,return_item,download_invoice,my_orders,verify_old_password,set_new_password,refer_and_earn,ourstory,sustainability,press,contact,faq,shipping
+from .views import home_view,login_view,signup_view,verify_otp,forgot_pass,reset_pass,profile,edit_profile,addresses,add_address,edit_address,delete_address,address_detail,verify_password_otp,wallet_page,change_email,verify_email_otp,resend_otp,user_logout,wishlist_view,toggle_wishlist,order_confirmation,apply_coupon,remove_coupon,order_detail_view,cancel_order,return_item,download_invoice,my_orders,verify_old_password,set_new_password,refer_and_earn,ourstory,sustainability,press,contact,faq,shipping,cancel_order_item
 urlpatterns=[
     path('login/',login_view,name='login'),
     path('register/',signup_view,name='register'), 
@@ -28,6 +28,7 @@ urlpatterns=[
     path('remove-coupon/',remove_coupon,name='remove_coupon'), 
     path('orderdetails/<uuid:order_uuid>/',order_detail_view,name='orderdetails'),
     path('order/cancel/<uuid:order_uuid>/',cancel_order,name='cancel_order'),
+    path('order/cancelitem/<int:item_id>/',cancel_order_item,name='cancel_order_item'),
     path('order/return/<int:item_id>/',return_item,name='return_item'),
     path('order/<uuid:order_uuid>/invoice',download_invoice,name='download_invoice'),
     path('orderhistory/',my_orders,name='orderhistory'),

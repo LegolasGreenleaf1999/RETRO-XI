@@ -679,7 +679,39 @@ def cancel_order(request,order_uuid):
         messages.success(request,'your order has been cancelled successfully. refund is credited to your wallet')
         return redirect('orderdetails',order_uuid=order.pk)
     messages.warning(request,'invalid request')
-    return redirect('orderdetails',order_id=order.id)
+    return redirect('orderdetails',order_id=order.id) 
+@login_required
+def cancel_order_item(request,item_id):
+    item=get_object_or_404(OrderItem,id=item_id,order__user=request.user)
+    order=item.order
+    if order.status in ['shipped','cancelled','delivered']:
+        messages.error(request,'this item cannot be cancelled')
+        return redirect('orderdetails',order__uuid=order.pk)
+    if item.cancelled:
+        messages.warning(request,'item already cancelled')  
+        return redirect('orderdetails',order__uuid=order.pk)
+    if request.method=='POST':
+        with transaction.atomic():
+            if order.stock_deducted and item.variant: 
+                variant=item.variant
+                variant.stock+=item.quantity
+                variant.save() 
+            payment=Payment.objects.filter(order=order,status='success').first()
+            if payment:
+                refund_amount=item.price*item.quantity
+                wallet,_=Wallet.objects.get_or_create(user=request.user)
+                wallet.deposit(refund_amount) 
+            item.cancelled=True
+            item.save()
+            remaining_items=order.item.filter(cancelled=False)
+            if not remaining_items.exists():
+                order.status='cancelled'
+                order.stock_deducted=False
+                order.save()
+        messages.success(request,'item cancelled successfully. refund credited to your wallet')
+        return redirect('orderdetails',order_uuid=order.pk)
+    messages.warning(request,'invalid request')
+    return redirect('orderdetails',order_uuid=order.pk)
 @login_required
 def return_item(request,item_id):
     item=get_object_or_404(OrderItem,id=item_id,order__user=request.user)
