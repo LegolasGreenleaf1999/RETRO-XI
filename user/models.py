@@ -55,17 +55,15 @@ class Wallet(models.Model):
     updated_at=models.DateTimeField(auto_now=True)      
     def __str__(self):
         return f"{self.user.first_name}'s Wallet" 
-    def deposit(self, amount):
-        if amount > 0:
-            if not isinstance(amount, Decimal):
-                amount = Decimal(str(amount))
-
-            if not isinstance(self.balance, Decimal):
-                self.balance = Decimal(str(self.balance))
-
-                self.balance = self.balance + amount
-                self.save()
-                return True
+    def deposit(self,amount):
+        if amount>0: 
+            if not isinstance(amount,Decimal):
+                amount=Decimal(str(amount))
+            if not isinstance(self.balance,Decimal):
+                self.balance=Decimal(str(self.balance))
+            self.balance=self.balance + amount  
+            self.save()
+            return True
         return False
     def withdraw(self,amount):  
         if amount>0 and self.balance>=amount:
