@@ -9,9 +9,10 @@ from xhtml2pdf import pisa
 from django.template.loader import get_template
 from io import BytesIO
 from django.views.decorators.cache import never_cache
+from adminpanel.utils import admin_required
 # Create your views here.
 @never_cache
-@staff_member_required
+@admin_required
 def sales_report_view(request): 
     report_type=request.GET.get('type','daily')
     export_type=request.GET.get('export')
