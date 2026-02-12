@@ -172,17 +172,28 @@ def add_to_cart(request, variant_id):
     current_qty = cart.get(key, {}).get('qty', 0)
 
     if current_qty >= variant.stock:
-        messages.error(request,f'only {variant.stock} units available') 
-        return redirect(request.META.get('HTTP_REFERRER','home'))
+        message=f'only {variant.stock} units available'
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({
+                'status':'error',
+                'message':message
+            },status=400)
+        messages.error(request,message)
+        return redirect(request.META.get('HTTP_REFERER','home'))
 
     cart[key] = {'qty': current_qty + 1}
     request.session['cart'] = cart
     request.session.modified = True
 
     total_items = sum(item['qty'] for item in cart.values())
-
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'status':'success', 
+            'message':'ítem added to cart',
+            'total_items':total_items
+        })
     messages.success(request,'item added to cart successfully')
-    return redirect(request.META.get('HTTP_REFERRER','home'))
+    return redirect(request.META.get('HTTP_REFERER','home'))
 @login_required
 @user_only
 def update_cart(request,variant_id):
