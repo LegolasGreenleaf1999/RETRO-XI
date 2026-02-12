@@ -694,13 +694,11 @@ def referral_admin_dashboard(request):
     successful_referrals=ReferralReward.objects.filter(status='credited').count()
     total_rewards=(ReferralReward.objects.filter(status='credited').aggregate(total=Sum('reward_amount')))['total'] or 0
     pending_rewards=(ReferralReward.objects.filter(status='pending').aggregate(total=Sum('reward_amount')))['total'] or 0
-    referrals=(ReferralReward.objects.select_related('referrer','referred_user','order').order_by('-created_at'))
     context={ 
         'referrals':referrals,
         'total_referrers':total_referrers,
         'successful_referrals':successful_referrals,
         'total_rewards':total_rewards,
-        'pending_awards':pending_rewards,
-        'referrals':referrals,
+        'pending_rewards':pending_rewards,
     }
     return render(request,'admin/referral.html',context)
