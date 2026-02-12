@@ -7,7 +7,7 @@
 
 <body class="bg-dark-theme">
 <div class="container py-5" style="max-width: 450px;">
-    <h3 class="text-white fw-bold mb-4">Verify OTP</h3>
+    <h3 class="text-dark fw-bold mb-4">Verify OTP</h3>
 
     {% if messages %}
         {% for message in messages %}
@@ -19,7 +19,7 @@
 
     <form method="POST">
         {% csrf_token %}
-        <label class="text-white-50 mb-2">Enter OTP sent to your email</label>
+        <label class="text-dark-50 mb-2">Enter OTP sent to your email</label>
         <input type="text" name="otp" class="form-control" required>
 
         <button class="btn btn-warning w-100 mt-3">Verify</button>
