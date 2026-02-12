@@ -32,6 +32,8 @@ def sales_report_view(request):
         start=request.GET.get('start')
         end=request.GET.get('end')
         rows=None 
+        context['start']=start
+        context['end']=end
         if start and end:
             try:
                 start_date = datetime.strptime(start, "%Y-%m-%d").date()
@@ -42,9 +44,16 @@ def sales_report_view(request):
                     context['error'] = "Start date cannot be after end date"
                     context['custom'] = None
                 else:
-                    context['custom'] = custom_sales_report(start_date, end_date)
-                    context['start'] = start
-                    context['end'] = end
+                    report = custom_sales_report(start_date, end_date)
+                    context['custom'] = report
+                    rows = [{
+    'date': f"{start} to {end}",
+    'orders': report['orders'],
+    'gross_sales': report['gross_sales'],
+    'discounts': report['discounts'],
+    'net_sales': report['net_sales'],
+}]
+                    context['rows'] = rows
 
             except Exception as e:
                 print("Custom report error:", e)
@@ -56,6 +65,8 @@ def sales_report_view(request):
         context['rows']=rows
         context['label']='date'
     qs=successful_orders()
+    if report_type == 'custom' and start and end:
+        qs = qs.filter(created_at__date__range=[start_date, end_date])
     context.update({
         'orders_count':qs.count(),
         'revenue':qs.aggregate(total=Sum('total'))['total'] or 0,
