@@ -30,8 +30,13 @@ def sales_report_view(request):
     elif report_type=='custom':
         start=request.GET.get('start')
         end=request.GET.get('end')
-        context['custom']=custom_sales_report(start,end)
-        rows=None  
+        rows=None 
+        if start and end: 
+            context['custom']=custom_sales_report(start,end)
+            context['start']=start
+            context['end']=end
+        else: 
+            context['custom']=None 
     else:
         rows=daily_sales()
         context['rows']=rows
