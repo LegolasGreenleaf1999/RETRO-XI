@@ -10,6 +10,7 @@ from django.template.loader import get_template
 from io import BytesIO
 from django.views.decorators.cache import never_cache
 from adminpanel.utils import admin_required
+from datetime import datetime
 # Create your views here.
 @never_cache
 @admin_required
@@ -31,12 +32,25 @@ def sales_report_view(request):
         start=request.GET.get('start')
         end=request.GET.get('end')
         rows=None 
-        if start and end: 
-            context['custom']=custom_sales_report(start,end)
-            context['start']=start
-            context['end']=end
-        else: 
-            context['custom']=None 
+        if start and end:
+            try:
+                start_date = datetime.strptime(start, "%Y-%m-%d").date()
+                end_date = datetime.strptime(end, "%Y-%m-%d").date()
+
+            
+                if start_date > end_date:
+                    context['error'] = "Start date cannot be after end date"
+                    context['custom'] = None
+                else:
+                    context['custom'] = custom_sales_report(start_date, end_date)
+                    context['start'] = start
+                    context['end'] = end
+
+            except Exception as e:
+                print("Custom report error:", e)
+                context['custom'] = None
+        else:
+            context['custom'] = None 
     else:
         rows=daily_sales()
         context['rows']=rows

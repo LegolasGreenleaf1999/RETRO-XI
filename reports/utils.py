@@ -16,5 +16,5 @@ def custom_sales_report(start_date,end_date):
         'orders':qs.count(),
         'net_sales':qs.aggregate(total=Sum('total'))['total'] or 0,
         'gross_sales':qs.aaggregate(total=Sum('subtotal'))['total'] or 0,
-        'discounts':qs.aaggregate(total=Sum('discount'))['total'] or 0,
+        'discounts':qs.aggregate(total=Sum('discount'))['total'] or 0,
     }
