@@ -360,16 +360,21 @@ document.addEventListener("click", function (e) {
   })
   .then(res => res.json())
   .then(data => {
-    if (data.status === "success") {
-      showToast("Added to cart 🛒", "success");
+if (data.status === "success") {
+  showToast("Added to cart 🛒", "success");
 
-      const cartCount = document.querySelector(".badge.bg-success");
-      if (cartCount) {
-        cartCount.textContent = data.total_items;
-      }
-    } else {
-      showToast(data.message || "Unable to add item", "danger");
-    }
+  const cartCount = document.querySelector(".badge.bg-success");
+  if (cartCount) {
+    cartCount.textContent = data.total_items;
+  }
+}
+else if (data.status === "login_required") {
+  window.location.href = data.login_url;
+}
+else {
+  showToast(data.message || "Unable to add item", "danger");
+}
+
   })
   .catch(() => {
     showToast("Server error. Try again.", "danger");

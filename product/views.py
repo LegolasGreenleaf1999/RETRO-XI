@@ -17,6 +17,7 @@ from django.http import JsonResponse
 from .services import get_best_offer,calculate_discount_amount 
 from user.utils import get_referral_discount,user_only
 from .utils import get_cart_items,calculate_cart_totals
+from django.urls import reverse
 import json
 # Create your views here.
 def product_list(request):
@@ -157,8 +158,15 @@ def cart_view(request):
         **totals
     }
     return render(request, 'user/cart.html', context)
-@login_required
 def add_to_cart(request, variant_id):
+    if not request.user.is_authenticated:
+        login_url=reverse('login') 
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({
+                'status':'login_required',
+                'login_url':f'{login_url}?next={request.path}'
+            },status=401)
+        return redirect(f'{login_url}?next={request.path}')
     variant = get_object_or_404(
         JerseyVariant,
         id=variant_id,

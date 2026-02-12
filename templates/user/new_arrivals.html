@@ -133,3 +133,26 @@
 {% endfor %}
 </div>
 {% endblock %}
+{% block extra_js %}
+<script>
+  fetch(url, {
+  headers: { "X-Requested-With": "XMLHttpRequest" }
+})
+.then(res => res.json())
+.then(data => {
+  if (data.status === "success") {
+    showToast(data.message);
+  }
+  else if (data.status === "login_required") {
+    window.location.href = data.login_url;
+  }
+  else {
+    showToast(data.message || "Server error");
+  }
+})
+.catch(() => {
+  showToast("Server error, try again");
+});
+
+</script>
+{% endblock %}
