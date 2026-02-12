@@ -28,7 +28,7 @@ urlpatterns = [
     path('',include('user.urls')),
     path('product/',include('product.urls')), 
     path('payments/',include('payments.urls')),
-    path('reports/',include('reports.urls')),
+    path('secret-admin-panel-1729/reports/', include('reports.urls')),
 ] 
 
 if settings.DEBUG:
